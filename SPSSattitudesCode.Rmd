@@ -20,11 +20,12 @@ library(rsample)
 
 ```{r Uploading data and cleaning}
 
+# Uploading raw data
 spss.data <- readxl::read_xlsx("spssdata.xlsx", col_names = TRUE)
 View(spss.data)
 
-# Selecting just variables of interest
 
+# Selecting only SPSS-related columns
 spss.data <- spss.data %>% 
              select(SPSS1E,
                     SPSS2E,
@@ -36,5 +37,13 @@ spss.data <- spss.data %>%
                     SPSS8E,
                     SPSS9E,
                     SPSS10E)
+
+# Descriptive Statistics
+multi.hist(spss.data) 
+summary(spss.data)
+describe(spss.data)
+boxplot(spss.data)
+sum(is.na(spss.data))/(10*181)
+
 
 ```

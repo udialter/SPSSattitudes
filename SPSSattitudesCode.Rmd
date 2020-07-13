@@ -1,0 +1,40 @@
+---
+title: "SPSS Attitudes Measure Validation"
+author: "Udi Alter"
+date: "13/07/2020"
+output: html_document
+        md_keep = TRUE
+---
+```{r Loading Packages}
+library(readr)
+library(haven)
+library(tidyverse)
+library(lavaan)
+library(psych)
+library(mirt)
+library(rsample)
+
+```
+
+
+
+```{r Uploading data and cleaning}
+
+spss.data <- readxl::read_xlsx("spssdata.xlsx", col_names = TRUE)
+View(spss.data)
+
+# Selecting just variables of interest
+
+spss.data <- spss.data %>% 
+             select(SPSS1E,
+                    SPSS2E,
+                    SPSS3E,
+                    SPSS4E,
+                    SPSS5E,
+                    SPSS6E,
+                    SPSS7E,
+                    SPSS8E,
+                    SPSS9E,
+                    SPSS10E)
+
+```

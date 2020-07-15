@@ -45,6 +45,7 @@ describe(spss.data)
 boxplot(spss.data)
 sum(is.na(spss.data))
 sum(is.na(spss.data))/(10*181)
+```
 
 questions <- c("SPSS1E","SPSS2E", "SPSS3E", "SPSS4E", "SPSS5E", "SPSS6E", "SPSS7E", "SPSS8E", "SPSS9E", "SPSS10E")
 
@@ -61,6 +62,16 @@ for (i in 1:10) {
                        sum(is.na(spss.data$x))
                        table(spss.data$x)
                       }
-  
+
+```{r}
+data.split <- initial_split(spss.data, prop = 81/100)
+
+efa.MTurk <- training(data.split)
+cfa.spss <- testing(data.split)
+
+
+```
+
+
 
 ```

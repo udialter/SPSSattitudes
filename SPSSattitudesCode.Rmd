@@ -37,13 +37,30 @@ spss.data <- spss.data %>%
                     SPSS8E,
                     SPSS9E,
                     SPSS10E)
-
+spss.data$
 # Descriptive Statistics
 multi.hist(spss.data) 
 summary(spss.data)
 describe(spss.data)
 boxplot(spss.data)
+sum(is.na(spss.data))
 sum(is.na(spss.data))/(10*181)
 
+questions <- c("SPSS1E","SPSS2E", "SPSS3E", "SPSS4E", "SPSS5E", "SPSS6E", "SPSS7E", "SPSS8E", "SPSS9E", "SPSS10E")
+
+
+typeof(spss.data)
+
+
+for (i in 1:10) {
+                       x <- as.character(questions[i])
+                       multi.hist(spss.data$x) 
+                       summary(spss.data$x)
+                       describe(spss.data$x)
+                       boxplot(spss.data$x)
+                       sum(is.na(spss.data$x))
+                       table(spss.data$x)
+                      }
+  
 
 ```

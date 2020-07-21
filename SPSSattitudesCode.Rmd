@@ -1,13 +1,12 @@
 ---
 title: "SPSS Attitudes Measure Validation"
-author: "Udi Alter"
+author: "Carmen Dang"
 date: "13/07/2020"
 output: html_document
         md_keep = TRUE
 ---
-test: create carmens branch
-test 2
-```{r Loading Packages}
+
+```{r Loading Packages, echo = FALSE}
 library(readr)
 library(haven)
 library(tidyverse)
@@ -15,20 +14,18 @@ library(lavaan)
 library(psych)
 library(mirt)
 library(rsample)
-
 ```
 
-
-
 ```{r Uploading data and cleaning}
-
 # Uploading raw data
-spss.data <- readxl::read_xlsx("spssdata.xlsx", col_names = TRUE)
-View(spss.data)
-
+full.data <- readxl::read_xlsx("spssdata.xlsx", col_names = TRUE)
+# Remove empty rows
+full.data <- full.data[1:181, ]
 
 # Selecting only SPSS-related columns
-spss.data <- spss.data %>% 
+  # Do not select StudentIDE col bc it'd be included with EFA/CFA
+  # Num of rows corresponds to StudentIDE
+spss.data <- full.data %>% 
              select(SPSS1E,
                     SPSS2E,
                     SPSS3E,
@@ -39,45 +36,127 @@ spss.data <- spss.data %>%
                     SPSS8E,
                     SPSS9E,
                     SPSS10E)
-spss.data$
-# Descriptive Statistics
-multi.hist(spss.data) 
-summary(spss.data)
+
+# Reverse code SPSS items 2, 3, 10
+spss.data$SPSS2E <- car::recode(spss.data$SPSS2E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1")
+spss.data$SPSS3E <- car::recode(spss.data$SPSS3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1")
+spss.data$SPSS10E <- car::recode(spss.data$SPSS10E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1")
+```
+
+```{r Descriptive Stats}
 describe(spss.data)
-boxplot(spss.data)
-sum(is.na(spss.data))
-sum(is.na(spss.data))/(10*181)
+
+# Contingency table of the counts
+table(spss.data$SPSS1E)
+table(spss.data$SPSS2E)
+table(spss.data$SPSS3E)
+table(spss.data$SPSS4E)
+table(spss.data$SPSS5E)
+table(spss.data$SPSS6E)
+table(spss.data$SPSS7E)
+table(spss.data$SPSS8E)
+table(spss.data$SPSS9E)
+table(spss.data$SPSS10E)
+
+## Missing Data Calculations ##
+table(is.na(spss.data))
+
+# FALSE  TRUE 
+#  1988     3
+
+# 3 / (3 + 1988) = 0.001506781
+# 0.001506781 * 100 = 0.1506781
+
+## Less than 1% missing data, proceeding with complete case analyses
 ```
 
-questions <- c("SPSS1E","SPSS2E", "SPSS3E", "SPSS4E", "SPSS5E", "SPSS6E", "SPSS7E", "SPSS8E", "SPSS9E", "SPSS10E")
+```{r Splitting into EFA/CFA Sets}
+# Default split is 75%/25%
+# Default is no appropriate with our n = 181
+# Zach suggests: EFA n = 81 and CFA n = 100
+EFA_CFA_spss_split <- initial_split(spss.data, prop = .552)
 
-
-typeof(spss.data)
-
-
-for (i in 1:10) {
-                       x <- as.character(questions[i])
-                       multi.hist(spss.data$x) 
-                       summary(spss.data$x)
-                       describe(spss.data$x)
-                       boxplot(spss.data$x)
-                       sum(is.na(spss.data$x))
-                       table(spss.data$x)
-                      }
-
-```{r}
-
-data.split <- initial_split(spss.data, prop = 0.19/.81)
-
-efa.spss <- training(data.split)
-cfa.spss <- testing(data.split)
-
-View(efa.spss)
-View(cfa.spss)
-tail(efa.spss)
-
+EFA.spss <- testing(EFA_CFA_spss_split)
+CFA.spss <- training(EFA_CFA_spss_split)
 ```
 
+```{r MAP/Parallel}
+VSS(EFA.spss, plot = F)
+# The Velicer MAP achieves a minimum of 0.06  with  1  factors  
 
 
+fa.parallel(EFA.spss, fm="ml", fa='fa', n.iter=100)
+# Parallel analysis suggests that the number of factors =  2  and the number of components =  NA 
+# Num. of components = NA bc fa = 'fa' produces factors, fa = 'pc' produces components, fa = 'both'
 ```
+
+```{r EFAs}
+# Zach prefers promax rotation. Promax is most common, but does not achieve a simple structure as well as other oblique rotations
+  # Alyssa prefers oblimin
+# fm. minres/ULS (default) does not assume multivariate normality, ML does.
+  # Let's do ULS for now until assumptions are checked
+```
+
+```{r 1f uls oblimin}
+fa(EFA.spss, nfactors = 1, fm = "uls", rotate = "oblimin")
+#
+# Factor Analysis using method =  uls
+# Call: fa(r = EFA.spss, nfactors = 1, rotate = "oblimin", fm = "uls")
+# Standardized loadings (pattern matrix) based upon correlation matrix
+# 
+#                ULS1
+# SS loadings    4.22
+# Proportion Var 0.42
+#
+# The root mean square of the residuals (RMSR) is  0.15 
+
+##########
+## 1F model looks terrible. RMSR should be <.08
+## Several factor loadings <.40 (Zach drops these items and re-runs EFA)
+## Several communalities <.40 (variance of measure explained by common factors)
+## Not going to do more rotations bc it does not change communality
+##########
+```
+```{r 2f uls oblimin}
+fa(EFA.spss, nfactors = 2, fm = "uls", rotate = "oblimin")
+#
+# Factor Analysis using method =  uls
+# Call: fa(r = EFA.spss, nfactors = 2, rotate = "oblimin", fm = "uls")
+# Standardized loadings (pattern matrix) based upon correlation matrix
+# 
+#                       ULS1 ULS2
+# SS loadings           4.18 1.73
+# Proportion Var        0.42 0.17
+# Cumulative Var        0.42 0.59
+# Proportion Explained  0.71 0.29
+# Cumulative Proportion 0.71 1.00
+#
+# The root mean square of the residuals (RMSR) is  0.06
+#
+#         ULS1  ULS2      h2        u2        com
+# SPSS1E	0.79	0.02	0.6285039	0.3714961	1.001102
+# SPSS2E	-0.05	0.89	0.7749856	0.2250144	1.006495
+# SPSS3E	0.12	0.77	0.6323897	0.3676103	1.045096
+# SPSS4E	0.81	0.07	0.6855243	0.3144757	1.013962
+# SPSS5E	0.77	0.00	0.5960341	0.4039659	1.000078
+# SPSS6E	0.62	-0.11	0.3716264	0.6283736	1.059626 h2 <.4
+# SPSS7E	0.69	-0.09	0.4658933	0.5341067	1.036013
+# SPSS8E	0.83	0.07	0.7147570	0.2852430	1.013128
+# SPSS9E	0.85	-0.04	0.7201390	0.2798610	1.003544
+# SPSS10E	-0.06	0.57	0.3216321	0.6783679	1.021490 h2 <.4
+
+##########
+# RMSR = .05 is good
+# All factor loadings are >.4
+# Some w. low communality
+# Let's check out other rotations to change the loadings
+##########
+```
+```{r 2f uls promax}
+fa(EFA.spss, nfactors = 2, fm = "uls", rotate = "promax")
+##########
+# Factor loadings did not change much
+# Open to trying other rotations as well
+##########
+```
+

@@ -91,7 +91,7 @@ MAP/Parallel
 
 VSS(efa.spss, plot = F)
 
-# The Velicer MAP achieves a minimum of 0.04  with  1  factors 
+# The Velicer MAP achieves a minimum of 0.04  with  2  factors 
 
 
 fa.parallel(efa.spss, fa = "both")
@@ -108,7 +108,7 @@ fa.parallel(efa.spss, fa = "both")
 ```{r EFA} 
 #EFA (trying with 2 factors)
 
-fa(efa.spss, fm = "ml", nfactors = 2, rotate = "Promax")
+fa(efa.spss, fm = "ml", nfactors = 2, rotate = "promax")
 
 # I always prefer promax rotation and maximum likelihood extraction. These are not universally agreed upon.
 # ML extraction is highly prone to Heywood cases. Promax rotation allows for correlations between factors.
@@ -151,5 +151,19 @@ Measures of factor score adequacy
 Correlation of (regression) scores with factors   0.97 0.88
 Multiple R square of scores with factors          0.94 0.78
 Minimum correlation of possible factor scores     0.87 0.56
+
+```{r EFA} 
+#EFA (trying with 2 factors)
+
+fa(efa.spss, fm = "ml", nfactors = 2, rotate = "oblimin")
+
+
+```
+
+```{r EFA} 
+#EFA (trying with 2 factors)
+
+fa(efa.spss, fm = "uls", nfactors = 2, rotate = "oblimin")
+
 
 ```

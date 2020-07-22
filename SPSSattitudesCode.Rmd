@@ -2,8 +2,7 @@
 title: "SPSS Attitudes Measure Validation"
 author: "Udi Alter"
 date: "13/07/2020"
-output: html_document
-        md_keep = TRUE
+output: github_document
 ---
 ```{r Loading Packages}
 library(readr)
@@ -21,12 +20,12 @@ library(rsample)
 ```{r Uploading data and cleaning}
 
 # Uploading raw data
-spss.data <- readxl::read_xlsx("spssdata.xlsx", col_names = TRUE)
-View(spss.data)
+spssdata <- readxl::read_xlsx("spssdata.xlsx", col_names = TRUE)
+View(spssdata)
 
 
 # Selecting only SPSS-related columns
-spss.data <- spss.data %>% 
+spss.data <- spssdata %>% 
              select(SPSS1E,
                     SPSS2E,
                     SPSS3E,
@@ -37,7 +36,30 @@ spss.data <- spss.data %>%
                     SPSS8E,
                     SPSS9E,
                     SPSS10E)
-spss.data$
+
+
+# Descriptive Statistics
+multi.hist(spss.data) 
+summary(spss.data)
+describe(spss.data)
+boxplot(spss.data)
+sum(is.na(spss.data))
+sum(is.na(spss.data))/(10*181)
+
+## Less than 1% missing data, proceeding with complete case analyses.
+
+```
+Reverse Code Q 2,3 & 10
+```{r}
+
+View(spss.data$SPSS2E)
+spss.data$SPSS2E <- 6-spss.data$SPSS2E
+spss.data$SPSS3E <- 6-spss.data$SPSS3E
+spss.data$SPSS10E <- 6-spss.data$SPSS10E
+
+head(spssdata$SPSS10E)
+head(spss.data)
+
 # Descriptive Statistics
 multi.hist(spss.data) 
 summary(spss.data)
@@ -46,36 +68,88 @@ boxplot(spss.data)
 sum(is.na(spss.data))
 sum(is.na(spss.data))/(10*181)
 ```
+```{r}
+head(spss.data$SPSS10E)
+```
 
-questions <- c("SPSS1E","SPSS2E", "SPSS3E", "SPSS4E", "SPSS5E", "SPSS6E", "SPSS7E", "SPSS8E", "SPSS9E", "SPSS10E")
-
-
-typeof(spss.data)
-
-
-for (i in 1:10) {
-                       x <- as.character(questions[i])
-                       multi.hist(spss.data$x) 
-                       summary(spss.data$x)
-                       describe(spss.data$x)
-                       boxplot(spss.data$x)
-                       sum(is.na(spss.data$x))
-                       table(spss.data$x)
-                      }
-
+Splitting Data into EFA and CFA. We aim for EFA of N = 82 and CFA of N = 100.
 ```{r}
 
-data.split <- initial_split(spss.data, prop = 0.19/.81)
+data.split <- initial_split(spss.data, prop = 1/1.81)
 
-efa.spss <- training(data.split)
-cfa.spss <- testing(data.split)
+cfa.spss <- training(data.split)
+efa.spss <- testing(data.split)
 
 View(efa.spss)
 View(cfa.spss)
-tail(efa.spss)
+
 
 ```
 
+MAP/Parallel
+```{r}
 
+VSS(efa.spss, plot = F)
+
+# The Velicer MAP achieves a minimum of 0.04  with  1  factors 
+
+
+fa.parallel(efa.spss, fa = "both")
+
+# Parallel analysis suggests that the number of factors =  2  and the number of components =  2 
+
+#The estimated weights for the factor scores are probably incorrect.  Try a different factor score estimation method.An ultra-Heywood case was detected.  Examine the results carefullyThe estimated weights for the factor scores are probably incorrect.  Try a different factor score estimation method.An ultra-Heywood case was detected.  Examine the results carefullyThe estimated weights for the factor scores are probably incorrect.  Try a different factor score estimation method.An ultra-Heywood case was detected.  Examine the results carefullyParallel analysis suggests that the number of factors =  2  and the number of components =  2 
+
+# Result show 1 factors with MAP and 2 with parallel, to be discussed.
+
+
+```
+
+```{r EFA} 
+#EFA (trying with 2 factors)
+
+fa(efa.spss, fm = "ml", nfactors = 2, rotate = "Promax")
+
+# I always prefer promax rotation and maximum likelihood extraction. These are not universally agreed upon.
+# ML extraction is highly prone to Heywood cases. Promax rotation allows for correlations between factors.
+```
+
+Factor Analysis using method =  ml
+Call: fa(r = efa.spss, nfactors = 2, rotate = "Promax", fm = "ml")
+Standardized loadings (pattern matrix) based upon correlation matrix
+
+                       ML1  ML2
+SS loadings           4.42 1.45
+Proportion Var        0.44 0.14
+Cumulative Var        0.44 0.59
+Proportion Explained  0.75 0.25
+Cumulative Proportion 0.75 1.00
+
+ With factor correlations of 
+     ML1  ML2
+ML1 1.00 0.35
+ML2 0.35 1.00
+
+Mean item complexity =  1
+Test of the hypothesis that 2 factors are sufficient.
+
+The degrees of freedom for the null model are  45  and the objective function was  5.92 with Chi Square of  449.06
+The degrees of freedom for the model are 26  and the objective function was  0.5 
+
+The root mean square of the residuals (RMSR) is  0.04 
+The df corrected root mean square of the residuals is  0.05 
+
+The harmonic number of observations is  81 with the empirical chi square  11.03  with prob <  1 
+The total number of observations was  81  with Likelihood Chi Square =  37.3  with prob <  0.07 
+
+Tucker Lewis Index of factoring reliability =  0.951
+RMSEA index =  0.072  and the 90 % confidence intervals are  0 0.123
+BIC =  -76.96
+Fit based upon off diagonal values = 0.99
+Measures of factor score adequacy             
+                                                   ML1  ML2
+Correlation of (regression) scores with factors   0.97 0.88
+Multiple R square of scores with factors          0.94 0.78
+Minimum correlation of possible factor scores     0.87 0.56
 
 ```

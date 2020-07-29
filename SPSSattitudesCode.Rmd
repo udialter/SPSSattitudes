@@ -470,3 +470,79 @@ fa(EFA.spss, nfactors = 2, fm = "ml", rotate = "promax")
 # Loadings did not change much from oblimin
 ##########
 ```
+# Possibly method effects?
+
+```{r drop reverse worded items}
+EFA.spss.2 <- EFA.spss %>% select(-SPSS2E, -SPSS3E, -SPSS10E)
+```
+
+```{r rerun VSS/PA}
+VSS(EFA.spss.2, plot = F)
+
+fa.parallel(EFA.spss.2, fm="ml", fa='both', n.iter=100)
+
+
+# Very Simple Structure
+# Call: vss(x = x, n = n, rotate = rotate, diagonal = diagonal, fm = fm, 
+#     n.obs = n.obs, plot = plot, title = title, use = use, cor = cor)
+# VSS complexity 1 achieves a maximimum of 0.94  with  1  factors
+# VSS complexity 2 achieves a maximimum of 0.95  with  2  factors
+# 
+# The Velicer MAP achieves a minimum of NA  with  1  factors 
+# BIC achieves a minimum of  NA  with  1  factors
+# Sample Size adjusted BIC achieves a minimum of  NA  with  3  factors
+# 
+# Statistics by number of factors 
+# Parallel analysis suggests that the number of factors =  1  and the number of components =  1 
+```
+```{r rerun EFA}
+fa(EFA.spss.2, nfactors = 1, fm = "uls", rotate = "oblimin")
+
+# Factor Analysis using method =  uls
+# Call: fa(r = EFA.spss.2, nfactors = 1, rotate = "oblimin", fm = "uls")
+# Standardized loadings (pattern matrix) based upon correlation matrix
+# 
+#                ULS1
+# SS loadings    4.28
+# Proportion Var 0.61
+# 
+# Mean item complexity =  1
+# Test of the hypothesis that 1 factor is sufficient.
+# 
+# The degrees of freedom for the null model are  21  and the objective function was  4.85 with Chi Square of  373
+# The degrees of freedom for the model are 14  and the objective function was  0.24 
+# 
+# The root mean square of the residuals (RMSR) is  0.03 
+# The df corrected root mean square of the residuals is  0.04 
+# 
+# The harmonic number of observations is  81 with the empirical chi square  3.94  with prob <  1 
+# The total number of observations was  81  with Likelihood Chi Square =  18.58  with prob <  0.18 
+# 
+# Tucker Lewis Index of factoring reliability =  0.98
+# RMSEA index =  0.062  and the 90 % confidence intervals are  0 0.134
+# BIC =  -42.94
+# Fit based upon off diagonal values = 1
+# Measures of factor score adequacy             
+#                                                   ULS1
+# Correlation of (regression) scores with factors   0.97
+# Multiple R square of scores with factors          0.94
+# Minimum correlation of possible factor scores     0.87
+# 
+#         ULS1      h2        u2    com
+# SPSS1E	0.86	0.7336326	0.2663674	1
+# SPSS4E	0.91	0.8202064	0.1797936	1
+# SPSS5E	0.71	0.5045856	0.4954144	1
+# SPSS6E	0.66	0.4339379	0.5660621	1
+# SPSS7E	0.56	0.3174674	0.6825326	1
+# SPSS8E	0.83	0.6968142	0.3031858	1
+# SPSS9E	0.88	0.7721449	0.2278551	1
+
+##########
+# RMSR = .03
+# Prop var explained: 61%
+# No loadings <.4
+# Some communality <.4, but none <.2
+##########
+```
+
+

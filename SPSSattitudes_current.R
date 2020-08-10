@@ -5,6 +5,15 @@
 #' output: github_document
 #' ---
 #'
+#' Load packages
+#'
+library(readr)
+library(haven)
+library(tidyverse)
+library(lavaan)
+library(psych)
+library(mirt)
+library(rsample)
 #' Load and clean data
 #' 
 #' Descriptive statistics

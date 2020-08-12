@@ -43,6 +43,22 @@ spss.data$SPSS3E <- car::recode(spss.data$SPSS3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5
 spss.data$SPSS10E <- car::recode(spss.data$SPSS10E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1")
 ```
 
+# Questionnaire Info
+<!-- 1 Always True 2 Mostly True	3 Sometimes True 4 Rarely True 5 Never True -->
+
+<!-- SPSS1E	SPSS helped me understand statistics concepts better. -->
+<!-- SPSS2E	SPSS has not helped me do well in the course. -->
+<!-- SPSS3E	SPSS has not helped me integrate and apply class concepts. -->
+<!-- SPSS4E	SPSS has helped me become more comfortable with statistics. -->
+<!-- SPSS5E	SPSS provided me with a good application experience. -->
+<!-- SPSS6E	SPSS has been convenient for me to do assignments. -->
+<!-- SPSS7E	I think the skills I’m learning with SPSS will be useful outside of class. -->
+<!-- SPSS8E	SPSS helps me get involved in learning class material. -->
+<!-- SPSS9E	SPSS has helped me gain confidence in the course material. -->
+<!-- SPSS10E	SPSS has not helped me make more sense out of the material. -->
+
+# Descriptives
+
 ```{r Descriptive Stats}
 describe(spss.data)
 
@@ -69,7 +85,9 @@ table(is.na(spss.data))
 
 ## Less than 1% missing data, proceeding with complete case analyses
 ```
-
+```{r Scatterplot matrix}
+car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')
+```
 ```{r Splitting into EFA/CFA Sets}
 # Default split is 75%/25%
 # Default is no appropriate with our n = 181
@@ -553,7 +571,7 @@ fa(EFA.spss.2, nfactors = 1, fm = "uls", rotate = "oblimin")
 # Polychoric Correlations
 
 ```{r}
-psych::polychoric(EFA.spss)
+psych::polychoric(EFA.spss) # wants numeric data
 
 # 45 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.Call: psych::polychoric(x = EFA.spss)
 # Polychoric correlations 
@@ -604,6 +622,11 @@ fa.parallel(EFA.spss, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 # ...The estimated weights for the factor scores are probably incorrect.  Try a different factor score estimation method.An ultra-Heywood case was detected.  Examine the results carefully45 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.45 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.45 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.
 #
 # Parallel analysis suggests that the number of factors =  2  and the number of components =  2 
+
+##########
+# MAP test suggests 1f
+# PA suggests 2f, note PA should be interpreted w caution for polychoric
+##########
 ```
 
 ```{r onef}
@@ -641,17 +664,25 @@ fa(r = EFA.spss, fm = 'minres', cor = 'poly', nfactors = 1)
 
 #         MR1       h2        u2    com
 # SPSS1E	0.79	0.6172494	0.3827506	1
-# SPSS2E	0.50	0.2527229	0.7472771	1
-# SPSS3E	0.47	0.2246721	0.7753279	1
+# SPSS2E	0.50	0.2527229	0.7472771	1     comm almost <.2
+# SPSS3E	0.47	0.2246721	0.7753279	1     comm almost <.2
 # SPSS4E	0.72	0.5129039	0.4870961	1
 # SPSS5E	0.66	0.4402027	0.5597973	1
-# SPSS6E	0.49	0.2445146	0.7554854	1
+# SPSS6E	0.49	0.2445146	0.7554854	1     comm almost <.2
 # SPSS7E	0.55	0.3005827	0.6994173	1
 # SPSS8E	0.73	0.5383807	0.4616193	1
 # SPSS9E	0.71	0.5112138	0.4887862	1
-# SPSS10E	0.34	0.1128328	0.8871672	1
+# SPSS10E	0.34	0.1128328	0.8871672	1     loading <.4
+
+##########
+# RMSR = .1 - BAD
+# Prop var explained: 38% BAD
+# SPSS10E loadings <.4
+# Some communality almost <.2
+##########
 
 ```
+## 2F oblimin
 
 ```{r twof}
 fa(r = EFA.spss, fm = 'minres', cor = 'poly', nfactors = 2)
@@ -700,11 +731,18 @@ fa(r = EFA.spss, fm = 'minres', cor = 'poly', nfactors = 2)
 # SPSS3E	0.04	0.72	0.5469524	0.4530476	1.005051
 # SPSS4E	0.69	0.05	0.5193531	0.4806469	1.012167
 # SPSS5E	0.68	0.01	0.4619481	0.5380519	1.000333
-# SPSS6E	0.58	-0.11	0.2948620	0.7051380	1.065314
+# SPSS6E	0.58	-0.11	0.2948620	0.7051380	1.065314     comm <.2
 # SPSS7E	0.68	-0.16	0.3886479	0.6113521	1.107156
 # SPSS8E	0.75	0.01	0.5661628	0.4338372	1.000176
 # SPSS9E	0.73	0.01	0.5344979	0.4655021	1.000481
-# SPSS10E	0.03	0.47	0.2369709	0.7630291	1.010499
+# SPSS10E	0.03	0.47	0.2369709	0.7630291	1.010499     comm <.2
+
+##########
+# RMSR = .04 GOOD! Huge improvement from 1f
+# Prop var explained: 49% - 11% improvement from 1f, ok
+# NO loadings <.4
+# Some communality almost <.2
+##########
 ```
 ```{r threef}
 fa(r = EFA.spss, fm = 'minres', cor = 'poly', nfactors = 3)
@@ -750,8 +788,8 @@ fa(r = EFA.spss, fm = 'minres', cor = 'poly', nfactors = 3)
 # 
 #         MR1   MR2   MR3       h2        u2        com
 # SPSS1E	0.68	0.06	0.19	0.6127656	0.387234409	1.175643
-# SPSS2E	0.12	0.56	0.21	0.5188486	0.481151433	1.387924
-# SPSS3E	-0.02	1.01	-0.03	0.9961837	0.003816273	1.001711
+# SPSS2E	0.12	0.56	0.21	0.5188486	0.481151433	1.387924    * cross-loading?
+# SPSS3E	-0.02	1.01	-0.03	0.9961837	0.003816273	1.001711    * does not load
 # SPSS4E	0.70	-0.03	0.13	0.5338773	0.466122674	1.075298
 # SPSS5E	0.67	0.09	-0.11	0.4740481	0.525951851	1.085722
 # SPSS6E	0.58	0.06	-0.22	0.3296342	0.670365783	1.302773
@@ -759,9 +797,144 @@ fa(r = EFA.spss, fm = 'minres', cor = 'poly', nfactors = 3)
 # SPSS8E	0.74	-0.01	0.03	0.5624311	0.437568946	1.003968
 # SPSS9E	0.73	0.00	0.01	0.5333148	0.466685156	1.000244
 # SPSS10E	0.02	0.03	0.84	0.7380883	0.261911740	1.003885
+
+##########
+# RMSR = .02 not huge improvement from 2f
+# Prop var explained: 57% - 8% improvement from 2f, eh
+# SPSS3E does not load
+# No communality almost <.2
+##########
 ```
 
 ## Rotate 2f models (default: oblimin)
+
+### bentlerQ
+
+```{r}
+fa(r = EFA.spss, fm = 'minres', cor = 'poly', nfactors = 2, rotate = 'bentlerQ')
+
+# 45 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.Factor Analysis using method =  minres
+# Call: fa(r = EFA.spss, nfactors = 2, rotate = "bentlerQ", fm = "minres", 
+#     cor = "poly")
+# Standardized loadings (pattern matrix) based upon correlation matrix
+# 
+#                        MR1  MR2
+# SS loadings           4.11 1.62
+# Proportion Var        0.41 0.16
+# Cumulative Var        0.41 0.57
+# Proportion Explained  0.72 0.28
+# Cumulative Proportion 0.72 1.00
+# 
+#  With factor correlations of 
+#      MR1  MR2
+# MR1 1.00 0.46
+# MR2 0.46 1.00
+# 
+# Mean item complexity =  1
+# Test of the hypothesis that 2 factors are sufficient.
+# 
+# The degrees of freedom for the null model are  45  and the objective function was  5.13 with Chi Square of  388.66
+# The degrees of freedom for the model are 26  and the objective function was  0.23 
+# 
+# The root mean square of the residuals (RMSR) is  0.03 
+# The df corrected root mean square of the residuals is  0.04 
+# 
+# The harmonic number of observations is  80 with the empirical chi square  6.92  with prob <  1 
+# The total number of observations was  81  with Likelihood Chi Square =  17.21  with prob <  0.9 
+# 
+# Tucker Lewis Index of factoring reliability =  1.045
+# RMSEA index =  0  and the 90 % confidence intervals are  0 0.038
+# BIC =  -97.05
+# Fit based upon off diagonal values = 1
+# Measures of factor score adequacy             
+#                                                    MR1  MR2
+# Correlation of (regression) scores with factors   0.96 0.89
+# Multiple R square of scores with factors          0.92 0.79
+# Minimum correlation of possible factor scores     0.83 0.58
+
+#          MR1   MR2       h2        u2      com
+# SPSS1E	0.77	0.07	0.6562164	0.3437836	1.017209
+# SPSS2E	0.09	0.68	0.5312715	0.4687285	1.037743
+# SPSS3E	0.03	0.76	0.6057135	0.3942865	1.003896
+# SPSS4E	0.72	0.05	0.5495149	0.4504851	1.009759
+# SPSS5E	0.77	0.05	0.6272151	0.3727849	1.008506
+# SPSS6E	0.75	-0.08	0.5110088	0.4889912	1.022991
+# SPSS7E	0.76	-0.23	0.4729742	0.5270258	1.182238
+# SPSS8E	0.76	0.13	0.6790722	0.3209278	1.056819
+# SPSS9E	0.81	0.01	0.6700573	0.3299427	1.000342
+# SPSS10E	-0.11	0.69	0.4198884	0.5801116	1.051787
+
+##########
+# Better!
+# SPSS7E cross-loading? maybe 10 too - differences in loading are greater than in oblimin
+##########
+```
+
+### simplimax
+
+```{r}
+fa(r = EFA.spss, fm = 'minres', cor = 'poly', nfactors = 2, rotate = 'simplimax')
+
+# 45 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.Factor Analysis using method =  minres
+# Call: fa(r = EFA.spss, nfactors = 2, rotate = "simplimax", fm = "minres", 
+#     cor = "poly")
+# Standardized loadings (pattern matrix) based upon correlation matrix
+# 
+#                        MR1  MR2
+# SS loadings           4.12 1.61
+# Proportion Var        0.41 0.16
+# Cumulative Var        0.41 0.57
+# Proportion Explained  0.72 0.28
+# Cumulative Proportion 0.72 1.00
+# 
+#  With factor correlations of 
+#      MR1  MR2
+# MR1 1.00 0.44
+# MR2 0.44 1.00
+# 
+# Mean item complexity =  1
+# Test of the hypothesis that 2 factors are sufficient.
+# 
+# The degrees of freedom for the null model are  45  and the objective function was  5.13 with Chi Square of  388.66
+# The degrees of freedom for the model are 26  and the objective function was  0.23 
+# 
+# The root mean square of the residuals (RMSR) is  0.03 
+# The df corrected root mean square of the residuals is  0.04 
+# 
+# The harmonic number of observations is  80 with the empirical chi square  6.92  with prob <  1 
+# The total number of observations was  81  with Likelihood Chi Square =  17.21  with prob <  0.9 
+# 
+# Tucker Lewis Index of factoring reliability =  1.045
+# RMSEA index =  0  and the 90 % confidence intervals are  0 0.038
+# BIC =  -97.05
+# Fit based upon off diagonal values = 1
+# Measures of factor score adequacy             
+#                                                    MR1  MR2
+# Correlation of (regression) scores with factors   0.96 0.89
+# Multiple R square of scores with factors          0.92 0.79
+# Minimum correlation of possible factor scores     0.83 0.57
+# 
+#         MR1   MR2       h2        u2      com
+# SPSS1E	0.78	0.07	0.6562164	0.3437836	1.017749
+# SPSS2E	0.10	0.68	0.5312715	0.4687285	1.047952
+# SPSS3E	0.05	0.76	0.6057135	0.3942865	1.007457
+# SPSS4E	0.72	0.05	0.5495149	0.4504851	1.010227
+# SPSS5E	0.77	0.05	0.6272151	0.3727849	1.008954
+# SPSS6E	0.75	-0.08	0.5110088	0.4889912	1.021852
+# SPSS7E	0.76	-0.23	0.4729742	0.5270258	1.179140
+# SPSS8E	0.76	0.13	0.6790722	0.3209278	1.057244
+# SPSS9E	0.81	0.01	0.6700573	0.3299427	1.000461
+# SPSS10E	-0.10	0.69	0.4198884	0.5801116	1.042274
+
+##########
+# almost identical to bentlerQ
+# SPSS2E way better
+# SPSS7E worse
+# ^ bc cross-loading?
+##########
+```
+
+### geominQ
 
 ```{r}
 fa(r = EFA.spss, fm = 'minres', cor = 'poly', nfactors = 2, rotate = 'geominQ')
@@ -817,13 +990,12 @@ fa(r = EFA.spss, fm = 'minres', cor = 'poly', nfactors = 2, rotate = 'geominQ')
 # SPSS9E	0.72	0.02	0.5344979	0.4655021	1.001586
 # SPSS10E	0.03	0.47	0.2369709	0.7630291	1.009932
 
+##########
+# Not very diff 
+# I guess its worse by .01
+##########
 ```
-
-```{r}
-fa(r = EFA.spss, fm = 'minres', cor = 'poly', nfactors = 2, rotate = 'biquartimin')
-
-# Error in matrix(1, k, k) : non-numeric matrix extent
-```
+### promax
 
 ```{r}
 fa(r = EFA.spss, fm = 'minres', cor = 'poly', nfactors = 2, rotate = 'Promax') # Zach's fav. Allows for correlations between factors
@@ -878,5 +1050,13 @@ fa(r = EFA.spss, fm = 'minres', cor = 'poly', nfactors = 2, rotate = 'Promax') #
 # SPSS8E	0.75	0.01	0.5661628	0.4338372	1.000286
 # SPSS9E	0.73	0.01	0.5344979	0.4655021	1.000650
 # SPSS10E	0.04	0.47	0.2369709	0.7630291	1.018004
-```
 
+##########
+# Not much different
+# I guess better by like .01?
+##########
+```
+# Assumptions
+MV normality: are you using ML?
+Multicollinearity: did it converge?
+Linearity: N/A for polychoric corr.

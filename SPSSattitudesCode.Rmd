@@ -14,6 +14,7 @@ library(lavaan)
 library(psych)
 library(mirt)
 library(rsample)
+library(GPArotation)
 ```
 
 ```{r Uploading data and cleaning}
@@ -91,7 +92,7 @@ car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')
 ## Correlations
 
 ```{r polychoric}
-psych::polychoric(spss.data) # wants numeric data
+poly.spss.data <- psych::polychoric(spss.data) # wants numeric data
 
 # 44 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.Call: psych::polychoric(x = spss.data)
 # Polychoric correlations 
@@ -225,7 +226,7 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 #                        MR1  MR2
 # SS loadings           4.35 1.71
 # Proportion Var        0.43 0.17
-# Cumulative Var        0.43 0.61
+# Cumulative Var        0.43 0.61 *
 # Proportion Explained  0.72 0.28
 # Cumulative Proportion 0.72 1.00
 # 
@@ -289,7 +290,7 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
 #                        MR1  MR2  MR3
 # SS loadings           4.39 1.49 0.65
 # Proportion Var        0.44 0.15 0.07
-# Cumulative Var        0.44 0.59 0.65
+# Cumulative Var        0.44 0.59 0.65 *
 # Proportion Explained  0.67 0.23 0.10
 # Cumulative Proportion 0.67 0.90 1.00
 # 
@@ -447,6 +448,92 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "Promax", nfactors = 2)
 ```
 I quickly ran the remaining oblique rotations mentioned in the 'fa' function's documentation. They're all nearly identical to oblimin as the ones above. 
 
+# Bifactor model 
+
+```{r}
+psych::schmid(model = poly.spss.data$rho, nfactors = 2, fm = 'minres', rotate = 'oblimin', na.obs = NA, option = 'equal')
+
+#### Carmen's random notes:
+  
+# nfactors: number of factors to extract. Note that it already assumes the general factor
+# What is digits??
+# n.obs is calculated if input is raw data. "NA" is default.
+# 3 factors are the minimum number necessary to define the solution uniquely, but 2F can be done.
+  # A message is issued suggesting that the model is not really well defined.
+  # There are three possible options for this condition: setting the general factor loadings between the two lower order factors to be "equal" which will be the sqrt(oblique correlations between the factors) or to "first" or "second" in which case the general factor is equated with either the first or second group factor.
+
+#### Actual output below:
+
+# Three factors are required for identification -- general factor loadings set to be equal. 
+# Proceed with caution. 
+# Think about redoing the analysis with alternative values of the 'option' setting.
+# 
+# Schmid-Leiman analysis 
+# Call: psych::schmid(model = poly.spss.data$rho, nfactors = 2, fm = "minres", 
+#     rotate = "oblimin", option = "equal", na.obs = NA)
+# 
+# Schmid Leiman Factor loadings greater than  0.2 
+# 
+# With eigenvalues of:
+#    g  F1*  F2* 
+# 2.63 2.46 0.97 
+# 
+# general/max  1.07   max/min =   2.54
+# mean percent general =  0.43    with sd =  0.05 and cv of  0.11 
+# 
+#  The orthogonal loadings were 
+# Unstandardized loadings based upon covariance matrix
+# 
+#                  F1   F2
+# SS loadings    4.20 1.86
+# Proportion Var 0.42 0.19
+# Cumulative Var 0.42 0.60
+# 
+# The degrees of freedom are 26  and the fit is  0.25 
+# 
+# The root mean square of the residuals is  0.03 
+# The df corrected root mean square of the residuals is  0.04
+# 
+#         g     F1*   F2*    h2    u2    p2
+# SPSS1E	0.59	0.61	    	0.72	0.28	0.48
+# SPSS2E	0.54		    0.57	0.62	0.38	0.47
+# SPSS3E	0.55		    0.61	0.68	0.32	0.45
+# SPSS4E	0.57	0.62	     	0.70	0.30	0.46
+# SPSS5E	0.52	0.60    		0.63	0.37	0.43
+# SPSS6E	0.42	0.51	    	0.44	0.56	0.41
+# SPSS7E	0.38	0.52    		0.42	0.58	0.34
+# SPSS8E	0.57	0.60    		0.68	0.32	0.47
+# SPSS9E	0.56	0.66	    	0.75	0.25	0.41
+# SPSS10E	0.38		    0.50	0.40	0.60	0.36
+# 
+#         F1    F2    h2        u2    H2        U2
+# SPSS1E	0.81	0.26	0.7236662	0.28	0.7210228	0.2789772
+# SPSS2E	0.22	0.75	0.6178306	0.38	0.6191738	0.3808262
+# SPSS3E	0.20	0.80	0.6827871	0.32	0.6808894	0.3191106
+# SPSS4E	0.81	0.23	0.7018363	0.30	0.7005499	0.2994501
+# SPSS5E	0.77	0.17	0.6295613	0.37	0.6298376	0.3701624
+# SPSS6E	0.66	0.12	0.4448130	0.56	0.4426824	0.5573176
+# SPSS7E	0.65	0.05	0.4244661	0.58	0.4225788	0.5774212
+# SPSS8E	0.79	0.24	0.6842864	0.32	0.6813658	0.3186342
+# SPSS9E	0.85	0.17	0.7508519	0.25	0.7502128	0.2497872
+# SPSS10E	0.06	0.63	0.3975595	0.60	0.3985321	0.6014679
+
+####
+# *NOTICE* the warning - that 3 factors are required for identification - what does this mean? Can we interpret model fit stats? Below are my interpretations (ignoring this warning)
+
+# Below is based on R console output:
+# 'g' and 'F1*' have eigenvals > 1 - F2 is slightly < 1.
+# Prop. var explained = .60 *AS GOOD AS 2F MODEL*
+# RMSR: .03 *GOOD*
+
+# Below is based off the first df in output (i.e. "sl")
+  # All positive valenced items load onto F1 and all negative valenced items load onto F2 (good)
+  # All questions load onto 'g' (i.e. general factor) OK except SPSS10E and SPSS7E (could be better)
+    # ...to be discussed why (are these bad items? if so, why?)
+
+# I think the second df in output is "orthog" (i.e. original orthogonal factor loadings - ignore)
+####
+```
 # Assumptions
 
 1. MV normality - N/A because we are using minres/ULS and not ML

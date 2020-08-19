@@ -2,8 +2,7 @@
 title: "SPSS Attitudes Measure Validation"
 author: "Carmen Dang"
 date: "13/07/2020"
-output: html_document
-        md_keep = TRUE
+output: github_document
 ---
 
 ```{r Loading Packages, echo = FALSE}

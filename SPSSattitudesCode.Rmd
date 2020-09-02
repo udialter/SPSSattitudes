@@ -533,6 +533,14 @@ psych::schmid(model = poly.spss.data$rho, nfactors = 2, fm = 'minres', rotate = 
 # I think the second df in output is "orthog" (i.e. original orthogonal factor loadings - ignore)
 ####
 ```
+
+```{r}
+# fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "bifactor", nfactors = 2)
+# fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "biquartimin", nfactors = 2)
+
+# Error in matrix(1, k, k) : non-numeric matrix extent
+```
+
 # Assumptions
 
 1. MV normality - N/A because we are using minres/ULS and not ML

@@ -14,6 +14,7 @@ library(psych)
 library(mirt)
 library(rsample)
 library(GPArotation)
+library(MBESS)
 ```
 
 ```{r Uploading data and cleaning}
@@ -533,12 +534,56 @@ psych::schmid(model = poly.spss.data$rho, nfactors = 2, fm = 'minres', rotate = 
 # I think the second df in output is "orthog" (i.e. original orthogonal factor loadings - ignore)
 ####
 ```
-
 ```{r}
-# fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "bifactor", nfactors = 2)
+# fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "bifactor", nfactors = 2) # orthogonal rotation*
 # fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "biquartimin", nfactors = 2)
 
 # Error in matrix(1, k, k) : non-numeric matrix extent
+
+# fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "bifactor", nfactors = 3)
+  # for some reason this runs when nfactors is changed from 2 to 3
+```
+
+# Reliability
+
+SPSS attitudes measure is unit-weighted and cogeneric (i.e., violates tau equivalence) so we are interested in Omega, but which one?
+
+My guess is omega total because omega hierarchial only calculates reliability for 'g'
+
+Should we use 'psych' or 'MBESS' pkg? I receive warnings from 'psych', I think it has to do with the Schmid-Leiman stuff(?)
+
+```{r}
+# calculate reliability for scale overall and for each factor
+# split dataset 
+spss.data.f1 <- spss.data %>% select(-c(SPSS2E, SPSS3E, SPSS10E))
+spss.data.f2 <- spss.data %>% select(c(SPSS2E, SPSS3E, SPSS10E))
+```
+
+## Overall
+
+```{r alpha, Revelles omega total, Omega hierarchial}
+omega(m = spss.data, poly = TRUE, plot = F)
+
+# Omega total for total scores and subscales: amount of variance accounted for by 'g' and group 
+# Omega general for total scores and subscales: amount of variance that is accounted for by 'g'.
+# Omega group for total scores and subscales: i.e., omegaS / subset omega.
+```
+```{r omega total NOT Revelles}
+# value under $est
+# provides CI
+ci.reliability(spss.data)
+```
+## Per factor
+
+```{r F1: alpha, Revelles omega total, Omega hierarchial}
+omega(m = spss.data.f1, poly = TRUE, plot = F)
+```
+```{r F2: alpha, Revelles omega total, Omega hierarchial}
+omega(m = spss.data.f2, poly = TRUE, plot = F)
+```
+```{r omega total NOT Revelles for factors}
+ci.reliability(spss.data.f1)
+ci.reliability(spss.data.f2)
 ```
 
 # Assumptions

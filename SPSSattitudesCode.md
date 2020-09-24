@@ -7,14 +7,14 @@ Carmen Dang
 
     ## Warning: package 'haven' was built under R version 4.0.2
 
-    ## -- Attaching packages -------- tidyverse 1.3.0 --
+    ## -- Attaching packages --------------------- tidyverse 1.3.0 --
 
     ## v ggplot2 3.3.1     v dplyr   1.0.0
     ## v tibble  3.0.1     v stringr 1.4.0
     ## v tidyr   1.1.0     v forcats 0.5.0
     ## v purrr   0.3.4
 
-    ## -- Conflicts ----------- tidyverse_conflicts() --
+    ## -- Conflicts ------------------------ tidyverse_conflicts() --
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
 
@@ -44,6 +44,19 @@ Carmen Dang
     ## Loading required package: lattice
 
     ## Warning: package 'rsample' was built under R version 4.0.2
+
+    ## Warning: package 'MBESS' was built under R version 4.0.2
+
+    ## 
+    ## Attaching package: 'MBESS'
+
+    ## The following object is masked from 'package:psych':
+    ## 
+    ##     cor2cov
+
+    ## The following object is masked from 'package:lavaan':
+    ## 
+    ##     cor2cov
 
 ``` r
 # Uploading raw data
@@ -234,13 +247,7 @@ car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')
 
 ``` r
 poly.spss.data <- psych::polychoric(spss.data) # wants numeric data
-```
 
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-``` r
 # 44 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.Call: psych::polychoric(x = spss.data)
 # Polychoric correlations 
 #         SPSS1E SPSS2 SPSS3 SPSS4 SPSS5 SPSS6 SPSS7 SPSS8 SPSS9 SPSS10
@@ -280,40 +287,36 @@ poly.spss.data <- psych::polychoric(spss.data) # wants numeric data
 VSS(spss.data, fm = 'minres', cor = 'poly', plot = F)
 ```
 
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
     ## 
     ## Very Simple Structure
     ## Call: vss(x = x, n = n, rotate = rotate, diagonal = diagonal, fm = fm, 
     ##     n.obs = n.obs, plot = plot, title = title, use = use, cor = cor)
-    ## VSS complexity 1 achieves a maximimum of 0.85  with  1  factors
-    ## VSS complexity 2 achieves a maximimum of 0.94  with  2  factors
+    ## VSS complexity 1 achieves a maximimum of 0.87  with  1  factors
+    ## VSS complexity 2 achieves a maximimum of 0.95  with  2  factors
     ## 
-    ## The Velicer MAP achieves a minimum of 0.04  with  2  factors 
+    ## The Velicer MAP achieves a minimum of 0.05  with  2  factors 
     ## BIC achieves a minimum of  NA  with  2  factors
-    ## Sample Size adjusted BIC achieves a minimum of  NA  with  3  factors
+    ## Sample Size adjusted BIC achieves a minimum of  NA  with  4  factors
     ## 
     ## Statistics by number of factors 
     ##   vss1 vss2   map dof   chisq    prob sqresid  fit RMSEA BIC SABIC complex
-    ## 1 0.85 0.00 0.047  35 1.8e+02 2.1e-21    4.52 0.85 0.151  -2 108.8     1.0
-    ## 2 0.84 0.94 0.040  26 4.4e+01 1.4e-02    1.79 0.94 0.062 -91  -8.6     1.1
-    ## 3 0.84 0.93 0.061  18 2.5e+01 1.3e-01    1.48 0.95 0.046 -69 -11.7     1.3
-    ## 4 0.81 0.89 0.112  11 1.4e+01 2.2e-01    1.21 0.96 0.040 -43  -8.2     1.3
-    ## 5 0.79 0.86 0.161   5 3.4e+00 6.4e-01    1.10 0.96 0.000 -23  -6.7     1.3
-    ## 6 0.63 0.88 0.216   0 2.8e-01      NA    1.02 0.97    NA  NA    NA     1.6
-    ## 7 0.84 0.90 0.322  -4 2.8e-07      NA    1.03 0.97    NA  NA    NA     1.5
-    ## 8 0.84 0.91 0.463  -7 4.1e-11      NA    0.97 0.97    NA  NA    NA     1.5
+    ## 1 0.87 0.00 0.057  35 2.3e+02 1.8e-31    4.49 0.87 0.178  53 163.9     1.0
+    ## 2 0.86 0.95 0.049  26 8.5e+01 3.6e-08    1.58 0.95 0.112 -50  32.1     1.1
+    ## 3 0.86 0.95 0.071  18 5.2e+01 3.2e-05    1.28 0.96 0.103 -41  15.9     1.2
+    ## 4 0.86 0.94 0.118  11 1.6e+01 1.6e-01    1.17 0.97 0.048 -42  -6.8     1.3
+    ## 5 0.86 0.89 0.163   5 4.0e+00 5.5e-01    0.99 0.97 0.000 -22  -6.2     1.4
+    ## 6 0.86 0.93 0.241   0 6.3e-01      NA    0.98 0.97    NA  NA    NA     1.4
+    ## 7 0.86 0.93 0.414  -4 2.3e-10      NA    0.92 0.97    NA  NA    NA     1.4
+    ## 8 0.86 0.95 0.483  -7 9.0e-09      NA    0.85 0.97    NA  NA    NA     1.4
     ##    eChisq    SRMR eCRMS eBIC
-    ## 1 2.2e+02 1.2e-01 0.131   37
-    ## 2 1.3e+01 2.8e-02 0.037 -122
-    ## 3 5.5e+00 1.8e-02 0.029  -88
-    ## 4 2.9e+00 1.3e-02 0.027  -54
-    ## 5 7.7e-01 6.9e-03 0.021  -25
-    ## 6 5.6e-02 1.8e-03    NA   NA
-    ## 7 6.4e-08 2.0e-06    NA   NA
-    ## 8 6.1e-12 1.9e-08    NA   NA
+    ## 1 2.4e+02 1.2e-01 0.138   60
+    ## 2 1.6e+01 3.1e-02 0.041 -119
+    ## 3 6.6e+00 2.0e-02 0.032  -87
+    ## 4 2.6e+00 1.3e-02 0.026  -55
+    ## 5 4.3e-01 5.1e-03 0.015  -26
+    ## 6 5.7e-02 1.9e-03    NA   NA
+    ## 7 5.0e-11 5.5e-08    NA   NA
+    ## 8 6.2e-10 1.9e-07    NA   NA
 
 ``` r
 # Very Simple Structure
@@ -331,129 +334,12 @@ VSS(spss.data, fm = 'minres', cor = 'poly', plot = F)
 fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 ```
 
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-    
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 39 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
     ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
     ## The estimated weights for the factor scores are probably incorrect. Try a
     ## different factor score estimation method.
 
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 41 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 40 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 41 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 40 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 41 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 45 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-    
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 45 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-    
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 40 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
 
     ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
     ## The estimated weights for the factor scores are probably incorrect. Try a
@@ -462,229 +348,14 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
     ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
     ## ultra-Heywood case was detected. Examine the results carefully
 
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 40 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
     
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 40 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
     
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 41 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 39 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 45 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 39 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 41 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 45 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 40 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-    
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 39 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-    
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-    
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 41 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 40 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 41 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 39 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
     ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
     ## The estimated weights for the factor scores are probably incorrect. Try a
     ## different factor score estimation method.
@@ -696,104 +367,12 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
     ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
     ## ultra-Heywood case was detected. Examine the results carefully
 
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 41 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 40 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 45 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 45 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 41 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 40 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 41 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 45 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-    
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 45 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
     ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
     ## The estimated weights for the factor scores are probably incorrect. Try a
     ## different factor score estimation method.
 
     ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
     ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 38 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 45 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 41 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 42 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 43 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
 
 ![](SPSSattitudesCode_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
@@ -818,51 +397,47 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfactors = 1)
 ```
 
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
     ## Factor Analysis using method =  minres
     ## Call: fa(r = spss.data, nfactors = 1, rotate = "oblimin", fm = "minres", 
     ##     cor = "poly")
     ## Standardized loadings (pattern matrix) based upon correlation matrix
-    ##          MR1   h2   u2 com
-    ## SPSS1E  0.85 0.73 0.27   1
-    ## SPSS2E  0.47 0.22 0.78   1
-    ## SPSS3E  0.45 0.21 0.79   1
-    ## SPSS4E  0.83 0.70 0.30   1
-    ## SPSS5E  0.78 0.61 0.39   1
-    ## SPSS6E  0.65 0.42 0.58   1
-    ## SPSS7E  0.61 0.38 0.62   1
-    ## SPSS8E  0.83 0.68 0.32   1
-    ## SPSS9E  0.85 0.71 0.29   1
-    ## SPSS10E 0.28 0.08 0.92   1
+    ##          MR1    h2   u2 com
+    ## SPSS1E  0.89 0.791 0.21   1
+    ## SPSS2E  0.45 0.204 0.80   1
+    ## SPSS3E  0.44 0.197 0.80   1
+    ## SPSS4E  0.89 0.801 0.20   1
+    ## SPSS5E  0.80 0.638 0.36   1
+    ## SPSS6E  0.65 0.428 0.57   1
+    ## SPSS7E  0.63 0.391 0.61   1
+    ## SPSS8E  0.87 0.766 0.23   1
+    ## SPSS9E  0.89 0.800 0.20   1
+    ## SPSS10E 0.27 0.071 0.93   1
     ## 
     ##                 MR1
-    ## SS loadings    4.74
-    ## Proportion Var 0.47
+    ## SS loadings    5.09
+    ## Proportion Var 0.51
     ## 
     ## Mean item complexity =  1
     ## Test of the hypothesis that 1 factor is sufficient.
     ## 
-    ## The degrees of freedom for the null model are  45  and the objective function was  5.86 with Chi Square of  1030.98
-    ## The degrees of freedom for the model are 35  and the objective function was  1.03 
+    ## The degrees of freedom for the null model are  45  and the objective function was  7.31 with Chi Square of  1284.96
+    ## The degrees of freedom for the model are 35  and the objective function was  1.34 
     ## 
     ## The root mean square of the residuals (RMSR) is  0.12 
-    ## The df corrected root mean square of the residuals is  0.13 
+    ## The df corrected root mean square of the residuals is  0.14 
     ## 
-    ## The harmonic number of observations is  180 with the empirical chi square  218.15  with prob <  2.5e-28 
-    ## The total number of observations was  181  with Likelihood Chi Square =  179.94  with prob <  2.1e-21 
+    ## The harmonic number of observations is  180 with the empirical chi square  241.25  with prob <  1.2e-32 
+    ## The total number of observations was  181  with Likelihood Chi Square =  234.97  with prob <  1.8e-31 
     ## 
-    ## Tucker Lewis Index of factoring reliability =  0.81
-    ## RMSEA index =  0.151  and the 90 % confidence intervals are  0.13 0.174
-    ## BIC =  -2.01
+    ## Tucker Lewis Index of factoring reliability =  0.792
+    ## RMSEA index =  0.178  and the 90 % confidence intervals are  0.157 0.2
+    ## BIC =  53.02
     ## Fit based upon off diagonal values = 0.94
     ## Measures of factor score adequacy             
     ##                                                    MR1
-    ## Correlation of (regression) scores with factors   0.96
-    ## Multiple R square of scores with factors          0.93
-    ## Minimum correlation of possible factor scores     0.86
+    ## Correlation of (regression) scores with factors   0.97
+    ## Multiple R square of scores with factors          0.95
+    ## Minimum correlation of possible factor scores     0.89
 
 ``` r
 # 44 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.Factor Analysis using method =  minres
@@ -924,58 +499,54 @@ fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfactors = 1)
 fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 ```
 
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
     ## Factor Analysis using method =  minres
     ## Call: fa(r = spss.data, nfactors = 2, fm = "minres", cor = "poly")
     ## Standardized loadings (pattern matrix) based upon correlation matrix
     ##           MR1   MR2   h2   u2 com
-    ## SPSS1E   0.81  0.08 0.72 0.28 1.0
-    ## SPSS2E   0.06  0.76 0.62 0.38 1.0
-    ## SPSS3E   0.02  0.82 0.68 0.32 1.0
-    ## SPSS4E   0.82  0.04 0.70 0.30 1.0
-    ## SPSS5E   0.80 -0.01 0.63 0.37 1.0
-    ## SPSS6E   0.68 -0.04 0.44 0.56 1.0
-    ## SPSS7E   0.69 -0.11 0.42 0.58 1.1
-    ## SPSS8E   0.80  0.05 0.68 0.32 1.0
-    ## SPSS9E   0.88 -0.04 0.75 0.25 1.0
-    ## SPSS10E -0.09  0.66 0.40 0.60 1.0
+    ## SPSS1E   0.85  0.08 0.79 0.21 1.0
+    ## SPSS2E   0.05  0.79 0.66 0.34 1.0
+    ## SPSS3E   0.02  0.82 0.69 0.31 1.0
+    ## SPSS4E   0.88  0.04 0.80 0.20 1.0
+    ## SPSS5E   0.82 -0.02 0.66 0.34 1.0
+    ## SPSS6E   0.68 -0.04 0.45 0.55 1.0
+    ## SPSS7E   0.70 -0.12 0.44 0.56 1.1
+    ## SPSS8E   0.86  0.05 0.77 0.23 1.0
+    ## SPSS9E   0.93 -0.04 0.83 0.17 1.0
+    ## SPSS10E -0.09  0.66 0.39 0.61 1.0
     ## 
     ##                        MR1  MR2
-    ## SS loadings           4.35 1.71
-    ## Proportion Var        0.43 0.17
-    ## Cumulative Var        0.43 0.61
-    ## Proportion Explained  0.72 0.28
-    ## Cumulative Proportion 0.72 1.00
+    ## SS loadings           4.72 1.75
+    ## Proportion Var        0.47 0.17
+    ## Cumulative Var        0.47 0.65
+    ## Proportion Explained  0.73 0.27
+    ## Cumulative Proportion 0.73 1.00
     ## 
     ##  With factor correlations of 
     ##      MR1  MR2
-    ## MR1 1.00 0.44
-    ## MR2 0.44 1.00
+    ## MR1 1.00 0.42
+    ## MR2 0.42 1.00
     ## 
     ## Mean item complexity =  1
     ## Test of the hypothesis that 2 factors are sufficient.
     ## 
-    ## The degrees of freedom for the null model are  45  and the objective function was  5.86 with Chi Square of  1030.98
-    ## The degrees of freedom for the model are 26  and the objective function was  0.25 
+    ## The degrees of freedom for the null model are  45  and the objective function was  7.31 with Chi Square of  1284.96
+    ## The degrees of freedom for the model are 26  and the objective function was  0.49 
     ## 
     ## The root mean square of the residuals (RMSR) is  0.03 
     ## The df corrected root mean square of the residuals is  0.04 
     ## 
-    ## The harmonic number of observations is  180 with the empirical chi square  13.09  with prob <  0.98 
-    ## The total number of observations was  181  with Likelihood Chi Square =  44.2  with prob <  0.014 
+    ## The harmonic number of observations is  180 with the empirical chi square  16.09  with prob <  0.93 
+    ## The total number of observations was  181  with Likelihood Chi Square =  84.89  with prob <  3.6e-08 
     ## 
-    ## Tucker Lewis Index of factoring reliability =  0.968
-    ## RMSEA index =  0.062  and the 90 % confidence intervals are  0.028 0.093
-    ## BIC =  -90.96
+    ## Tucker Lewis Index of factoring reliability =  0.917
+    ## RMSEA index =  0.112  and the 90 % confidence intervals are  0.086 0.139
+    ## BIC =  -50.27
     ## Fit based upon off diagonal values = 1
     ## Measures of factor score adequacy             
     ##                                                    MR1  MR2
-    ## Correlation of (regression) scores with factors   0.96 0.91
-    ## Multiple R square of scores with factors          0.93 0.82
-    ## Minimum correlation of possible factor scores     0.86 0.65
+    ## Correlation of (regression) scores with factors   0.98 0.91
+    ## Multiple R square of scores with factors          0.95 0.83
+    ## Minimum correlation of possible factor scores     0.90 0.67
 
 ``` r
 # 44 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.Factor Analysis using method =  minres
@@ -1044,59 +615,55 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
 ```
 
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
     ## Factor Analysis using method =  minres
     ## Call: fa(r = spss.data, nfactors = 3, fm = "minres", cor = "poly")
     ## Standardized loadings (pattern matrix) based upon correlation matrix
-    ##           MR1   MR2   MR3   h2     u2 com
-    ## SPSS1E   0.84 -0.01  0.11 0.74 0.2596 1.0
-    ## SPSS2E  -0.01  1.00  0.00 1.00 0.0043 1.0
-    ## SPSS3E   0.15  0.47  0.36 0.57 0.4313 2.1
-    ## SPSS4E   0.86 -0.07  0.12 0.73 0.2683 1.1
-    ## SPSS5E   0.77  0.08 -0.11 0.63 0.3655 1.1
-    ## SPSS6E   0.64  0.10 -0.18 0.47 0.5336 1.2
-    ## SPSS7E   0.64  0.07 -0.22 0.45 0.5491 1.3
-    ## SPSS8E   0.82  0.01  0.04 0.69 0.3130 1.0
-    ## SPSS9E   0.88 -0.03 -0.02 0.75 0.2488 1.0
-    ## SPSS10E  0.04  0.27  0.56 0.51 0.4937 1.5
+    ##           MR1   MR2   MR3   h2    u2 com
+    ## SPSS1E   0.88  0.02  0.11 0.81 0.191 1.0
+    ## SPSS2E  -0.01  0.99 -0.08 0.95 0.051 1.0
+    ## SPSS3E   0.13  0.63  0.24 0.59 0.406 1.4
+    ## SPSS4E   0.93 -0.04  0.14 0.85 0.148 1.1
+    ## SPSS5E   0.78  0.07 -0.17 0.67 0.325 1.1
+    ## SPSS6E   0.64  0.07 -0.21 0.48 0.519 1.3
+    ## SPSS7E   0.65  0.00 -0.22 0.47 0.533 1.2
+    ## SPSS8E   0.86  0.04  0.00 0.77 0.235 1.0
+    ## SPSS9E   0.93 -0.04 -0.01 0.83 0.166 1.0
+    ## SPSS10E  0.02  0.46  0.43 0.47 0.526 2.0
     ## 
     ##                        MR1  MR2  MR3
-    ## SS loadings           4.39 1.49 0.65
-    ## Proportion Var        0.44 0.15 0.07
-    ## Cumulative Var        0.44 0.59 0.65
-    ## Proportion Explained  0.67 0.23 0.10
-    ## Cumulative Proportion 0.67 0.90 1.00
+    ## SS loadings           4.74 1.71 0.45
+    ## Proportion Var        0.47 0.17 0.04
+    ## Cumulative Var        0.47 0.65 0.69
+    ## Proportion Explained  0.69 0.25 0.06
+    ## Cumulative Proportion 0.69 0.94 1.00
     ## 
     ##  With factor correlations of 
     ##      MR1  MR2  MR3
-    ## MR1 1.00 0.39 0.13
-    ## MR2 0.39 1.00 0.37
-    ## MR3 0.13 0.37 1.00
+    ## MR1 1.00 0.38 0.02
+    ## MR2 0.38 1.00 0.19
+    ## MR3 0.02 0.19 1.00
     ## 
     ## Mean item complexity =  1.2
     ## Test of the hypothesis that 3 factors are sufficient.
     ## 
-    ## The degrees of freedom for the null model are  45  and the objective function was  5.86 with Chi Square of  1030.98
-    ## The degrees of freedom for the model are 18  and the objective function was  0.14 
+    ## The degrees of freedom for the null model are  45  and the objective function was  7.31 with Chi Square of  1284.96
+    ## The degrees of freedom for the model are 18  and the objective function was  0.3 
     ## 
     ## The root mean square of the residuals (RMSR) is  0.02 
     ## The df corrected root mean square of the residuals is  0.03 
     ## 
-    ## The harmonic number of observations is  180 with the empirical chi square  5.49  with prob <  1 
-    ## The total number of observations was  181  with Likelihood Chi Square =  24.9  with prob <  0.13 
+    ## The harmonic number of observations is  180 with the empirical chi square  6.6  with prob <  0.99 
+    ## The total number of observations was  181  with Likelihood Chi Square =  52.43  with prob <  3.2e-05 
     ## 
-    ## Tucker Lewis Index of factoring reliability =  0.982
-    ## RMSEA index =  0.046  and the 90 % confidence intervals are  0 0.086
-    ## BIC =  -68.68
+    ## Tucker Lewis Index of factoring reliability =  0.93
+    ## RMSEA index =  0.103  and the 90 % confidence intervals are  0.071 0.136
+    ## BIC =  -41.15
     ## Fit based upon off diagonal values = 1
     ## Measures of factor score adequacy             
-    ##                                                    MR1 MR2  MR3
-    ## Correlation of (regression) scores with factors   0.97   1 0.76
-    ## Multiple R square of scores with factors          0.93   1 0.58
-    ## Minimum correlation of possible factor scores     0.87   1 0.16
+    ##                                                    MR1  MR2  MR3
+    ## Correlation of (regression) scores with factors   0.98 0.98 0.72
+    ## Multiple R square of scores with factors          0.96 0.96 0.52
+    ## Minimum correlation of possible factor scores     0.91 0.92 0.03
 
 ``` r
 # 44 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.Factor Analysis using method =  minres
@@ -1191,59 +758,55 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
 fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = 'bentlerQ', nfactors = 2)
 ```
 
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
     ## Factor Analysis using method =  minres
     ## Call: fa(r = spss.data, nfactors = 2, rotate = "bentlerQ", fm = "minres", 
     ##     cor = "poly")
     ## Standardized loadings (pattern matrix) based upon correlation matrix
     ##           MR1   MR2   h2   u2 com
-    ## SPSS1E   0.81  0.08 0.72 0.28 1.0
-    ## SPSS2E   0.05  0.76 0.62 0.38 1.0
-    ## SPSS3E   0.01  0.82 0.68 0.32 1.0
-    ## SPSS4E   0.82  0.04 0.70 0.30 1.0
-    ## SPSS5E   0.80 -0.01 0.63 0.37 1.0
-    ## SPSS6E   0.68 -0.04 0.44 0.56 1.0
-    ## SPSS7E   0.70 -0.12 0.42 0.58 1.1
-    ## SPSS8E   0.80  0.05 0.68 0.32 1.0
-    ## SPSS9E   0.88 -0.04 0.75 0.25 1.0
-    ## SPSS10E -0.10  0.67 0.40 0.60 1.0
+    ## SPSS1E   0.85  0.08 0.79 0.21 1.0
+    ## SPSS2E   0.04  0.79 0.66 0.34 1.0
+    ## SPSS3E   0.02  0.82 0.69 0.31 1.0
+    ## SPSS4E   0.88  0.04 0.80 0.20 1.0
+    ## SPSS5E   0.82 -0.02 0.66 0.34 1.0
+    ## SPSS6E   0.68 -0.04 0.45 0.55 1.0
+    ## SPSS7E   0.71 -0.12 0.44 0.56 1.1
+    ## SPSS8E   0.86  0.04 0.77 0.23 1.0
+    ## SPSS9E   0.93 -0.04 0.83 0.17 1.0
+    ## SPSS10E -0.09  0.66 0.39 0.61 1.0
     ## 
     ##                        MR1  MR2
-    ## SS loadings           4.35 1.71
-    ## Proportion Var        0.43 0.17
-    ## Cumulative Var        0.43 0.61
-    ## Proportion Explained  0.72 0.28
-    ## Cumulative Proportion 0.72 1.00
+    ## SS loadings           4.72 1.75
+    ## Proportion Var        0.47 0.17
+    ## Cumulative Var        0.47 0.65
+    ## Proportion Explained  0.73 0.27
+    ## Cumulative Proportion 0.73 1.00
     ## 
     ##  With factor correlations of 
     ##      MR1  MR2
-    ## MR1 1.00 0.45
-    ## MR2 0.45 1.00
+    ## MR1 1.00 0.43
+    ## MR2 0.43 1.00
     ## 
     ## Mean item complexity =  1
     ## Test of the hypothesis that 2 factors are sufficient.
     ## 
-    ## The degrees of freedom for the null model are  45  and the objective function was  5.86 with Chi Square of  1030.98
-    ## The degrees of freedom for the model are 26  and the objective function was  0.25 
+    ## The degrees of freedom for the null model are  45  and the objective function was  7.31 with Chi Square of  1284.96
+    ## The degrees of freedom for the model are 26  and the objective function was  0.49 
     ## 
     ## The root mean square of the residuals (RMSR) is  0.03 
     ## The df corrected root mean square of the residuals is  0.04 
     ## 
-    ## The harmonic number of observations is  180 with the empirical chi square  13.09  with prob <  0.98 
-    ## The total number of observations was  181  with Likelihood Chi Square =  44.2  with prob <  0.014 
+    ## The harmonic number of observations is  180 with the empirical chi square  16.09  with prob <  0.93 
+    ## The total number of observations was  181  with Likelihood Chi Square =  84.89  with prob <  3.6e-08 
     ## 
-    ## Tucker Lewis Index of factoring reliability =  0.968
-    ## RMSEA index =  0.062  and the 90 % confidence intervals are  0.028 0.093
-    ## BIC =  -90.96
+    ## Tucker Lewis Index of factoring reliability =  0.917
+    ## RMSEA index =  0.112  and the 90 % confidence intervals are  0.086 0.139
+    ## BIC =  -50.27
     ## Fit based upon off diagonal values = 1
     ## Measures of factor score adequacy             
     ##                                                    MR1  MR2
-    ## Correlation of (regression) scores with factors   0.96 0.91
-    ## Multiple R square of scores with factors          0.93 0.82
-    ## Minimum correlation of possible factor scores     0.86 0.65
+    ## Correlation of (regression) scores with factors   0.98 0.91
+    ## Multiple R square of scores with factors          0.95 0.84
+    ## Minimum correlation of possible factor scores     0.90 0.67
 
 ``` r
 #          MR1   MR2       h2        u2    com
@@ -1269,59 +832,55 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = 'bentlerQ', nfactors = 2
 fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = 'geominQ', nfactors = 2)
 ```
 
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
     ## Factor Analysis using method =  minres
     ## Call: fa(r = spss.data, nfactors = 2, rotate = "geominQ", fm = "minres", 
     ##     cor = "poly")
     ## Standardized loadings (pattern matrix) based upon correlation matrix
     ##           MR1   MR2   h2   u2 com
-    ## SPSS1E   0.81  0.09 0.72 0.28   1
-    ## SPSS2E   0.06  0.76 0.62 0.38   1
-    ## SPSS3E   0.02  0.82 0.68 0.32   1
-    ## SPSS4E   0.82  0.05 0.70 0.30   1
-    ## SPSS5E   0.80  0.00 0.63 0.37   1
-    ## SPSS6E   0.68 -0.03 0.44 0.56   1
-    ## SPSS7E   0.69 -0.11 0.42 0.58   1
-    ## SPSS8E   0.80  0.06 0.68 0.32   1
-    ## SPSS9E   0.88 -0.03 0.75 0.25   1
-    ## SPSS10E -0.09  0.66 0.40 0.60   1
+    ## SPSS1E   0.85  0.09 0.79 0.21 1.0
+    ## SPSS2E   0.05  0.79 0.66 0.34 1.0
+    ## SPSS3E   0.03  0.82 0.69 0.31 1.0
+    ## SPSS4E   0.88  0.05 0.80 0.20 1.0
+    ## SPSS5E   0.82 -0.01 0.66 0.34 1.0
+    ## SPSS6E   0.68 -0.03 0.45 0.55 1.0
+    ## SPSS7E   0.70 -0.11 0.44 0.56 1.1
+    ## SPSS8E   0.85  0.05 0.77 0.23 1.0
+    ## SPSS9E   0.92 -0.03 0.83 0.17 1.0
+    ## SPSS10E -0.09  0.66 0.39 0.61 1.0
     ## 
     ##                        MR1  MR2
-    ## SS loadings           4.34 1.72
-    ## Proportion Var        0.43 0.17
-    ## Cumulative Var        0.43 0.61
-    ## Proportion Explained  0.72 0.28
-    ## Cumulative Proportion 0.72 1.00
+    ## SS loadings           4.71 1.76
+    ## Proportion Var        0.47 0.18
+    ## Cumulative Var        0.47 0.65
+    ## Proportion Explained  0.73 0.27
+    ## Cumulative Proportion 0.73 1.00
     ## 
     ##  With factor correlations of 
     ##      MR1  MR2
-    ## MR1 1.00 0.42
-    ## MR2 0.42 1.00
+    ## MR1 1.00 0.41
+    ## MR2 0.41 1.00
     ## 
     ## Mean item complexity =  1
     ## Test of the hypothesis that 2 factors are sufficient.
     ## 
-    ## The degrees of freedom for the null model are  45  and the objective function was  5.86 with Chi Square of  1030.98
-    ## The degrees of freedom for the model are 26  and the objective function was  0.25 
+    ## The degrees of freedom for the null model are  45  and the objective function was  7.31 with Chi Square of  1284.96
+    ## The degrees of freedom for the model are 26  and the objective function was  0.49 
     ## 
     ## The root mean square of the residuals (RMSR) is  0.03 
     ## The df corrected root mean square of the residuals is  0.04 
     ## 
-    ## The harmonic number of observations is  180 with the empirical chi square  13.09  with prob <  0.98 
-    ## The total number of observations was  181  with Likelihood Chi Square =  44.2  with prob <  0.014 
+    ## The harmonic number of observations is  180 with the empirical chi square  16.09  with prob <  0.93 
+    ## The total number of observations was  181  with Likelihood Chi Square =  84.89  with prob <  3.6e-08 
     ## 
-    ## Tucker Lewis Index of factoring reliability =  0.968
-    ## RMSEA index =  0.062  and the 90 % confidence intervals are  0.028 0.093
-    ## BIC =  -90.96
+    ## Tucker Lewis Index of factoring reliability =  0.917
+    ## RMSEA index =  0.112  and the 90 % confidence intervals are  0.086 0.139
+    ## BIC =  -50.27
     ## Fit based upon off diagonal values = 1
     ## Measures of factor score adequacy             
     ##                                                    MR1  MR2
-    ## Correlation of (regression) scores with factors   0.96 0.91
-    ## Multiple R square of scores with factors          0.93 0.82
-    ## Minimum correlation of possible factor scores     0.86 0.64
+    ## Correlation of (regression) scores with factors   0.97 0.91
+    ## Multiple R square of scores with factors          0.95 0.83
+    ## Minimum correlation of possible factor scores     0.90 0.67
 
 ``` r
 #           MR1   MR2       h2        u2    com
@@ -1347,59 +906,55 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = 'geominQ', nfactors = 2)
 fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "quartimin", nfactors = 2)
 ```
 
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
     ## Factor Analysis using method =  minres
     ## Call: fa(r = spss.data, nfactors = 2, rotate = "quartimin", fm = "minres", 
     ##     cor = "poly")
     ## Standardized loadings (pattern matrix) based upon correlation matrix
     ##           MR1   MR2   h2   u2 com
-    ## SPSS1E   0.81  0.08 0.72 0.28 1.0
-    ## SPSS2E   0.06  0.76 0.62 0.38 1.0
-    ## SPSS3E   0.02  0.82 0.68 0.32 1.0
-    ## SPSS4E   0.82  0.04 0.70 0.30 1.0
-    ## SPSS5E   0.80 -0.01 0.63 0.37 1.0
-    ## SPSS6E   0.68 -0.04 0.44 0.56 1.0
-    ## SPSS7E   0.69 -0.11 0.42 0.58 1.1
-    ## SPSS8E   0.80  0.05 0.68 0.32 1.0
-    ## SPSS9E   0.88 -0.04 0.75 0.25 1.0
-    ## SPSS10E -0.09  0.66 0.40 0.60 1.0
+    ## SPSS1E   0.85  0.08 0.79 0.21 1.0
+    ## SPSS2E   0.05  0.79 0.66 0.34 1.0
+    ## SPSS3E   0.02  0.82 0.69 0.31 1.0
+    ## SPSS4E   0.88  0.04 0.80 0.20 1.0
+    ## SPSS5E   0.82 -0.02 0.66 0.34 1.0
+    ## SPSS6E   0.68 -0.04 0.45 0.55 1.0
+    ## SPSS7E   0.70 -0.12 0.44 0.56 1.1
+    ## SPSS8E   0.86  0.05 0.77 0.23 1.0
+    ## SPSS9E   0.93 -0.04 0.83 0.17 1.0
+    ## SPSS10E -0.09  0.66 0.39 0.61 1.0
     ## 
     ##                        MR1  MR2
-    ## SS loadings           4.35 1.71
-    ## Proportion Var        0.43 0.17
-    ## Cumulative Var        0.43 0.61
-    ## Proportion Explained  0.72 0.28
-    ## Cumulative Proportion 0.72 1.00
+    ## SS loadings           4.72 1.75
+    ## Proportion Var        0.47 0.17
+    ## Cumulative Var        0.47 0.65
+    ## Proportion Explained  0.73 0.27
+    ## Cumulative Proportion 0.73 1.00
     ## 
     ##  With factor correlations of 
     ##      MR1  MR2
-    ## MR1 1.00 0.44
-    ## MR2 0.44 1.00
+    ## MR1 1.00 0.42
+    ## MR2 0.42 1.00
     ## 
     ## Mean item complexity =  1
     ## Test of the hypothesis that 2 factors are sufficient.
     ## 
-    ## The degrees of freedom for the null model are  45  and the objective function was  5.86 with Chi Square of  1030.98
-    ## The degrees of freedom for the model are 26  and the objective function was  0.25 
+    ## The degrees of freedom for the null model are  45  and the objective function was  7.31 with Chi Square of  1284.96
+    ## The degrees of freedom for the model are 26  and the objective function was  0.49 
     ## 
     ## The root mean square of the residuals (RMSR) is  0.03 
     ## The df corrected root mean square of the residuals is  0.04 
     ## 
-    ## The harmonic number of observations is  180 with the empirical chi square  13.09  with prob <  0.98 
-    ## The total number of observations was  181  with Likelihood Chi Square =  44.2  with prob <  0.014 
+    ## The harmonic number of observations is  180 with the empirical chi square  16.09  with prob <  0.93 
+    ## The total number of observations was  181  with Likelihood Chi Square =  84.89  with prob <  3.6e-08 
     ## 
-    ## Tucker Lewis Index of factoring reliability =  0.968
-    ## RMSEA index =  0.062  and the 90 % confidence intervals are  0.028 0.093
-    ## BIC =  -90.96
+    ## Tucker Lewis Index of factoring reliability =  0.917
+    ## RMSEA index =  0.112  and the 90 % confidence intervals are  0.086 0.139
+    ## BIC =  -50.27
     ## Fit based upon off diagonal values = 1
     ## Measures of factor score adequacy             
     ##                                                    MR1  MR2
-    ## Correlation of (regression) scores with factors   0.96 0.91
-    ## Multiple R square of scores with factors          0.93 0.82
-    ## Minimum correlation of possible factor scores     0.86 0.65
+    ## Correlation of (regression) scores with factors   0.98 0.91
+    ## Multiple R square of scores with factors          0.95 0.83
+    ## Minimum correlation of possible factor scores     0.90 0.67
 
 ``` r
 #          MR1   MR2       h2        u2    com
@@ -1425,59 +980,55 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "quartimin", nfactors = 
 fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "Promax", nfactors = 2)
 ```
 
-    ## Warning in matpLower(x, nvar, gminx, gmaxx, gminy, gmaxy): 44 cells were
-    ## adjusted for 0 values using the correction for continuity. Examine your data
-    ## carefully.
-
     ## Factor Analysis using method =  minres
     ## Call: fa(r = spss.data, nfactors = 2, rotate = "Promax", fm = "minres", 
     ##     cor = "poly")
     ## Standardized loadings (pattern matrix) based upon correlation matrix
     ##           MR1   MR2   h2   u2 com
-    ## SPSS1E   0.81  0.09 0.72 0.28   1
-    ## SPSS2E   0.09  0.75 0.62 0.38   1
-    ## SPSS3E   0.05  0.81 0.68 0.32   1
-    ## SPSS4E   0.82  0.05 0.70 0.30   1
-    ## SPSS5E   0.79  0.00 0.63 0.37   1
-    ## SPSS6E   0.68 -0.03 0.44 0.56   1
-    ## SPSS7E   0.69 -0.10 0.42 0.58   1
-    ## SPSS8E   0.80  0.07 0.68 0.32   1
-    ## SPSS9E   0.88 -0.02 0.75 0.25   1
-    ## SPSS10E -0.07  0.65 0.40 0.60   1
+    ## SPSS1E   0.85  0.09 0.79 0.21   1
+    ## SPSS2E   0.08  0.78 0.66 0.34   1
+    ## SPSS3E   0.06  0.81 0.69 0.31   1
+    ## SPSS4E   0.87  0.05 0.80 0.20   1
+    ## SPSS5E   0.81 -0.01 0.66 0.34   1
+    ## SPSS6E   0.68 -0.03 0.45 0.55   1
+    ## SPSS7E   0.69 -0.11 0.44 0.56   1
+    ## SPSS8E   0.85  0.06 0.77 0.23   1
+    ## SPSS9E   0.92 -0.02 0.83 0.17   1
+    ## SPSS10E -0.06  0.65 0.39 0.61   1
     ## 
     ##                        MR1  MR2
-    ## SS loadings           4.35 1.71
-    ## Proportion Var        0.43 0.17
-    ## Cumulative Var        0.43 0.61
-    ## Proportion Explained  0.72 0.28
-    ## Cumulative Proportion 0.72 1.00
+    ## SS loadings           4.72 1.75
+    ## Proportion Var        0.47 0.17
+    ## Cumulative Var        0.47 0.65
+    ## Proportion Explained  0.73 0.27
+    ## Cumulative Proportion 0.73 1.00
     ## 
     ##  With factor correlations of 
     ##      MR1  MR2
-    ## MR1 1.00 0.39
-    ## MR2 0.39 1.00
+    ## MR1 1.00 0.37
+    ## MR2 0.37 1.00
     ## 
     ## Mean item complexity =  1
     ## Test of the hypothesis that 2 factors are sufficient.
     ## 
-    ## The degrees of freedom for the null model are  45  and the objective function was  5.86 with Chi Square of  1030.98
-    ## The degrees of freedom for the model are 26  and the objective function was  0.25 
+    ## The degrees of freedom for the null model are  45  and the objective function was  7.31 with Chi Square of  1284.96
+    ## The degrees of freedom for the model are 26  and the objective function was  0.49 
     ## 
     ## The root mean square of the residuals (RMSR) is  0.03 
     ## The df corrected root mean square of the residuals is  0.04 
     ## 
-    ## The harmonic number of observations is  180 with the empirical chi square  13.09  with prob <  0.98 
-    ## The total number of observations was  181  with Likelihood Chi Square =  44.2  with prob <  0.014 
+    ## The harmonic number of observations is  180 with the empirical chi square  16.09  with prob <  0.93 
+    ## The total number of observations was  181  with Likelihood Chi Square =  84.89  with prob <  3.6e-08 
     ## 
-    ## Tucker Lewis Index of factoring reliability =  0.968
-    ## RMSEA index =  0.062  and the 90 % confidence intervals are  0.028 0.093
-    ## BIC =  -90.96
+    ## Tucker Lewis Index of factoring reliability =  0.917
+    ## RMSEA index =  0.112  and the 90 % confidence intervals are  0.086 0.139
+    ## BIC =  -50.27
     ## Fit based upon off diagonal values = 1
     ## Measures of factor score adequacy             
     ##                                                    MR1  MR2
-    ## Correlation of (regression) scores with factors   0.96 0.90
-    ## Multiple R square of scores with factors          0.93 0.82
-    ## Minimum correlation of possible factor scores     0.86 0.64
+    ## Correlation of (regression) scores with factors   0.97 0.91
+    ## Multiple R square of scores with factors          0.95 0.83
+    ## Minimum correlation of possible factor scores     0.90 0.66
 
 ``` r
 #         MR1   MR2       h2        u2    com
@@ -1518,44 +1069,44 @@ psych::schmid(model = poly.spss.data$rho, nfactors = 2, fm = 'minres', rotate = 
     ## 
     ## Schmid Leiman Factor loadings greater than  0.2 
     ##            g   F1*   F2*   h2   u2   p2
-    ## SPSS1E  0.59  0.61       0.72 0.28 0.48
-    ## SPSS2E  0.54        0.57 0.62 0.38 0.47
-    ## SPSS3E  0.55        0.61 0.68 0.32 0.45
-    ## SPSS4E  0.57  0.62       0.70 0.30 0.46
-    ## SPSS5E  0.52  0.60       0.63 0.37 0.43
-    ## SPSS6E  0.42  0.51       0.44 0.56 0.41
-    ## SPSS7E  0.38  0.52       0.42 0.58 0.34
-    ## SPSS8E  0.57  0.60       0.68 0.32 0.47
-    ## SPSS9E  0.56  0.66       0.75 0.25 0.41
-    ## SPSS10E 0.38        0.50 0.40 0.60 0.36
+    ## SPSS1E  0.61  0.64       0.79 0.21 0.47
+    ## SPSS2E  0.54        0.60 0.66 0.34 0.45
+    ## SPSS3E  0.55        0.62 0.69 0.31 0.44
+    ## SPSS4E  0.60  0.67       0.80 0.20 0.45
+    ## SPSS5E  0.52  0.62       0.66 0.34 0.41
+    ## SPSS6E  0.42  0.52       0.45 0.55 0.40
+    ## SPSS7E  0.38  0.53       0.44 0.56 0.33
+    ## SPSS8E  0.59  0.65       0.77 0.23 0.45
+    ## SPSS9E  0.58  0.70       0.83 0.17 0.40
+    ## SPSS10E 0.37        0.50 0.39 0.61 0.35
     ## 
     ## With eigenvalues of:
-    ##    g  F1*  F2* 
-    ## 2.63 2.46 0.97 
+    ##   g F1* F2* 
+    ## 2.7 2.7 1.0 
     ## 
-    ## general/max  1.07   max/min =   2.54
-    ## mean percent general =  0.43    with sd =  0.05 and cv of  0.11 
+    ## general/max  1   max/min =   2.69
+    ## mean percent general =  0.42    with sd =  0.05 and cv of  0.11 
     ## 
     ##  The orthogonal loadings were 
     ## Unstandardized loadings based upon covariance matrix
     ##           F1   F2   h2   u2   H2   U2
-    ## SPSS1E  0.81 0.26 0.72 0.28 0.72 0.28
-    ## SPSS2E  0.22 0.75 0.62 0.38 0.62 0.38
-    ## SPSS3E  0.20 0.80 0.68 0.32 0.68 0.32
-    ## SPSS4E  0.81 0.23 0.70 0.30 0.70 0.30
-    ## SPSS5E  0.77 0.17 0.63 0.37 0.63 0.37
-    ## SPSS6E  0.66 0.12 0.44 0.56 0.44 0.56
-    ## SPSS7E  0.65 0.05 0.42 0.58 0.42 0.58
-    ## SPSS8E  0.79 0.24 0.68 0.32 0.68 0.32
-    ## SPSS9E  0.85 0.17 0.75 0.25 0.75 0.25
-    ## SPSS10E 0.06 0.63 0.40 0.60 0.40 0.60
+    ## SPSS1E  0.84 0.27 0.79 0.21 0.79 0.21
+    ## SPSS2E  0.21 0.78 0.66 0.34 0.66 0.34
+    ## SPSS3E  0.20 0.81 0.69 0.31 0.69 0.31
+    ## SPSS4E  0.87 0.24 0.80 0.20 0.80 0.20
+    ## SPSS5E  0.79 0.16 0.66 0.34 0.66 0.34
+    ## SPSS6E  0.66 0.12 0.45 0.55 0.45 0.55
+    ## SPSS7E  0.66 0.04 0.44 0.56 0.44 0.56
+    ## SPSS8E  0.84 0.24 0.77 0.23 0.77 0.23
+    ## SPSS9E  0.90 0.17 0.83 0.17 0.83 0.17
+    ## SPSS10E 0.05 0.62 0.39 0.61 0.39 0.61
     ## 
     ##                  F1   F2
-    ## SS loadings    4.20 1.86
-    ## Proportion Var 0.42 0.19
-    ## Cumulative Var 0.42 0.60
+    ## SS loadings    4.57 1.91
+    ## Proportion Var 0.46 0.19
+    ## Cumulative Var 0.46 0.65
     ## 
-    ## The degrees of freedom are 26  and the fit is  0.25 
+    ## The degrees of freedom are 26  and the fit is  0.49 
     ## 
     ## The root mean square of the residuals is  0.03 
     ## The df corrected root mean square of the residuals is  0.04
@@ -1642,6 +1193,311 @@ psych::schmid(model = poly.spss.data$rho, nfactors = 2, fm = 'minres', rotate = 
 # I think the second df in output is "orthog" (i.e. original orthogonal factor loadings - ignore)
 ####
 ```
+
+``` r
+# fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "bifactor", nfactors = 2) # orthogonal rotation*
+# fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "biquartimin", nfactors = 2)
+
+# Error in matrix(1, k, k) : non-numeric matrix extent
+
+# fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "bifactor", nfactors = 3)
+  # for some reason this runs when nfactors is changed from 2 to 3
+```
+
+# Reliability
+
+SPSS attitudes measure is unit-weighted and cogeneric (i.e., violates
+tau equivalence) so we are interested in Omega, but which one?
+
+My guess is omega total because omega hierarchial only calculates
+reliability for ‘g’
+
+Should we use ‘psych’ or ‘MBESS’ pkg? I receive warnings from ‘psych’, I
+think it has to do with the Schmid-Leiman stuff(?)
+
+``` r
+# calculate reliability for scale overall and for each factor
+# split dataset 
+spss.data.f1 <- spss.data %>% select(-c(SPSS2E, SPSS3E, SPSS10E))
+spss.data.f2 <- spss.data %>% select(c(SPSS2E, SPSS3E, SPSS10E))
+```
+
+## Overall
+
+``` r
+omega(m = spss.data, poly = TRUE, plot = F)
+```
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in cov2cor(t(w) %*% r %*% w): diag(.) had 0 or NA entries; non-finite
+    ## result is doubtful
+
+    ## Omega 
+    ## Call: omegah(m = m, nfactors = nfactors, fm = fm, key = key, flip = flip, 
+    ##     digits = digits, title = title, sl = sl, labels = labels, 
+    ##     plot = plot, n.obs = n.obs, rotate = rotate, Phi = Phi, option = option, 
+    ##     covar = covar)
+    ## Alpha:                 0.9 
+    ## G.6:                   0.93 
+    ## Omega Hierarchical:    0.38 
+    ## Omega H asymptotic:    0.4 
+    ## Omega Total            0.94 
+    ## 
+    ## Schmid Leiman Factor loadings greater than  0.2 
+    ##            g   F1* F2*   F3*   h2   u2   p2
+    ## SPSS1E  0.37  0.82           0.81 0.19 0.17
+    ## SPSS2E  0.97                 0.95 0.05 1.00
+    ## SPSS3E  0.72           -0.24 0.59 0.41 0.87
+    ## SPSS4E  0.33  0.86           0.85 0.15 0.13
+    ## SPSS5E  0.34  0.72           0.67 0.33 0.17
+    ## SPSS6E  0.28  0.59      0.21 0.48 0.52 0.16
+    ## SPSS7E  0.21  0.60      0.22 0.47 0.53 0.09
+    ## SPSS8E  0.36  0.80           0.77 0.23 0.17
+    ## SPSS9E  0.31  0.86           0.83 0.17 0.12
+    ## SPSS10E 0.54           -0.42 0.47 0.53 0.62
+    ## 
+    ## With eigenvalues of:
+    ##    g  F1*  F2*  F3* 
+    ## 2.47 4.02 0.00 0.39 
+    ## 
+    ## general/max  0.61   max/min =   Inf
+    ## mean percent general =  0.35    with sd =  0.34 and cv of  0.98 
+    ## Explained Common Variance of the general factor =  0.36 
+    ## 
+    ## The degrees of freedom are 18  and the fit is  0.3 
+    ## The number of observations was  181  with Chi Square =  52.43  with prob <  3.2e-05
+    ## The root mean square of the residuals is  0.02 
+    ## The df corrected root mean square of the residuals is  0.03
+    ## RMSEA index =  0.103  and the 10 % confidence intervals are  0.071 0.136
+    ## BIC =  -41.15
+    ## 
+    ## Compare this with the adequacy of just a general factor and no group factors
+    ## The degrees of freedom for just the general factor are 35  and the fit is  5.47 
+    ## The number of observations was  181  with Chi Square =  958.96  with prob <  1.2e-178
+    ## The root mean square of the residuals is  0.39 
+    ## The df corrected root mean square of the residuals is  0.45 
+    ## 
+    ## RMSEA index =  0.382  and the 10 % confidence intervals are  0.362 0.404
+    ## BIC =  777.02 
+    ## 
+    ## Measures of factor score adequacy             
+    ##                                                  g  F1* F2*  F3*
+    ## Correlation of scores with factors            0.98 0.97   0 0.72
+    ## Multiple R square of scores with factors      0.96 0.95   0 0.51
+    ## Minimum correlation of factor score estimates 0.92 0.90  -1 0.03
+    ## 
+    ##  Total, General and Subset omega for each subset
+    ##                                                  g  F1* F2*  F3*
+    ## Omega total for total scores and subscales    0.94 0.93  NA 0.84
+    ## Omega general for total scores and subscales  0.38 0.14  NA 0.78
+    ## Omega group for total scores and subscales    0.54 0.79  NA 0.05
+
+``` r
+# Omega total for total scores and subscales: amount of variance accounted for by 'g' and group 
+# Omega general for total scores and subscales: amount of variance that is accounted for by 'g'.
+# Omega group for total scores and subscales: i.e., omegaS / subset omega.
+```
+
+``` r
+# value under $est
+# provides CI
+ci.reliability(spss.data)
+```
+
+    ## $est
+    ## [1] 0.8673275
+    ## 
+    ## $se
+    ## [1] 0.01654805
+    ## 
+    ## $ci.lower
+    ## [1] 0.8348939
+    ## 
+    ## $ci.upper
+    ## [1] 0.8997611
+    ## 
+    ## $conf.level
+    ## [1] 0.95
+    ## 
+    ## $type
+    ## [1] "omega"
+    ## 
+    ## $interval.type
+    ## [1] "robust maximum likelihood (wald ci)"
+
+## Per factor
+
+``` r
+omega(m = spss.data.f1, poly = TRUE, plot = F)
+```
+
+    ## Omega 
+    ## Call: omegah(m = m, nfactors = nfactors, fm = fm, key = key, flip = flip, 
+    ##     digits = digits, title = title, sl = sl, labels = labels, 
+    ##     plot = plot, n.obs = n.obs, rotate = rotate, Phi = Phi, option = option, 
+    ##     covar = covar)
+    ## Alpha:                 0.93 
+    ## G.6:                   0.93 
+    ## Omega Hierarchical:    0.85 
+    ## Omega H asymptotic:    0.9 
+    ## Omega Total            0.95 
+    ## 
+    ## Schmid Leiman Factor loadings greater than  0.2 
+    ##           g   F1*  F2*   F3*   h2   u2   p2
+    ## SPSS1E 0.82  0.31       0.20 0.81 0.19 0.83
+    ## SPSS4E 0.85  0.52            1.00 0.00 0.72
+    ## SPSS5E 0.77                  0.66 0.34 0.90
+    ## SPSS6E 0.67       0.32       0.55 0.45 0.81
+    ## SPSS7E 0.62                  0.43 0.57 0.89
+    ## SPSS8E 0.85             0.29 0.83 0.17 0.86
+    ## SPSS9E 0.85  0.26            0.82 0.18 0.89
+    ## 
+    ## With eigenvalues of:
+    ##    g  F1*  F2*  F3* 
+    ## 4.26 0.46 0.21 0.16 
+    ## 
+    ## general/max  9.2   max/min =   2.87
+    ## mean percent general =  0.84    with sd =  0.06 and cv of  0.08 
+    ## Explained Common Variance of the general factor =  0.84 
+    ## 
+    ## The degrees of freedom are 3  and the fit is  0.01 
+    ## The number of observations was  181  with Chi Square =  1.68  with prob <  0.64
+    ## The root mean square of the residuals is  0.01 
+    ## The df corrected root mean square of the residuals is  0.02
+    ## RMSEA index =  0  and the 10 % confidence intervals are  0 0.1
+    ## BIC =  -13.92
+    ## 
+    ## Compare this with the adequacy of just a general factor and no group factors
+    ## The degrees of freedom for just the general factor are 14  and the fit is  0.46 
+    ## The number of observations was  181  with Chi Square =  81.77  with prob <  1.3e-11
+    ## The root mean square of the residuals is  0.07 
+    ## The df corrected root mean square of the residuals is  0.09 
+    ## 
+    ## RMSEA index =  0.163  and the 10 % confidence intervals are  0.131 0.199
+    ## BIC =  8.99 
+    ## 
+    ## Measures of factor score adequacy             
+    ##                                                  g  F1*   F2*   F3*
+    ## Correlation of scores with factors            0.93 0.77  0.46  0.58
+    ## Multiple R square of scores with factors      0.86 0.59  0.21  0.34
+    ## Minimum correlation of factor score estimates 0.72 0.18 -0.58 -0.32
+    ## 
+    ##  Total, General and Subset omega for each subset
+    ##                                                  g  F1*  F2*  F3*
+    ## Omega total for total scores and subscales    0.95 0.94 0.76 0.80
+    ## Omega general for total scores and subscales  0.85 0.79 0.69 0.71
+    ## Omega group for total scores and subscales    0.05 0.15 0.07 0.08
+
+``` r
+omega(m = spss.data.f2, poly = TRUE, plot = F)
+```
+
+    ## Warning in cov2cor(t(w) %*% r %*% w): diag(.) had 0 or NA entries; non-finite
+    ## result is doubtful
+
+    ## Omega 
+    ## Call: omegah(m = m, nfactors = nfactors, fm = fm, key = key, flip = flip, 
+    ##     digits = digits, title = title, sl = sl, labels = labels, 
+    ##     plot = plot, n.obs = n.obs, rotate = rotate, Phi = Phi, option = option, 
+    ##     covar = covar)
+    ## Alpha:                 0.79 
+    ## G.6:                   0.73 
+    ## Omega Hierarchical:    0.12 
+    ## Omega H asymptotic:    0.15 
+    ## Omega Total            0.8 
+    ## 
+    ## Schmid Leiman Factor loadings greater than  0.2 
+    ##            g  F1*   F2*   F3*   h2   u2   p2
+    ## SPSS2E  0.32 0.77             0.69 0.31 0.14
+    ## SPSS3E  0.31 0.77             0.68 0.32 0.14
+    ## SPSS10E 0.26 0.54             0.37 0.63 0.18
+    ## 
+    ## With eigenvalues of:
+    ##    g  F1*  F2*  F3* 
+    ## 0.26 1.48 0.01 0.00 
+    ## 
+    ## general/max  0.18   max/min =   Inf
+    ## mean percent general =  0.15    with sd =  0.02 and cv of  0.15 
+    ## Explained Common Variance of the general factor =  0.15 
+    ## 
+    ## The degrees of freedom are -3  and the fit is  0 
+    ## The number of observations was  181  with Chi Square =  0  with prob <  NA
+    ## The root mean square of the residuals is  0 
+    ## The df corrected root mean square of the residuals is  NA
+    ## 
+    ## Compare this with the adequacy of just a general factor and no group factors
+    ## The degrees of freedom for just the general factor are 0  and the fit is  0.73 
+    ## The number of observations was  181  with Chi Square =  130.23  with prob <  NA
+    ## The root mean square of the residuals is  0.48 
+    ## The df corrected root mean square of the residuals is  NA 
+    ## 
+    ## Measures of factor score adequacy             
+    ##                                                   g  F1*   F2* F3*
+    ## Correlation of scores with factors             0.35 0.84  0.12   0
+    ## Multiple R square of scores with factors       0.12 0.71  0.01   0
+    ## Minimum correlation of factor score estimates -0.75 0.42 -0.97  -1
+    ## 
+    ##  Total, General and Subset omega for each subset
+    ##                                                  g  F1* F2* F3*
+    ## Omega total for total scores and subscales    0.80 0.80  NA  NA
+    ## Omega general for total scores and subscales  0.12 0.12  NA  NA
+    ## Omega group for total scores and subscales    0.68 0.68  NA  NA
+
+``` r
+ci.reliability(spss.data.f1)
+```
+
+    ## $est
+    ## [1] 0.907176
+    ## 
+    ## $se
+    ## [1] 0.01330616
+    ## 
+    ## $ci.lower
+    ## [1] 0.8810964
+    ## 
+    ## $ci.upper
+    ## [1] 0.9332556
+    ## 
+    ## $conf.level
+    ## [1] 0.95
+    ## 
+    ## $type
+    ## [1] "omega"
+    ## 
+    ## $interval.type
+    ## [1] "robust maximum likelihood (wald ci)"
+
+``` r
+ci.reliability(spss.data.f2)
+```
+
+    ## $est
+    ## [1] 0.7437227
+    ## 
+    ## $se
+    ## [1] 0.04214397
+    ## 
+    ## $ci.lower
+    ## [1] 0.661122
+    ## 
+    ## $ci.upper
+    ## [1] 0.8263233
+    ## 
+    ## $conf.level
+    ## [1] 0.95
+    ## 
+    ## $type
+    ## [1] "omega"
+    ## 
+    ## $interval.type
+    ## [1] "robust maximum likelihood (wald ci)"
 
 # Assumptions
 

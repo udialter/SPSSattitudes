@@ -337,32 +337,11 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
     ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
     ## The estimated weights for the factor scores are probably incorrect. Try a
     ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
     
     ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
     ## The estimated weights for the factor scores are probably incorrect. Try a
     ## different factor score estimation method.
     
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
     ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
     ## The estimated weights for the factor scores are probably incorrect. Try a
     ## different factor score estimation method.
@@ -409,6 +388,24 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
     ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
     ## The estimated weights for the factor scores are probably incorrect. Try a
     ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
 
     ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
     ## ultra-Heywood case was detected. Examine the results carefully
@@ -430,6 +427,21 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 
     ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
     ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
 
 ![](SPSSattitudesCode_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
@@ -1393,11 +1405,11 @@ ci.reliability(spss.data)
 ``` r
 # # I think, I should be using the polychoric covariance matrix instead
 # 
-# ci.reliability(poly.spss.data)
+# ci.reliability(poly.spss.data$rho)
 # 
-# # But I receive the following error: "Error in as.data.frame.default(data) : cannot coerce class ‘c("psych", "poly")’ to a data.frame"
+# # But I receive the following error: "Error in if (se != "none" && any(errorcheck <= 0)) converged <- FALSE : missing value where TRUE/FALSE needed...lavaan WARNING: estimation of the baseline model failed."
 # 
-# # The documentation for the function that the default parameter 'type' is 'omega'. But the function can calculate other types of reliability such as alpha, omega, omega hierarchical and omega categorical. From the documentation, "Categorical omega is a method to calculate coefficient omega for categorical items (Green and Yang, 2009)"
+# # The documentation for the function says that the default parameter 'type' is 'omega'. But the function can calculate other types of reliability such as alpha, omega, omega hierarchical and omega categorical. From the documentation, "Categorical omega is a method to calculate coefficient omega for categorical items (Green and Yang, 2009)"
 # 
 # ci.reliability(spss.data, type = "categorical")
 # 

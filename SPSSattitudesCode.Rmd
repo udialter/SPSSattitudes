@@ -578,11 +578,11 @@ ci.reliability(spss.data)
 
 # # I think, I should be using the polychoric covariance matrix instead
 # 
-# ci.reliability(poly.spss.data)
+# ci.reliability(poly.spss.data$rho)
 # 
-# # But I receive the following error: "Error in as.data.frame.default(data) : cannot coerce class ‘c("psych", "poly")’ to a data.frame"
+# # But I receive the following error: "Error in if (se != "none" && any(errorcheck <= 0)) converged <- FALSE : missing value where TRUE/FALSE needed...lavaan WARNING: estimation of the baseline model failed."
 # 
-# # The documentation for the function that the default parameter 'type' is 'omega'. But the function can calculate other types of reliability such as alpha, omega, omega hierarchical and omega categorical. From the documentation, "Categorical omega is a method to calculate coefficient omega for categorical items (Green and Yang, 2009)"
+# # The documentation for the function says that the default parameter 'type' is 'omega'. But the function can calculate other types of reliability such as alpha, omega, omega hierarchical and omega categorical. From the documentation, "Categorical omega is a method to calculate coefficient omega for categorical items (Green and Yang, 2009)"
 # 
 # ci.reliability(spss.data, type = "categorical")
 # 

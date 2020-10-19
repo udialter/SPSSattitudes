@@ -225,7 +225,7 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 # 
 #                        MR1  MR2
 # SS loadings           4.35 1.71
-# Proportion Var        0.43 0.17
+# Proportion Var        0.43 0.17 PROP EXPLAINED PER FACTOR
 # Cumulative Var        0.43 0.61 *
 # Proportion Explained  0.72 0.28
 # Cumulative Proportion 0.72 1.00
@@ -561,6 +561,8 @@ spss.data.f2 <- spss.data %>% select(c(SPSS2E, SPSS3E, SPSS10E))
 
 ## Overall
 
+YOU MUST HAVE POLY = TRUE 
+
 ```{r alpha, Revelles omega total, Omega hierarchial}
 omega(m = spss.data, poly = TRUE, plot = F)
 
@@ -568,10 +570,27 @@ omega(m = spss.data, poly = TRUE, plot = F)
 # Omega general for total scores and subscales: amount of variance that is accounted for by 'g'.
 # Omega group for total scores and subscales: i.e., omegaS / subset omega.
 ```
+
 ```{r omega total NOT Revelles}
 # value under $est
 # provides CI
 ci.reliability(spss.data)
+
+# # I think, I should be using the polychoric covariance matrix instead
+# 
+# ci.reliability(poly.spss.data)
+# 
+# # But I receive the following error: "Error in as.data.frame.default(data) : cannot coerce class ‘c("psych", "poly")’ to a data.frame"
+# 
+# # The documentation for the function that the default parameter 'type' is 'omega'. But the function can calculate other types of reliability such as alpha, omega, omega hierarchical and omega categorical. From the documentation, "Categorical omega is a method to calculate coefficient omega for categorical items (Green and Yang, 2009)"
+# 
+# ci.reliability(spss.data, type = "categorical")
+# 
+# # The above code gives me the following error, "Error in .ci.reliability.data(data = data, aux = aux, type = type, interval.type = interval.type,  : Any normal-theory or ADF methods are not available for hierarchical omega or categorical omega."
+# 
+# # The documentation says, "If type is specified as NULL, the default is to use hierarchical omega for continuous items and categorical omega for categorical items". So I ran the code below, but it gave me the same ADF error as above 
+# 
+# ci.reliability(spss.data, type = NULL)
 ```
 ## Per factor
 

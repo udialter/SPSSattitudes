@@ -7,14 +7,14 @@ Carmen Dang
 
     ## Warning: package 'haven' was built under R version 4.0.2
 
-    ## -- Attaching packages --------------------- tidyverse 1.3.0 --
+    ## -- Attaching packages ------------------- tidyverse 1.3.0 --
 
     ## v ggplot2 3.3.1     v dplyr   1.0.0
     ## v tibble  3.0.1     v stringr 1.4.0
     ## v tidyr   1.1.0     v forcats 0.5.0
     ## v purrr   0.3.4
 
-    ## -- Conflicts ------------------------ tidyverse_conflicts() --
+    ## -- Conflicts ---------------------- tidyverse_conflicts() --
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
 
@@ -344,6 +344,49 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
     ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
     ## The estimated weights for the factor scores are probably incorrect. Try a
     ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
 
     ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
     ## ultra-Heywood case was detected. Examine the results carefully
@@ -355,7 +398,21 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
     ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
     ## The estimated weights for the factor scores are probably incorrect. Try a
     ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
     
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
     ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
     ## The estimated weights for the factor scores are probably incorrect. Try a
     ## different factor score estimation method.
@@ -555,7 +612,7 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 # 
 #                        MR1  MR2
 # SS loadings           4.35 1.71
-# Proportion Var        0.43 0.17
+# Proportion Var        0.43 0.17 PROP EXPLAINED PER FACTOR
 # Cumulative Var        0.43 0.61 *
 # Proportion Explained  0.72 0.28
 # Cumulative Proportion 0.72 1.00
@@ -1224,6 +1281,8 @@ spss.data.f2 <- spss.data %>% select(c(SPSS2E, SPSS3E, SPSS10E))
 
 ## Overall
 
+YOU MUST HAVE POLY = TRUE
+
 ``` r
 omega(m = spss.data, poly = TRUE, plot = F)
 ```
@@ -1330,6 +1389,24 @@ ci.reliability(spss.data)
     ## 
     ## $interval.type
     ## [1] "robust maximum likelihood (wald ci)"
+
+``` r
+# # I think, I should be using the polychoric covariance matrix instead
+# 
+# ci.reliability(poly.spss.data)
+# 
+# # But I receive the following error: "Error in as.data.frame.default(data) : cannot coerce class ‘c("psych", "poly")’ to a data.frame"
+# 
+# # The documentation for the function that the default parameter 'type' is 'omega'. But the function can calculate other types of reliability such as alpha, omega, omega hierarchical and omega categorical. From the documentation, "Categorical omega is a method to calculate coefficient omega for categorical items (Green and Yang, 2009)"
+# 
+# ci.reliability(spss.data, type = "categorical")
+# 
+# # The above code gives me the following error, "Error in .ci.reliability.data(data = data, aux = aux, type = type, interval.type = interval.type,  : Any normal-theory or ADF methods are not available for hierarchical omega or categorical omega."
+# 
+# # The documentation says, "If type is specified as NULL, the default is to use hierarchical omega for continuous items and categorical omega for categorical items". So I ran the code below, but it gave me the same ADF error as above 
+# 
+# ci.reliability(spss.data, type = NULL)
+```
 
 ## Per factor
 

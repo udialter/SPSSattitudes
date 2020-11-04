@@ -7,14 +7,14 @@ Carmen Dang
 
     ## Warning: package 'haven' was built under R version 4.0.2
 
-    ## -- Attaching packages ------------------- tidyverse 1.3.0 --
+    ## -- Attaching packages ------------------------------------------------------------------------------------------------------------------------------------ tidyverse 1.3.0 --
 
     ## v ggplot2 3.3.1     v dplyr   1.0.0
     ## v tibble  3.0.1     v stringr 1.4.0
     ## v tidyr   1.1.0     v forcats 0.5.0
     ## v purrr   0.3.4
 
-    ## -- Conflicts ---------------------- tidyverse_conflicts() --
+    ## -- Conflicts --------------------------------------------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
 
@@ -279,6 +279,8 @@ poly.spss.data <- psych::polychoric(spss.data) # wants numeric data
 # Used polychoric bc Likert data
 # All Qs are more correlated w eachother than they are with 2,3,10. But 2,3, and 10 are more correlated to each other than other Qs.
 ####
+
+write.csv(poly.spss.data$rho, file = "polyCorrTable.csv", row.names = TRUE)
 ```
 
 # MAP / PA
@@ -337,68 +339,6 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
     ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
     ## The estimated weights for the factor scores are probably incorrect. Try a
     ## different factor score estimation method.
-    
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-    
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-    
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-    
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-    
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
 
     ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
     ## ultra-Heywood case was detected. Examine the results carefully
@@ -439,6 +379,77 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
     ## The estimated weights for the factor scores are probably incorrect. Try a
     ## different factor score estimation method.
     
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
     ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
     ## The estimated weights for the factor scores are probably incorrect. Try a
     ## different factor score estimation method.
@@ -463,52 +474,8 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 ## 1F
 
 ``` r
-fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfactors = 1)
-```
+efa1 <- fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfactors = 1)
 
-    ## Factor Analysis using method =  minres
-    ## Call: fa(r = spss.data, nfactors = 1, rotate = "oblimin", fm = "minres", 
-    ##     cor = "poly")
-    ## Standardized loadings (pattern matrix) based upon correlation matrix
-    ##          MR1    h2   u2 com
-    ## SPSS1E  0.89 0.791 0.21   1
-    ## SPSS2E  0.45 0.204 0.80   1
-    ## SPSS3E  0.44 0.197 0.80   1
-    ## SPSS4E  0.89 0.801 0.20   1
-    ## SPSS5E  0.80 0.638 0.36   1
-    ## SPSS6E  0.65 0.428 0.57   1
-    ## SPSS7E  0.63 0.391 0.61   1
-    ## SPSS8E  0.87 0.766 0.23   1
-    ## SPSS9E  0.89 0.800 0.20   1
-    ## SPSS10E 0.27 0.071 0.93   1
-    ## 
-    ##                 MR1
-    ## SS loadings    5.09
-    ## Proportion Var 0.51
-    ## 
-    ## Mean item complexity =  1
-    ## Test of the hypothesis that 1 factor is sufficient.
-    ## 
-    ## The degrees of freedom for the null model are  45  and the objective function was  7.31 with Chi Square of  1284.96
-    ## The degrees of freedom for the model are 35  and the objective function was  1.34 
-    ## 
-    ## The root mean square of the residuals (RMSR) is  0.12 
-    ## The df corrected root mean square of the residuals is  0.14 
-    ## 
-    ## The harmonic number of observations is  180 with the empirical chi square  241.25  with prob <  1.2e-32 
-    ## The total number of observations was  181  with Likelihood Chi Square =  234.97  with prob <  1.8e-31 
-    ## 
-    ## Tucker Lewis Index of factoring reliability =  0.792
-    ## RMSEA index =  0.178  and the 90 % confidence intervals are  0.157 0.2
-    ## BIC =  53.02
-    ## Fit based upon off diagonal values = 0.94
-    ## Measures of factor score adequacy             
-    ##                                                    MR1
-    ## Correlation of (regression) scores with factors   0.97
-    ## Multiple R square of scores with factors          0.95
-    ## Minimum correlation of possible factor scores     0.89
-
-``` r
 # 44 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.Factor Analysis using method =  minres
 # Call: fa(r = spss.data, nfactors = 1, rotate = "oblimin", fm = "minres", 
 #     cor = "poly")
@@ -560,64 +527,14 @@ fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfactors = 1)
 #
 # Based on model fit (RMSR), 1F sucks
 ####
+write.csv(efa1$loadings, file = "efa1Loadings.csv", row.names = TRUE)
 ```
 
 ## 2F
 
 ``` r
-fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
-```
+efa2oblimin <- fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 
-    ## Factor Analysis using method =  minres
-    ## Call: fa(r = spss.data, nfactors = 2, fm = "minres", cor = "poly")
-    ## Standardized loadings (pattern matrix) based upon correlation matrix
-    ##           MR1   MR2   h2   u2 com
-    ## SPSS1E   0.85  0.08 0.79 0.21 1.0
-    ## SPSS2E   0.05  0.79 0.66 0.34 1.0
-    ## SPSS3E   0.02  0.82 0.69 0.31 1.0
-    ## SPSS4E   0.88  0.04 0.80 0.20 1.0
-    ## SPSS5E   0.82 -0.02 0.66 0.34 1.0
-    ## SPSS6E   0.68 -0.04 0.45 0.55 1.0
-    ## SPSS7E   0.70 -0.12 0.44 0.56 1.1
-    ## SPSS8E   0.86  0.05 0.77 0.23 1.0
-    ## SPSS9E   0.93 -0.04 0.83 0.17 1.0
-    ## SPSS10E -0.09  0.66 0.39 0.61 1.0
-    ## 
-    ##                        MR1  MR2
-    ## SS loadings           4.72 1.75
-    ## Proportion Var        0.47 0.17
-    ## Cumulative Var        0.47 0.65
-    ## Proportion Explained  0.73 0.27
-    ## Cumulative Proportion 0.73 1.00
-    ## 
-    ##  With factor correlations of 
-    ##      MR1  MR2
-    ## MR1 1.00 0.42
-    ## MR2 0.42 1.00
-    ## 
-    ## Mean item complexity =  1
-    ## Test of the hypothesis that 2 factors are sufficient.
-    ## 
-    ## The degrees of freedom for the null model are  45  and the objective function was  7.31 with Chi Square of  1284.96
-    ## The degrees of freedom for the model are 26  and the objective function was  0.49 
-    ## 
-    ## The root mean square of the residuals (RMSR) is  0.03 
-    ## The df corrected root mean square of the residuals is  0.04 
-    ## 
-    ## The harmonic number of observations is  180 with the empirical chi square  16.09  with prob <  0.93 
-    ## The total number of observations was  181  with Likelihood Chi Square =  84.89  with prob <  3.6e-08 
-    ## 
-    ## Tucker Lewis Index of factoring reliability =  0.917
-    ## RMSEA index =  0.112  and the 90 % confidence intervals are  0.086 0.139
-    ## BIC =  -50.27
-    ## Fit based upon off diagonal values = 1
-    ## Measures of factor score adequacy             
-    ##                                                    MR1  MR2
-    ## Correlation of (regression) scores with factors   0.98 0.91
-    ## Multiple R square of scores with factors          0.95 0.83
-    ## Minimum correlation of possible factor scores     0.90 0.67
-
-``` r
 # 44 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.Factor Analysis using method =  minres
 # Call: fa(r = spss.data, nfactors = 2, fm = "minres", cor = "poly")
 # Standardized loadings (pattern matrix) based upon correlation matrix
@@ -676,6 +593,8 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 # Notice that all negatively worded items load onto factor 2 & all positively worded items load onto factor 1
 # 2F prob wins, but let's try 3F next anyways
 ####
+
+write.csv(efa2oblimin$loadings, file = "efa2Oblimin.csv", row.names = TRUE)
 ```
 
 ## 3F

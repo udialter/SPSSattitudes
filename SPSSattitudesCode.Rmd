@@ -125,6 +125,8 @@ poly.spss.data <- psych::polychoric(spss.data) # wants numeric data
 # Used polychoric bc Likert data
 # All Qs are more correlated w eachother than they are with 2,3,10. But 2,3, and 10 are more correlated to each other than other Qs.
 ####
+
+write.csv(poly.spss.data$rho, file = "polyCorrTable.csv", row.names = TRUE)
 ```
 # MAP / PA
 
@@ -160,7 +162,7 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 ## 1F
 
 ```{r}
-fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfactors = 1)
+efa1 <- fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfactors = 1)
 
 # 44 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.Factor Analysis using method =  minres
 # Call: fa(r = spss.data, nfactors = 1, rotate = "oblimin", fm = "minres", 
@@ -213,11 +215,12 @@ fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfactors = 1)
 #
 # Based on model fit (RMSR), 1F sucks
 ####
+write.csv(efa1$loadings, file = "efa1Loadings.csv", row.names = TRUE)
 ```
 ## 2F
 
 ```{r}
-fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
+efa2oblimin <- fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 
 # 44 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.Factor Analysis using method =  minres
 # Call: fa(r = spss.data, nfactors = 2, fm = "minres", cor = "poly")
@@ -277,6 +280,8 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 # Notice that all negatively worded items load onto factor 2 & all positively worded items load onto factor 1
 # 2F prob wins, but let's try 3F next anyways
 ####
+
+write.csv(efa2oblimin$loadings, file = "efa2Oblimin.csv", row.names = TRUE)
 ```
 ## 3F
 

@@ -600,10 +600,10 @@ ci.reliability(spss.data)
 ## Per factor
 
 ```{r F1: alpha, Revelles omega total, Omega hierarchial}
-omega(m = spss.data.f1, poly = TRUE, plot = F)
+omega(m = spss.data.f1, poly = TRUE, plot = F, nfactors = 1)
 ```
 ```{r F2: alpha, Revelles omega total, Omega hierarchial}
-omega(m = spss.data.f2, poly = TRUE, plot = F)
+omega(m = spss.data.f2, poly = TRUE, plot = F, nfactors = 1)
 ```
 ```{r omega total NOT Revelles for factors}
 ci.reliability(spss.data.f1)

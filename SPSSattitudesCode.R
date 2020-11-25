@@ -533,14 +533,14 @@ qa.data <- full.data %>% select(
   MA3E = car::recode(MA3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'I have seldom liked studying mathematics'
   MA7E = car::recode(MA7E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1") # reverse code 'I am not willing to take more than the required amount of statistics courses'
 ) %>% mutate(
-  total = MA1E+MA2E+MA3E+MA4E+MA5E+MA7E+MA8E # this could be done better...
+  total = rowSums(.[1:ncol(.)], na.rm = TRUE)
 )
 # SPSS Attitudes 
 sa.data <- spss.data %>% mutate(
-  total = SPSS1E+SPSS2E+SPSS3E+SPSS4E+SPSS5E+SPSS6E+SPSS7E+SPSS8E+SPSS9E+SPSS10E  
+  total = rowSums(.[1:ncol(.)], na.rm = TRUE)
 )
 # Correlation
-cor.test(qa.data$total, sa.data$total) # r = 0.2583134 ; p = 0.0005178 ; 95% CI [0.1152022 0.3909195]
+cor.test(qa.data$total, sa.data$total) # r = 0.2455324 ; p = 0.0008636 ; 95% CI [0.1033768 0.3778580]
 car::scatterplot(qa.data$total, sa.data$total)
 
 ## --------Discriminant Validity------- 
@@ -548,18 +548,68 @@ car::scatterplot(qa.data$total, sa.data$total)
 qanx.data <- full.data %>% select(
   QANX1E:QANX4E
 ) %>% mutate(
-  total = QANX1E+QANX2E+QANX3E+QANX4E
+  total = rowSums(.[1:ncol(.)], na.rm = TRUE)
 )
 # Correlation
-cor.test(qanx.data$total, sa.data$total) # r = -0.0787332 ; p = 0.2962 ; 95% CI [-0.2232328  0.0691523]
+cor.test(qanx.data$total, sa.data$total) # r = -0.08080368 ; p = 0.2795 ; 95% CI [ -0.22402116  0.06582993]
 car::scatterplot(qanx.data$total, sa.data$total)
 
 # Quantitative Hindrances
 qh.data <- full.data %>% select(
   QHIND1E:QHIND5E
 ) %>% mutate(
-  total = QHIND1E+QHIND2E+QHIND3E+QHIND4E+QHIND5E
+  total = rowSums(.[1:ncol(.)], na.rm = TRUE)
 )
 # Correlation
-cor.test(qh.data$total, sa.data$total) # r = -0.05983695 ; p = 0.4302 ; 95% CI [-0.20593427  0.08886971]
+cor.test(qh.data$total, sa.data$total) # r = -0.05689101 ; p = 0.4468 ; 95% CI [-0.20108020  0.08971117]
 car::scatterplot(qh.data$total, sa.data$total)
+
+## --------Exploratory Convergent / Discriminant Validity?----
+# The above were predictions we made a priori - below is me playing around
+
+# Quantitative Influences
+qi.data <- full.data %>% select(
+  QINFL1E:QINFL7E
+) %>% mutate(
+  total = rowSums(.[1:ncol(.)], na.rm = TRUE)
+)
+# Correlation
+cor.test(qi.data$total, sa.data$total) # r = 0.07819996  ; p = 0.2995 ; 95% CI [ -0.06968627  0.22272289]
+car::scatterplot(qi.data$total, sa.data$total)
+
+# Quantitative Success Factors
+qsf.data <- full.data %>% select(
+  QSF1E:QSF4E
+) %>% mutate(
+  total = rowSums(.[1:ncol(.)], na.rm = TRUE)
+)
+# Correlation
+cor.test(qsf.data$total, sa.data$total) # r = 0.05973762   ; p = 0.4283 ; 95% CI [ -0.08812135  0.20502090]
+car::scatterplot(qsf.data$total, sa.data$total)
+
+# Quantitative Self-Confidence
+qsc.data <- full.data %>% select(
+  QSC1E:QSC4E
+) %>% mutate(
+  QSC2E = car::recode(QSC2E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'I feel insecure in my math/statistics abilities'
+  QSC3E = car::recode(QSC3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'I find it hard to think in terms of symbols'
+) %>% mutate(
+  total = rowSums(.[1:ncol(.)], na.rm = TRUE)
+)
+# Correlation
+cor.test(qsc.data$total, sa.data$total) # r = 0.1372719    ; p = 0.06767 ; 95% CI [-0.01001498  0.27872892]
+car::scatterplot(qsc.data$total, sa.data$total)
+
+# Quantitative Self-Efficacy
+qse.data <- full.data %>% select(
+  QSE1E:QSE6E
+) %>% select(
+  -c(QSE1E, QSE2E)
+  # removed “Balance my checkbook without a mistake” based on previous validation study 
+  # removed “Read a table, such as what is in back of math books, to determine an answer.” based on previous validation study 
+) %>% mutate(
+  total = rowSums(.[1:ncol(.)], na.rm = TRUE)
+)
+# Correlation
+cor.test(qse.data$total, sa.data$total) # r = 0.2474466 ; p = 0.0008684 ; 95% CI [0.1041526 0.3806764]
+car::scatterplot(qse.data$total, sa.data$total)

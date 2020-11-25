@@ -521,3 +521,45 @@ omega(m = spss.data, poly = TRUE, plot = F, nfactors = 2) # Omega Total for tota
 ci.reliability(spss.data, type="categorical", interval.type="perc") # again, runs infinitely...
 ci.reliability(spss.data, type="categorical", interval.type="bca") # also runs infinitely...
 ci.reliability(spss.data) # runs, but not appropriate because does not account for categorical nature of items. est = 0.8673275, ci.lower = 0.8348939, ci.upper = 0.8997611
+
+## --------Convergent Validity-------
+# Quantitative Attitudes
+qa.data <- full.data %>% select(
+  MA1E:MA8E
+) %>% select(
+  -MA6E # removed 'Statistics is a not a worthwhile or necessary subject' based on previous validation paper 
+) %>% mutate(
+  MA2E = car::recode(MA2E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'Math is one of my most dreaded subjects'
+  MA3E = car::recode(MA3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'I have seldom liked studying mathematics'
+  MA7E = car::recode(MA7E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1") # reverse code 'I am not willing to take more than the required amount of statistics courses'
+) %>% mutate(
+  total = MA1E+MA2E+MA3E+MA4E+MA5E+MA7E+MA8E # this could be done better...
+)
+# SPSS Attitudes 
+sa.data <- spss.data %>% mutate(
+  total = SPSS1E+SPSS2E+SPSS3E+SPSS4E+SPSS5E+SPSS6E+SPSS7E+SPSS8E+SPSS9E+SPSS10E  
+)
+# Correlation
+cor.test(qa.data$total, sa.data$total) # r = 0.2583134 ; p = 0.0005178 ; 95% CI [0.1152022 0.3909195]
+car::scatterplot(qa.data$total, sa.data$total)
+
+## --------Discriminant Validity------- 
+# Quantitative Anxiety
+qanx.data <- full.data %>% select(
+  QANX1E:QANX4E
+) %>% mutate(
+  total = QANX1E+QANX2E+QANX3E+QANX4E
+)
+# Correlation
+cor.test(qanx.data$total, sa.data$total) # r = -0.0787332 ; p = 0.2962 ; 95% CI [-0.2232328  0.0691523]
+car::scatterplot(qanx.data$total, sa.data$total)
+
+# Quantitative Hindrances
+qh.data <- full.data %>% select(
+  QHIND1E:QHIND5E
+) %>% mutate(
+  total = QHIND1E+QHIND2E+QHIND3E+QHIND4E+QHIND5E
+)
+# Correlation
+cor.test(qh.data$total, sa.data$total) # r = -0.05983695 ; p = 0.4302 ; 95% CI [-0.20593427  0.08886971]
+car::scatterplot(qh.data$total, sa.data$total)

@@ -8,6 +8,7 @@ library(mirt)
 library(rsample)
 library(GPArotation)
 library(MBESS)
+library(REdaS)
 
 
 ## ----Uploading data and cleaning------------------------
@@ -62,6 +63,18 @@ table(is.na(spss.data))
 # 0.001657459 * 100 = 0.1657459
 
 ## Less than 1% missing data, proceeding with complete case analyses
+
+
+# Checking multivariate normality
+mardia(spss.data) #Kurtosis = 15.17 >4. Will not assume mvn.
+
+#Barlett's Test of Sphericity which tests whether a matrix is significantly different from an identity matrix
+
+bart_spher(spss.data, use = "complete.obs")
+
+
+# Kaiser-Meyer-Olkin Statistics
+KMOS(spss.data, use = "complete.obs")
 
 ## ----Scatterplot matrix---------------------------------
 car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')

@@ -186,7 +186,6 @@ efa1 <- fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfact
 #
 # Based on model fit (RMSR), 1F sucks
 ####
-write.csv(efa1$loadings, file = "efa1Loadings.csv", row.names = TRUE)
 
 
 ## ---------------2F EFA-----------------------------------
@@ -250,9 +249,6 @@ efa2oblimin <- fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 # Notice that all negatively worded items load onto factor 2 & all positively worded items load onto factor 1
 # 2F prob wins, but let's try 3F next anyways
 ####
-
-write.csv(efa2oblimin$loadings, file = "efa2Oblimin.csv", row.names = TRUE)
-
 
 ## ----------------------------3F EFA---------------------------
 fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
@@ -395,7 +391,7 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "Promax", nfactors = 2)
 # SPSS10E	-0.07	0.65	0.3975595	0.6024405	1.021111
 
 ####
-# Not very differnt from oblimin, if anything - .01 worse than oblimin
+# Not very different from oblimin, if anything - .01 worse than oblimin
 ####
 
 
@@ -498,12 +494,12 @@ omega(m = spss.data.f2, poly = TRUE, plot = F, nfactors = 1) # Omega Total 0.8
 # MBESS:ci.reliability() for 95% CI
 
 # The code below follows Flora (2020), but it runs infinitely...
-ci.reliability(spss.data.f1, type="categorical", interval.type="perc")
-ci.reliability(spss.data.f2, type="categorical", interval.type="perc")
+# ci.reliability(spss.data.f1, type="categorical", interval.type="perc")
+# ci.reliability(spss.data.f2, type="categorical", interval.type="perc")
 
 # Changed the interval.type to = "bca" because the ci.reliability() documentation recommends it for categorical omega, but it also runs infinitely...
-ci.reliability(spss.data.f1, type="categorical", interval.type="bca")
-ci.reliability(spss.data.f2, type="categorical", interval.type="bca")
+# ci.reliability(spss.data.f1, type="categorical", interval.type="bca")
+# ci.reliability(spss.data.f2, type="categorical", interval.type="bca")
 
 # The code below runs, but does not account for the categorical nature of the items - therefore possibly inappropriate estimate of the scale's reliability
 ci.reliability(spss.data.f1) # est 0.907176, ci.lower 0.8810964, ci.upper 0.9332556
@@ -515,11 +511,11 @@ ci.reliability(spss.data.f2) # est 0.7437227, ci.lower 0.661122, ci.upper 0.8263
 # note that this is not appropriate for our 2F model, but may be requested by reviewers
 
 # psych::omega()
-omega(m = spss.data, poly = TRUE, plot = F, nfactors = 2) # Omega Total for total scores = 0.9, for F1 = 0.93 and for F2 = 0.80 ; side note: I probably could have ran this instead of splitting the data into each of its factors
+omega(m = spss.data, poly = TRUE, plot = F, nfactors = 2) # Omega Total for total scores = 0.93, for F1 = 0.93 and for F2 = 0.80 ; side note: I probably could have ran this instead of splitting the data into each of its factors
 
 # MBESS:ci.reliability() for 95% CI
-ci.reliability(spss.data, type="categorical", interval.type="perc") # again, runs infinitely...
-ci.reliability(spss.data, type="categorical", interval.type="bca") # also runs infinitely...
+# ci.reliability(spss.data, type="categorical", interval.type="perc") # again, runs infinitely...
+# ci.reliability(spss.data, type="categorical", interval.type="bca") # also runs infinitely...
 ci.reliability(spss.data) # runs, but not appropriate because does not account for categorical nature of items. est = 0.8673275, ci.lower = 0.8348939, ci.upper = 0.8997611
 
 ## --------Convergent Validity-------
@@ -613,3 +609,5 @@ qse.data <- full.data %>% select(
 # Correlation
 cor.test(qse.data$total, sa.data$total) # r = 0.2474466 ; p = 0.0008684 ; 95% CI [0.1041526 0.3806764]
 car::scatterplot(qse.data$total, sa.data$total)
+
+end <- "end"

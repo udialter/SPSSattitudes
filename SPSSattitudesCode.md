@@ -3,200 +3,16 @@
 
 ```r
 library(readr)
-```
-
-```
-## Warning: package 'readr' was built under R version
-## 4.0.2
-```
-
-```r
 library(haven)
-```
-
-```
-## Warning: package 'haven' was built under R version
-## 4.0.2
-```
-
-```r
 library(tidyverse)
-```
-
-```
-## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
-```
-
-```
-## v ggplot2 3.3.1     v dplyr   1.0.0
-## v tibble  3.0.1     v stringr 1.4.0
-## v tidyr   1.1.0     v forcats 0.5.0
-## v purrr   0.3.4
-```
-
-```
-## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()
-```
-
-```r
 library(lavaan)
-```
-
-```
-## Warning: package 'lavaan' was built under R version
-## 4.0.2
-```
-
-```
-## This is lavaan 0.6-6
-```
-
-```
-## lavaan is BETA software! Please report any bugs.
-```
-
-```r
 library(psych)
-```
-
-```
-## Warning: package 'psych' was built under R version
-## 4.0.2
-```
-
-```
-## 
-## Attaching package: 'psych'
-```
-
-```
-## The following object is masked from 'package:lavaan':
-## 
-##     cor2cov
-```
-
-```
-## The following objects are masked from 'package:ggplot2':
-## 
-##     %+%, alpha
-```
-
-```r
 library(mirt)
-```
-
-```
-## Warning: package 'mirt' was built under R version 4.0.2
-```
-
-```
-## Loading required package: stats4
-```
-
-```
-## Loading required package: lattice
-```
-
-```r
 library(rsample)
-```
-
-```
-## Warning: package 'rsample' was built under R version
-## 4.0.2
-```
-
-```r
 library(GPArotation)
 library(MBESS)
-```
-
-```
-## Warning: package 'MBESS' was built under R version
-## 4.0.2
-```
-
-```
-## 
-## Attaching package: 'MBESS'
-```
-
-```
-## The following object is masked from 'package:psych':
-## 
-##     cor2cov
-```
-
-```
-## The following object is masked from 'package:lavaan':
-## 
-##     cor2cov
-```
-
-```r
 library(REdaS)
-```
-
-```
-## Warning: package 'REdaS' was built under R version
-## 4.0.3
-```
-
-```
-## Loading required package: grid
-```
-
-```r
 library(faoutlier)
-```
-
-```
-## Warning: package 'faoutlier' was built under R version
-## 4.0.3
-```
-
-```
-## Loading required package: sem
-```
-
-```
-## Warning: package 'sem' was built under R version 4.0.2
-```
-
-```
-## Registered S3 methods overwritten by 'lme4':
-##   method                          from
-##   cooks.distance.influence.merMod car 
-##   influence.merMod                car 
-##   dfbeta.influence.merMod         car 
-##   dfbetas.influence.merMod        car
-```
-
-```
-## 
-## Attaching package: 'sem'
-```
-
-```
-## The following object is masked from 'package:mirt':
-## 
-##     fscores
-```
-
-```
-## The following objects are masked from 'package:lavaan':
-## 
-##     cfa, sem
-```
-
-```
-## Loading required package: mvtnorm
-```
-
-```
-## Loading required package: parallel
 ```
 
 # ----Uploading data and cleaning------------------------
@@ -250,28 +66,17 @@ describe(spss.data)
 ```
 
 ```
-##         vars   n mean   sd median trimmed  mad min max
-## SPSS1E     1 180 3.49 1.04      4    3.55 1.48   1   5
-## SPSS2E     2 181 3.67 1.11      4    3.76 1.48   1   5
-## SPSS3E     3 180 3.51 1.11      4    3.58 1.48   1   5
-## SPSS4E     4 181 3.38 0.99      3    3.39 1.48   1   5
-## SPSS5E     5 180 3.70 1.05      4    3.79 1.48   1   5
-## SPSS6E     6 181 3.52 1.22      4    3.64 1.48   1   5
-## SPSS7E     7 181 3.32 1.18      3    3.34 1.48   1   5
-## SPSS8E     8 181 3.57 0.98      4    3.63 1.48   1   5
-## SPSS9E     9 181 3.43 1.03      3    3.46 1.48   1   5
-## SPSS10E   10 181 3.41 1.13      4    3.46 1.48   1   5
-##         range  skew kurtosis   se
-## SPSS1E      4 -0.44    -0.30 0.08
-## SPSS2E      4 -0.58    -0.58 0.08
-## SPSS3E      4 -0.53    -0.43 0.08
-## SPSS4E      4 -0.30    -0.42 0.07
-## SPSS5E      4 -0.52    -0.27 0.08
-## SPSS6E      4 -0.51    -0.60 0.09
-## SPSS7E      4 -0.13    -0.98 0.09
-## SPSS8E      4 -0.40    -0.22 0.07
-## SPSS9E      4 -0.25    -0.44 0.08
-## SPSS10E     4 -0.33    -0.71 0.08
+##         vars   n mean   sd median trimmed  mad min max range  skew kurtosis   se
+## SPSS1E     1 180 3.49 1.04      4    3.55 1.48   1   5     4 -0.44    -0.30 0.08
+## SPSS2E     2 181 3.67 1.11      4    3.76 1.48   1   5     4 -0.58    -0.58 0.08
+## SPSS3E     3 180 3.51 1.11      4    3.58 1.48   1   5     4 -0.53    -0.43 0.08
+## SPSS4E     4 181 3.38 0.99      3    3.39 1.48   1   5     4 -0.30    -0.42 0.07
+## SPSS5E     5 180 3.70 1.05      4    3.79 1.48   1   5     4 -0.52    -0.27 0.08
+## SPSS6E     6 181 3.52 1.22      4    3.64 1.48   1   5     4 -0.51    -0.60 0.09
+## SPSS7E     7 181 3.32 1.18      3    3.34 1.48   1   5     4 -0.13    -0.98 0.09
+## SPSS8E     8 181 3.57 0.98      4    3.63 1.48   1   5     4 -0.40    -0.22 0.07
+## SPSS9E     9 181 3.43 1.03      3    3.46 1.48   1   5     4 -0.25    -0.44 0.08
+## SPSS10E   10 181 3.41 1.13      4    3.46 1.48   1   5     4 -0.33    -0.71 0.08
 ```
 
  Contingency table of the counts
@@ -452,17 +257,6 @@ write.csv(poly.spss.data$rho, file = "polyCorrTable.csv", row.names = TRUE)  for
 poly.spss.ci <- (cor.ci(spss.data, poly = TRUE, plot = FALSE))$ci
 ```
 
-```
-## Warning in cor.smooth(mat): Matrix was not positive
-## definite, smoothing was done
-
-## Warning in cor.smooth(mat): Matrix was not positive
-## definite, smoothing was done
-
-## Warning in cor.smooth(mat): Matrix was not positive
-## definite, smoothing was done
-```
-
 write.csv(poly.spss.ci, file = "polyCorrTableCI.csv", row.names = TRUE)  for manuscript writing
  Polychoric correlations 
  SPSS1E SPSS2 SPSS3 SPSS4 SPSS5 SPSS6 SPSS7 SPSS8 SPSS9 SPSS10
@@ -513,24 +307,24 @@ VSS(spss.data, fm = 'minres', cor = 'poly', plot = F)
 ## Sample Size adjusted BIC achieves a minimum of  NA  with  4  factors
 ## 
 ## Statistics by number of factors 
-##   vss1 vss2   map dof   chisq    prob sqresid  fit
-## 1 0.87 0.00 0.057  35 2.3e+02 2.6e-31    4.48 0.87
-## 2 0.86 0.95 0.049  26 8.7e+01 1.7e-08    1.57 0.95
-## 3 0.86 0.95 0.072  18 5.4e+01 1.9e-05    1.27 0.96
-## 4 0.86 0.94 0.116  11 1.6e+01 1.3e-01    1.17 0.97
-## 5 0.86 0.89 0.165   5 4.6e+00 4.7e-01    0.98 0.97
-## 6 0.85 0.91 0.240   0 7.6e-01      NA    0.90 0.97
-## 7 0.86 0.93 0.410  -4 5.1e-07      NA    0.90 0.97
-## 8 0.86 0.95 0.480  -7 1.5e-12      NA    0.85 0.98
-##   RMSEA BIC SABIC complex  eChisq    SRMR eCRMS eBIC
-## 1 0.179  53 163.7     1.0 2.4e+02 1.2e-01 0.138   57
-## 2 0.115 -48  34.6     1.1 1.6e+01 3.2e-02 0.042 -119
-## 3 0.106 -39  17.6     1.2 6.6e+00 2.0e-02 0.032  -87
-## 4 0.052 -41  -5.8     1.3 2.7e+00 1.3e-02 0.026  -54
-## 5 0.000 -21  -5.5     1.4 4.8e-01 5.5e-03 0.016  -25
-## 6    NA  NA    NA     1.5 6.1e-02 2.0e-03    NA   NA
-## 7    NA  NA    NA     1.4 1.0e-07 2.5e-06    NA   NA
-## 8    NA  NA    NA     1.4 1.3e-13 2.9e-09    NA   NA
+##   vss1 vss2   map dof   chisq    prob sqresid  fit RMSEA BIC SABIC complex  eChisq
+## 1 0.87 0.00 0.057  35 2.3e+02 2.6e-31    4.48 0.87 0.179  53 163.7     1.0 2.4e+02
+## 2 0.86 0.95 0.049  26 8.7e+01 1.7e-08    1.57 0.95 0.115 -48  34.6     1.1 1.6e+01
+## 3 0.86 0.95 0.072  18 5.4e+01 1.9e-05    1.27 0.96 0.106 -39  17.6     1.2 6.6e+00
+## 4 0.86 0.94 0.116  11 1.6e+01 1.3e-01    1.17 0.97 0.052 -41  -5.8     1.3 2.7e+00
+## 5 0.86 0.89 0.165   5 4.6e+00 4.7e-01    0.98 0.97 0.000 -21  -5.5     1.4 4.8e-01
+## 6 0.85 0.91 0.240   0 7.6e-01      NA    0.90 0.97    NA  NA    NA     1.5 6.1e-02
+## 7 0.86 0.93 0.410  -4 5.1e-07      NA    0.90 0.97    NA  NA    NA     1.4 1.0e-07
+## 8 0.86 0.95 0.480  -7 1.5e-12      NA    0.85 0.98    NA  NA    NA     1.4 1.3e-13
+##      SRMR eCRMS eBIC
+## 1 1.2e-01 0.138   57
+## 2 3.2e-02 0.042 -119
+## 3 2.0e-02 0.032  -87
+## 4 1.3e-02 0.026  -54
+## 5 5.5e-03 0.016  -25
+## 6 2.0e-03    NA   NA
+## 7 2.5e-06    NA   NA
+## 8 2.9e-09    NA   NA
 ```
 
  Very Simple Structure
@@ -549,192 +343,166 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 ```
 
 ```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
 ```
 
 ```
-## Warning in fac(r = r, nfactors = nfactors, n.obs =
-## n.obs, rotate = rotate, : An ultra-Heywood case was
-## detected. Examine the results carefully
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
 ```
 
 ```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
 ```
 
 ```
-## Warning in fac(r = r, nfactors = nfactors, n.obs =
-## n.obs, rotate = rotate, : An ultra-Heywood case was
-## detected. Examine the results carefully
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
 ```
 
 ```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
 ```
 
 ```
-## Warning in fac(r = r, nfactors = nfactors, n.obs =
-## n.obs, rotate = rotate, : An ultra-Heywood case was
-## detected. Examine the results carefully
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
 ```
 
 ```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
 
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
 ```
 
 ```
-## Warning in fac(r = r, nfactors = nfactors, n.obs =
-## n.obs, rotate = rotate, : An ultra-Heywood case was
-## detected. Examine the results carefully
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
 ```
 
 ```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
 ```
 
 ```
-## Warning in fac(r = r, nfactors = nfactors, n.obs =
-## n.obs, rotate = rotate, : An ultra-Heywood case was
-## detected. Examine the results carefully
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
 ```
 
 ```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
 ```
 
 ```
-## Warning in fac(r = r, nfactors = nfactors, n.obs =
-## n.obs, rotate = rotate, : An ultra-Heywood case was
-## detected. Examine the results carefully
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
 ```
 
 ```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
 ```
 
 ```
-## Warning in fac(r = r, nfactors = nfactors, n.obs =
-## n.obs, rotate = rotate, : An ultra-Heywood case was
-## detected. Examine the results carefully
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
 ```
 
 ```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
 ```
 
 ```
-## Warning in fac(r = r, nfactors = nfactors, n.obs =
-## n.obs, rotate = rotate, : An ultra-Heywood case was
-## detected. Examine the results carefully
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
 ```
 
 ```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
 ```
 
 ```
-## Warning in fac(r = r, nfactors = nfactors, n.obs =
-## n.obs, rotate = rotate, : An ultra-Heywood case was
-## detected. Examine the results carefully
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
 ```
 
 ```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+```
+
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
+```
+
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+```
+
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
+```
+
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+```
+
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
+```
+
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+```
+
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
 ```
 
 ![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
@@ -1039,14 +807,10 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 ## BIC =  -47.72
 ## Fit based upon off diagonal values = 1
 ## Measures of factor score adequacy             
-##                                                    MR1
-## Correlation of (regression) scores with factors   0.98
-## Multiple R square of scores with factors          0.95
-## Minimum correlation of possible factor scores     0.90
-##                                                    MR2
-## Correlation of (regression) scores with factors   0.91
-## Multiple R square of scores with factors          0.84
-## Minimum correlation of possible factor scores     0.67
+##                                                    MR1  MR2
+## Correlation of (regression) scores with factors   0.98 0.91
+## Multiple R square of scores with factors          0.95 0.84
+## Minimum correlation of possible factor scores     0.90 0.67
 ```
 
  Factor Analysis using method =  minres
@@ -1296,18 +1060,10 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
 ## BIC =  -39.4
 ## Fit based upon off diagonal values = 1
 ## Measures of factor score adequacy             
-##                                                    MR1
-## Correlation of (regression) scores with factors   0.98
-## Multiple R square of scores with factors          0.96
-## Minimum correlation of possible factor scores     0.91
-##                                                    MR2
-## Correlation of (regression) scores with factors   0.97
-## Multiple R square of scores with factors          0.95
-## Minimum correlation of possible factor scores     0.89
-##                                                    MR3
-## Correlation of (regression) scores with factors   0.72
-## Multiple R square of scores with factors          0.51
-## Minimum correlation of possible factor scores     0.03
+##                                                    MR1  MR2  MR3
+## Correlation of (regression) scores with factors   0.98 0.97 0.72
+## Multiple R square of scores with factors          0.96 0.95 0.51
+## Minimum correlation of possible factor scores     0.91 0.89 0.03
 ```
 
  Factor Analysis using method =  minres
@@ -1562,14 +1318,10 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = 'bentlerQ', nfactors = 2
 ## BIC =  -47.72
 ## Fit based upon off diagonal values = 1
 ## Measures of factor score adequacy             
-##                                                    MR1
-## Correlation of (regression) scores with factors   0.98
-## Multiple R square of scores with factors          0.95
-## Minimum correlation of possible factor scores     0.90
-##                                                    MR2
-## Correlation of (regression) scores with factors   0.91
-## Multiple R square of scores with factors          0.84
-## Minimum correlation of possible factor scores     0.67
+##                                                    MR1  MR2
+## Correlation of (regression) scores with factors   0.98 0.91
+## Multiple R square of scores with factors          0.95 0.84
+## Minimum correlation of possible factor scores     0.90 0.67
 ```
 
            MR1   MR2   h2   u2 com
@@ -1639,14 +1391,10 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = 'geominQ', nfactors = 2)
 ## BIC =  -47.72
 ## Fit based upon off diagonal values = 1
 ## Measures of factor score adequacy             
-##                                                    MR1
-## Correlation of (regression) scores with factors   0.98
-## Multiple R square of scores with factors          0.95
-## Minimum correlation of possible factor scores     0.90
-##                                                    MR2
-## Correlation of (regression) scores with factors   0.91
-## Multiple R square of scores with factors          0.83
-## Minimum correlation of possible factor scores     0.67
+##                                                    MR1  MR2
+## Correlation of (regression) scores with factors   0.98 0.91
+## Multiple R square of scores with factors          0.95 0.83
+## Minimum correlation of possible factor scores     0.90 0.67
 ```
 
            MR1   MR2   h2   u2 com
@@ -1716,14 +1464,10 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "quartimin", nfactors = 
 ## BIC =  -47.72
 ## Fit based upon off diagonal values = 1
 ## Measures of factor score adequacy             
-##                                                    MR1
-## Correlation of (regression) scores with factors   0.98
-## Multiple R square of scores with factors          0.95
-## Minimum correlation of possible factor scores     0.90
-##                                                    MR2
-## Correlation of (regression) scores with factors   0.91
-## Multiple R square of scores with factors          0.84
-## Minimum correlation of possible factor scores     0.67
+##                                                    MR1  MR2
+## Correlation of (regression) scores with factors   0.98 0.91
+## Multiple R square of scores with factors          0.95 0.84
+## Minimum correlation of possible factor scores     0.90 0.67
 ```
 
          MR1   MR2   h2   u2 com
@@ -1793,14 +1537,10 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "Promax", nfactors = 2)
 ## BIC =  -47.72
 ## Fit based upon off diagonal values = 1
 ## Measures of factor score adequacy             
-##                                                    MR1
-## Correlation of (regression) scores with factors   0.97
-## Multiple R square of scores with factors          0.95
-## Minimum correlation of possible factor scores     0.90
-##                                                    MR2
-## Correlation of (regression) scores with factors   0.91
-## Multiple R square of scores with factors          0.83
-## Minimum correlation of possible factor scores     0.66
+##                                                    MR1  MR2
+## Correlation of (regression) scores with factors   0.97 0.91
+## Multiple R square of scores with factors          0.95 0.83
+## Minimum correlation of possible factor scores     0.90 0.66
 ```
 
  MR1   MR2   h2   u2 com

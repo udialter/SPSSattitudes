@@ -69,9 +69,9 @@ mardia(spss.data) # Kurtosis = 15.17 >4. Will not assume mvn.
 
 ## -------EFA Appropriateness------
 # Barlett's Test of Sphericity which tests whether a matrix is significantly different from an identity matrix
-bart_spher(spss.data, use = "complete.obs") # p-value < 2.22e-16
+bart_spher(spss.data, use = "complete.obs") ## p-value < 2.22e-16
 # Kaiser-Meyer-Olkin Statistics
-KMOS(spss.data, use = "complete.obs") # KMO-Criterion: 0.8795382
+KMOS(spss.data, use = "complete.obs") ## KMO-Criterion: 0.8795382
 
 ## -----------Scatterplot matrix-----------------------
 car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')

@@ -202,12 +202,73 @@ table(is.na(spss.data))
 # Less than 1% missing data, proceeding with complete case analyses
 # -----------Assumptions----------
  Checking multivariate normality
-mardia(spss.data)  Kurtosis = 15.17 >4. Will not assume mvn.
+
+
+```r
+mardia(spss.data)
+```
+
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
+
+```
+## Call: mardia(x = spss.data)
+## 
+## Mardia tests of multivariate skew and kurtosis
+## Use describe(x) the to get univariate tests
+## n.obs = 178   num.vars =  10 
+## b1p =  19.29   skew =  572.2  with probability =  0
+##  small sample skew =  583.62  with probability =  0
+## b2p =  155.23   kurtosis =  15.17  with probability =  0
+```
+
+ Kurtosis = 15.17 >4. Will not assume mvn.
 # -------EFA Appropriateness------
  Barlett's Test of Sphericity which tests whether a matrix is significantly different from an identity matrix
-bart_spher(spss.data, use = "complete.obs")  p-value < 2.22e-16
+
+
+```r
+bart_spher(spss.data, use = "complete.obs")
+```
+
+```
+## 
+## 	Bartlett's Test of Sphericity
+## 
+## Call: bart_spher(x = spss.data, use = "complete.obs")
+## 
+##      X2 = 969.939
+##      df = 45
+## p-value < 2.22e-16
+```
+
+```
+## Warning: Used n = 178.
+```
+
+ p-value < 2.22e-16
  Kaiser-Meyer-Olkin Statistics
-KMOS(spss.data, use = "complete.obs")  KMO-Criterion: 0.8795382
+
+
+```r
+KMOS(spss.data, use = "complete.obs")
+```
+
+```
+## 
+## Kaiser-Meyer-Olkin Statistics
+## 
+## Call: KMOS(x = spss.data, use = "complete.obs")
+## 
+## Measures of Sampling Adequacy (MSA):
+##    SPSS1E    SPSS2E    SPSS3E    SPSS4E    SPSS5E    SPSS6E    SPSS7E    SPSS8E 
+## 0.9098933 0.7138465 0.7359144 0.8758975 0.9281158 0.9543978 0.9378408 0.9022414 
+##    SPSS9E   SPSS10E 
+## 0.8956706 0.6953167 
+## 
+## KMO-Criterion: 0.8795382
+```
+
+ KMO-Criterion: 0.8795382
 # -----------Scatterplot matrix-----------------------
 
 
@@ -215,7 +276,7 @@ KMOS(spss.data, use = "complete.obs")  KMO-Criterion: 0.8795382
 car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png)
 
 # -----------Listwise Deletion-----------
  Previous work suggests using listwise deletion when the missing data rates are extremely low (e.g., < 1%; Flora, 2018; Jakobsen et al., 2017).
@@ -223,9 +284,10 @@ car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')
 
 ```r
 spss.data <- spss.data[-c(33, 141, 104), ]
+full.data <- full.data[-c(33, 141, 104), ]
 ```
 
-full.data <- full.data[-c(33, 141, 104), ]  needed later for convergent/discriminant validity
+ needed later for convergent/discriminant validity
 
 
 ```r
@@ -248,16 +310,23 @@ str(spss.data)
 ```
 
 # ----Polychoric Correlations-----------------------------------
-poly.spss.data <- psych::polychoric(spss.data)  wants numeric data
-write.csv(poly.spss.data$rho, file = "polyCorrTable.csv", row.names = TRUE)  for manuscript writing
+
+
+```r
+poly.spss.data <- psych::polychoric(spss.data)
+write.csv(poly.spss.data$rho, file = "polyCorrTable.csv", row.names = TRUE)
+```
+
+ csv for manuscript writing
  Confidence Intervals for Polychoric Correlations
 
 
 ```r
 poly.spss.ci <- (cor.ci(spss.data, poly = TRUE, plot = FALSE))$ci
+write.csv(poly.spss.ci, file = "polyCorrTableCI.csv", row.names = TRUE)
 ```
 
-write.csv(poly.spss.ci, file = "polyCorrTableCI.csv", row.names = TRUE)  for manuscript writing
+ csv for manuscript writing
  Polychoric correlations 
  SPSS1E SPSS2 SPSS3 SPSS4 SPSS5 SPSS6 SPSS7 SPSS8 SPSS9 SPSS10
  SPSS1E  1.00                                                         
@@ -346,25 +415,11 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
 ## estimated weights for the factor scores are probably incorrect. Try a different factor
 ## score estimation method.
-```
 
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
-## Heywood case was detected. Examine the results carefully
-```
-
-```
 ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
 ## estimated weights for the factor scores are probably incorrect. Try a different factor
 ## score estimation method.
-```
 
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
-## Heywood case was detected. Examine the results carefully
-```
-
-```
 ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
 ## estimated weights for the factor scores are probably incorrect. Try a different factor
 ## score estimation method.
@@ -409,6 +464,36 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
 ## estimated weights for the factor scores are probably incorrect. Try a different factor
 ## score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+```
+
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
+```
+
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+```
+
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
+```
+
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
 ```
 
 ```
@@ -442,17 +527,6 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
 ## estimated weights for the factor scores are probably incorrect. Try a different factor
 ## score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
-## Heywood case was detected. Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
-## estimated weights for the factor scores are probably incorrect. Try a different factor
-## score estimation method.
 
 ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
 ## estimated weights for the factor scores are probably incorrect. Try a different factor
@@ -479,14 +553,6 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
 ## estimated weights for the factor scores are probably incorrect. Try a different factor
 ## score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
-## estimated weights for the factor scores are probably incorrect. Try a different factor
-## score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
-## estimated weights for the factor scores are probably incorrect. Try a different factor
-## score estimation method.
 ```
 
 ```
@@ -498,14 +564,17 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
 ## estimated weights for the factor scores are probably incorrect. Try a different factor
 ## score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
 ```
 
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
-## Heywood case was detected. Examine the results carefully
-```
-
-![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
+![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-1.png)
 
 ```
 ## Parallel analysis suggests that the number of factors =  2  and the number of components =  2
@@ -741,19 +810,19 @@ ldresults1 <- LD(spss.data, 1)
 plot(gcdresult1)
 ```
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png)
+![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-1.png)
 
 ```r
 plot(fS1)
 ```
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-2.png)
+![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-2.png)
 
 ```r
 plot(ldresults1)
 ```
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-3.png)
+![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-3.png)
 
 # ---------------2F EFA-----------------------------------
 
@@ -993,19 +1062,19 @@ ldresults2 <- LD(spss.data, 2)
 plot(gcdresult2)
 ```
 
-![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-1.png)
+![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-1.png)
 
 ```r
 plot(fS2)
 ```
 
-![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-2.png)
+![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-2.png)
 
 ```r
 plot(ldresults2)
 ```
 
-![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-3.png)
+![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-3.png)
 
 # ----------------------------3F EFA---------------------------
 
@@ -1251,19 +1320,19 @@ ldresults3 <- LD(spss.data, 3)
 plot(gcdresult3)
 ```
 
-![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-1.png)
+![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25-1.png)
 
 ```r
 plot(fS3)
 ```
 
-![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-2.png)
+![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25-2.png)
 
 ```r
 plot(ldresults3)
 ```
 
-![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-3.png)
+![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25-3.png)
 
 # ---------------------2F EFA bentlerQ Rotation----------------------------------
 
@@ -1566,7 +1635,60 @@ psych::schmid(model = poly.spss.data$rho, nfactors = 2, fm = 'minres', rotate = 
 ```
 
 ```
-## Error in psych::schmid(model = poly.spss.data$rho, nfactors = 2, fm = "minres", : object 'poly.spss.data' not found
+## 
+## Three factors are required for identification -- general factor loadings set to be equal. 
+## Proceed with caution. 
+## Think about redoing the analysis with alternative values of the 'option' setting.
+```
+
+```
+## Schmid-Leiman analysis 
+## Call: psych::schmid(model = poly.spss.data$rho, nfactors = 2, fm = "minres", 
+##     rotate = "oblimin", option = "equal", na.obs = NA)
+## 
+## Schmid Leiman Factor loadings greater than  0.2 
+##            g   F1*   F2*   h2   u2   p2
+## SPSS1E  0.61  0.64       0.78 0.22 0.47
+## SPSS2E  0.54        0.60 0.66 0.34 0.45
+## SPSS3E  0.55        0.62 0.69 0.31 0.44
+## SPSS4E  0.60  0.67       0.80 0.20 0.45
+## SPSS5E  0.52  0.62       0.66 0.34 0.41
+## SPSS6E  0.42  0.52       0.45 0.55 0.39
+## SPSS7E  0.38  0.54       0.44 0.56 0.33
+## SPSS8E  0.59  0.65       0.77 0.23 0.45
+## SPSS9E  0.58  0.70       0.83 0.17 0.41
+## SPSS10E 0.37        0.50 0.39 0.61 0.35
+## 
+## With eigenvalues of:
+##   g F1* F2* 
+## 2.7 2.7 1.0 
+## 
+## general/max  1   max/min =   2.7
+## mean percent general =  0.42    with sd =  0.05 and cv of  0.11 
+## 
+##  The orthogonal loadings were 
+## Unstandardized loadings based upon covariance matrix
+##           F1   F2   h2   u2   H2   U2
+## SPSS1E  0.85 0.26 0.78 0.22 0.78 0.22
+## SPSS2E  0.22 0.78 0.66 0.34 0.66 0.34
+## SPSS3E  0.20 0.81 0.69 0.31 0.69 0.31
+## SPSS4E  0.87 0.23 0.80 0.20 0.80 0.20
+## SPSS5E  0.80 0.16 0.66 0.34 0.66 0.34
+## SPSS6E  0.66 0.10 0.45 0.55 0.45 0.55
+## SPSS7E  0.66 0.03 0.44 0.56 0.44 0.56
+## SPSS8E  0.85 0.22 0.77 0.23 0.77 0.23
+## SPSS9E  0.90 0.16 0.83 0.17 0.83 0.17
+## SPSS10E 0.06 0.62 0.39 0.61 0.39 0.61
+## 
+##                  F1   F2
+## SS loadings    4.61 1.88
+## Proportion Var 0.46 0.19
+## Cumulative Var 0.46 0.65
+## 
+## The degrees of freedom are 26  and the fit is  0.51 
+## 
+## The root mean square of the residuals is  0.03 
+## The df corrected root mean square of the residuals is  0.04
 ```
 
  Three factors are required for identification -- general factor loadings set to be equal. 
@@ -1632,8 +1754,152 @@ spss.data.f2 <- spss.data %>% select(c(SPSS2E, SPSS3E, SPSS10E))
  psych::omega()
 # poly = TRUE because we want to us the polychoric correlation matrix instead of Pearson because categorical data
 # since nfactors = 1, only omega total is meaningful 
-omega(m = spss.data.f1, poly = TRUE, plot = F, nfactors = 1)  Omega Total 0.93 
-omega(m = spss.data.f2, poly = TRUE, plot = F, nfactors = 1)  Omega Total 0.8 
+
+
+```r
+omega(m = spss.data.f1, poly = TRUE, plot = F, nfactors = 1) 
+```
+
+```
+## Omega_h for 1 factor is not meaningful, just omega_t
+```
+
+```
+## Warning in schmid(m, nfactors, fm, digits, rotate = rotate, n.obs = n.obs, : Omega_h and
+## Omega_asymptotic are not meaningful with one factor
+```
+
+```
+## Omega 
+## Call: omegah(m = m, nfactors = nfactors, fm = fm, key = key, flip = flip, 
+##     digits = digits, title = title, sl = sl, labels = labels, 
+##     plot = plot, n.obs = n.obs, rotate = rotate, Phi = Phi, option = option, 
+##     covar = covar)
+## Alpha:                 0.93 
+## G.6:                   0.93 
+## Omega Hierarchical:    0.93 
+## Omega H asymptotic:    1 
+## Omega Total            0.93 
+## 
+## Schmid Leiman Factor loadings greater than  0.2 
+##           g  F1*   h2   u2 p2
+## SPSS1E 0.88      0.78 0.22  1
+## SPSS4E 0.90      0.81 0.19  1
+## SPSS5E 0.81      0.66 0.34  1
+## SPSS6E 0.67      0.44 0.56  1
+## SPSS7E 0.65      0.42 0.58  1
+## SPSS8E 0.88      0.77 0.23  1
+## SPSS9E 0.91      0.83 0.17  1
+## 
+## With eigenvalues of:
+##   g F1* 
+## 4.7 0.0 
+## 
+## general/max  8.504964e+16   max/min =   1
+## mean percent general =  1    with sd =  0 and cv of  0 
+## Explained Common Variance of the general factor =  1 
+## 
+## The degrees of freedom are 14  and the fit is  0.24 
+## The number of observations was  178  with Chi Square =  40.74  with prob <  2e-04
+## The root mean square of the residuals is  0.03 
+## The df corrected root mean square of the residuals is  0.03
+## RMSEA index =  0.103  and the 10 % confidence intervals are  0.068 0.142
+## BIC =  -31.81
+## 
+## Compare this with the adequacy of just a general factor and no group factors
+## The degrees of freedom for just the general factor are 14  and the fit is  0.24 
+## The number of observations was  178  with Chi Square =  40.74  with prob <  2e-04
+## The root mean square of the residuals is  0.03 
+## The df corrected root mean square of the residuals is  0.03 
+## 
+## RMSEA index =  0.103  and the 10 % confidence intervals are  0.068 0.142
+## BIC =  -31.81 
+## 
+## Measures of factor score adequacy             
+##                                                  g F1*
+## Correlation of scores with factors            0.97   0
+## Multiple R square of scores with factors      0.95   0
+## Minimum correlation of factor score estimates 0.90  -1
+## 
+##  Total, General and Subset omega for each subset
+##                                                  g  F1*
+## Omega total for total scores and subscales    0.93 0.93
+## Omega general for total scores and subscales  0.93 0.93
+## Omega group for total scores and subscales    0.00 0.00
+```
+
+ Omega Total 0.93 
+
+
+```r
+omega(m = spss.data.f2, poly = TRUE, plot = F, nfactors = 1) 
+```
+
+```
+## Omega_h for 1 factor is not meaningful, just omega_t
+```
+
+```
+## Warning in schmid(m, nfactors, fm, digits, rotate = rotate, n.obs = n.obs, : Omega_h and
+## Omega_asymptotic are not meaningful with one factor
+```
+
+```
+## Warning in cov2cor(t(w) %*% r %*% w): diag(.) had 0 or NA entries; non-finite result is
+## doubtful
+```
+
+```
+## Omega 
+## Call: omegah(m = m, nfactors = nfactors, fm = fm, key = key, flip = flip, 
+##     digits = digits, title = title, sl = sl, labels = labels, 
+##     plot = plot, n.obs = n.obs, rotate = rotate, Phi = Phi, option = option, 
+##     covar = covar)
+## Alpha:                 0.79 
+## G.6:                   0.73 
+## Omega Hierarchical:    0.8 
+## Omega H asymptotic:    1 
+## Omega Total            0.8 
+## 
+## Schmid Leiman Factor loadings greater than  0.2 
+##            g  F1*   h2   u2 p2
+## SPSS2E  0.83      0.70 0.30  1
+## SPSS3E  0.83      0.68 0.32  1
+## SPSS10E 0.60      0.36 0.64  1
+## 
+## With eigenvalues of:
+##   g F1* 
+## 1.7 0.0 
+## 
+## general/max  Inf   max/min =   NaN
+## mean percent general =  1    with sd =  0 and cv of  0 
+## Explained Common Variance of the general factor =  1 
+## 
+## The degrees of freedom are 0  and the fit is  0 
+## The number of observations was  178  with Chi Square =  0  with prob <  NA
+## The root mean square of the residuals is  0 
+## The df corrected root mean square of the residuals is  NA
+## 
+## Compare this with the adequacy of just a general factor and no group factors
+## The degrees of freedom for just the general factor are 0  and the fit is  0 
+## The number of observations was  178  with Chi Square =  0  with prob <  NA
+## The root mean square of the residuals is  0 
+## The df corrected root mean square of the residuals is  NA 
+## 
+## Measures of factor score adequacy             
+##                                                  g F1*
+## Correlation of scores with factors            0.91   0
+## Multiple R square of scores with factors      0.83   0
+## Minimum correlation of factor score estimates 0.67  -1
+## 
+##  Total, General and Subset omega for each subset
+##                                                 g F1*
+## Omega total for total scores and subscales    0.8 0.8
+## Omega general for total scores and subscales  0.8 0.8
+## Omega group for total scores and subscales    0.0 0.0
+```
+
+ Omega Total 0.8 
 
 
 ```r
@@ -1648,17 +1914,179 @@ omega(m = spss.data.f2, poly = TRUE, plot = F, nfactors = 1)  Omega Total 0.8
  ci.reliability(spss.data.f1, type="categorical", interval.type="bca")
  ci.reliability(spss.data.f2, type="categorical", interval.type="bca")
  The code below runs, but does not account for the categorical nature of the items - therefore possibly inappropriate estimate of the scale's reliability
-ci.reliability(spss.data.f1)  est 0.9077046, ci.lower 0.8816747, ci.upper 0.9337345
-ci.reliability(spss.data.f2)  est 0.7429931, ci.lower 0.6599966, ci.upper 0.8259896
+
+
+```r
+ci.reliability(spss.data.f1) 
+```
+
+```
+## $est
+## [1] 0.9077046
+## 
+## $se
+## [1] 0.01328081
+## 
+## $ci.lower
+## [1] 0.8816747
+## 
+## $ci.upper
+## [1] 0.9337345
+## 
+## $conf.level
+## [1] 0.95
+## 
+## $type
+## [1] "omega"
+## 
+## $interval.type
+## [1] "robust maximum likelihood (wald ci)"
+```
+
+ est 0.9077046, ci.lower 0.8816747, ci.upper 0.9337345
+
+
+```r
+ci.reliability(spss.data.f2) 
+```
+
+```
+## $est
+## [1] 0.7429931
+## 
+## $se
+## [1] 0.04234592
+## 
+## $ci.lower
+## [1] 0.6599966
+## 
+## $ci.upper
+## [1] 0.8259896
+## 
+## $conf.level
+## [1] 0.95
+## 
+## $type
+## [1] "omega"
+## 
+## $interval.type
+## [1] "robust maximum likelihood (wald ci)"
+```
+
+ est 0.7429931, ci.lower 0.6599966, ci.upper 0.8259896
  Overall, I think MBESS::ci.reliability will not be appropriate here and psych::omega() is preferred
 # --------------Reliability Overall-----------------------------------------
  note that this is not appropriate for our 2F model, but may be requested by reviewers
  psych::omega()
-omega(m = spss.data, poly = TRUE, plot = F, nfactors = 2)  Omega Total for total scores = 0.93, for F1 = 0.94 and for F2 = 0.80 ; side note: I probably could have ran this instead of splitting the data into each of its factors?
+
+
+```r
+omega(m = spss.data, poly = TRUE, plot = F, nfactors = 2) 
+```
+
+```
+## 
+## Three factors are required for identification -- general factor loadings set to be equal. 
+## Proceed with caution. 
+## Think about redoing the analysis with alternative values of the 'option' setting.
+```
+
+```
+## Omega 
+## Call: omegah(m = m, nfactors = nfactors, fm = fm, key = key, flip = flip, 
+##     digits = digits, title = title, sl = sl, labels = labels, 
+##     plot = plot, n.obs = n.obs, rotate = rotate, Phi = Phi, option = option, 
+##     covar = covar)
+## Alpha:                 0.9 
+## G.6:                   0.93 
+## Omega Hierarchical:    0.52 
+## Omega H asymptotic:    0.55 
+## Omega Total            0.93 
+## 
+## Schmid Leiman Factor loadings greater than  0.2 
+##            g   F1*   F2*   h2   u2   p2
+## SPSS1E  0.61  0.64       0.78 0.22 0.47
+## SPSS2E  0.54        0.60 0.66 0.34 0.45
+## SPSS3E  0.55        0.62 0.69 0.31 0.44
+## SPSS4E  0.60  0.67       0.80 0.20 0.45
+## SPSS5E  0.52  0.62       0.66 0.34 0.41
+## SPSS6E  0.42  0.52       0.45 0.55 0.39
+## SPSS7E  0.38  0.54       0.44 0.56 0.33
+## SPSS8E  0.59  0.65       0.77 0.23 0.45
+## SPSS9E  0.58  0.70       0.83 0.17 0.41
+## SPSS10E 0.37        0.50 0.39 0.61 0.35
+## 
+## With eigenvalues of:
+##   g F1* F2* 
+## 2.7 2.7 1.0 
+## 
+## general/max  1   max/min =   2.7
+## mean percent general =  0.42    with sd =  0.05 and cv of  0.11 
+## Explained Common Variance of the general factor =  0.42 
+## 
+## The degrees of freedom are 26  and the fit is  0.51 
+## The number of observations was  178  with Chi Square =  87  with prob <  1.7e-08
+## The root mean square of the residuals is  0.03 
+## The df corrected root mean square of the residuals is  0.04
+## RMSEA index =  0.115  and the 10 % confidence intervals are  0.089 0.142
+## BIC =  -47.72
+## 
+## Compare this with the adequacy of just a general factor and no group factors
+## The degrees of freedom for just the general factor are 35  and the fit is  3.53 
+## The number of observations was  178  with Chi Square =  608.32  with prob <  9.3e-106
+## The root mean square of the residuals is  0.28 
+## The df corrected root mean square of the residuals is  0.32 
+## 
+## RMSEA index =  0.303  and the 10 % confidence intervals are  0.283 0.326
+## BIC =  426.95 
+## 
+## Measures of factor score adequacy             
+##                                                  g  F1*  F2*
+## Correlation of scores with factors            0.74 0.80 0.74
+## Multiple R square of scores with factors      0.55 0.64 0.55
+## Minimum correlation of factor score estimates 0.10 0.27 0.11
+## 
+##  Total, General and Subset omega for each subset
+##                                                  g  F1*  F2*
+## Omega total for total scores and subscales    0.93 0.94 0.80
+## Omega general for total scores and subscales  0.52 0.39 0.34
+## Omega group for total scores and subscales    0.42 0.54 0.47
+```
+
+ Omega Total for total scores = 0.93, for F1 = 0.94 and for F2 = 0.80 ; side note: I probably could have ran this instead of splitting the data into each of its factors?
  MBESS:ci.reliability() for 95% CI
  ci.reliability(spss.data, type="categorical", interval.type="perc") # again, runs infinitely...
  ci.reliability(spss.data, type="categorical", interval.type="bca") # also runs infinitely...
-ci.reliability(spss.data)  runs, but not appropriate because does not account for categorical nature of items. est = 0.8677201, ci.lower = 0.8353075, ci.upper = 0.9001326
+
+
+```r
+ci.reliability(spss.data) 
+```
+
+```
+## $est
+## [1] 0.8677201
+## 
+## $se
+## [1] 0.01653732
+## 
+## $ci.lower
+## [1] 0.8353075
+## 
+## $ci.upper
+## [1] 0.9001326
+## 
+## $conf.level
+## [1] 0.95
+## 
+## $type
+## [1] "omega"
+## 
+## $interval.type
+## [1] "robust maximum likelihood (wald ci)"
+```
+
+ runs, but not appropriate because does not account for categorical nature of items. est = 0.8677201, ci.lower = 0.8353075, ci.upper = 0.9001326
 # --------Convergent Validity-------
  Quantitative Attitudes
 
@@ -1667,11 +2095,15 @@ ci.reliability(spss.data)  runs, but not appropriate because does not account fo
 qa.data <- full.data %>% select(
   MA1E:MA8E
 ) %>% select(
-  -MA6E # removed 'Statistics is a not a worthwhile or necessary subject' based on previous validation paper 
+  -MA6E 
+  # removed 'Statistics is a not a worthwhile or necessary subject' based on previous validation paper 
 ) %>% mutate(
-  MA2E = car::recode(MA2E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'Math is one of my most dreaded subjects'
-  MA3E = car::recode(MA3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'I have seldom liked studying mathematics'
-  MA7E = car::recode(MA7E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1") # reverse code 'I am not willing to take more than the required amount of statistics courses'
+  MA2E = car::recode(MA2E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), 
+  # reverse code 'Math is one of my most dreaded subjects'
+  MA3E = car::recode(MA3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), 
+  # reverse code 'I have seldom liked studying mathematics'
+  MA7E = car::recode(MA7E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1") 
+  # reverse code 'I am not willing to take more than the required amount of statistics courses'
 ) %>% mutate(
   total = rowSums(.[1:ncol(.)], na.rm = TRUE)
 )
@@ -1687,18 +2119,34 @@ sa.data <- spss.data %>% mutate(
 ```
 
  Correlation
-cor.test(qa.data$total, sa.data$total)  r = 0.2533858  ; p = 0.0006434 ; 95% CI [0.1104162 0.3860816]
+
+
+```r
+cor.test(qa.data$total, sa.data$total) 
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  qa.data$total and sa.data$total
+## t = 3.4749, df = 176, p-value = 0.0006434
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.1104162 0.3860816
+## sample estimates:
+##       cor 
+## 0.2533858
+```
+
+ r = 0.2533858  ; p = 0.0006434 ; 95% CI [0.1104162 0.3860816]
 
 
 ```r
 car::scatterplot(qa.data$total, sa.data$total)
 ```
 
-```
-## Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
-```
-
-![plot of chunk unnamed-chunk-31](figure/unnamed-chunk-31-1.png)
+![plot of chunk unnamed-chunk-42](figure/unnamed-chunk-42-1.png)
 
 # --------Discriminant Validity------- 
  Quantitative Anxiety
@@ -1713,18 +2161,34 @@ qanx.data <- full.data %>% select(
 ```
 
  Correlation
-cor.test(qanx.data$total, sa.data$total)  r = -0.0787332  ; p = 0.2962 ; 95% CI [ -0.2232328  0.0691523]
+
+
+```r
+cor.test(qanx.data$total, sa.data$total) 
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  qanx.data$total and sa.data$total
+## t = -1.0478, df = 176, p-value = 0.2962
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.2232328  0.0691523
+## sample estimates:
+##        cor 
+## -0.0787332
+```
+
+ r = -0.0787332  ; p = 0.2962 ; 95% CI [ -0.2232328  0.0691523]
 
 
 ```r
 car::scatterplot(qanx.data$total, sa.data$total)
 ```
 
-```
-## Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
-```
-
-![plot of chunk unnamed-chunk-33](figure/unnamed-chunk-33-1.png)
+![plot of chunk unnamed-chunk-45](figure/unnamed-chunk-45-1.png)
 
  Quantitative Hindrances
 
@@ -1738,18 +2202,34 @@ qh.data <- full.data %>% select(
 ```
 
  Correlation
-cor.test(qh.data$total, sa.data$total)  r = -0.05655468  ; p = 0.4534 ; 95% CI [-0.20195941  0.09128939]
+
+
+```r
+cor.test(qh.data$total, sa.data$total) 
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  qh.data$total and sa.data$total
+## t = -0.75149, df = 176, p-value = 0.4534
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.20195941  0.09128939
+## sample estimates:
+##         cor 
+## -0.05655468
+```
+
+ r = -0.05655468  ; p = 0.4534 ; 95% CI [-0.20195941  0.09128939]
 
 
 ```r
 car::scatterplot(qh.data$total, sa.data$total)
 ```
 
-```
-## Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
-```
-
-![plot of chunk unnamed-chunk-35](figure/unnamed-chunk-35-1.png)
+![plot of chunk unnamed-chunk-48](figure/unnamed-chunk-48-1.png)
 
 # --------Exploratory Convergent / Discriminant Validity?----
  The above were predictions we made a priori - below is me playing around
@@ -1765,18 +2245,34 @@ qi.data <- full.data %>% select(
 ```
 
  Correlation
-cor.test(qi.data$total, sa.data$total)  r = 0.07819996   ; p = 0.2995 ; 95% CI [-0.06968627  0.22272289]
+
+
+```r
+cor.test(qi.data$total, sa.data$total) 
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  qi.data$total and sa.data$total
+## t = 1.0406, df = 176, p-value = 0.2995
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.06968627  0.22272289
+## sample estimates:
+##        cor 
+## 0.07819996
+```
+
+ r = 0.07819996   ; p = 0.2995 ; 95% CI [-0.06968627  0.22272289]
 
 
 ```r
 car::scatterplot(qi.data$total, sa.data$total)
 ```
 
-```
-## Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
-```
-
-![plot of chunk unnamed-chunk-37](figure/unnamed-chunk-37-1.png)
+![plot of chunk unnamed-chunk-51](figure/unnamed-chunk-51-1.png)
 
  Quantitative Success Factors
 
@@ -1790,18 +2286,34 @@ qsf.data <- full.data %>% select(
 ```
 
  Correlation
-cor.test(qsf.data$total, sa.data$total)  r = 0.05973762  ; p = 0.4283 ; 95% CI [ -0.08812135  0.20502090]
+
+
+```r
+cor.test(qsf.data$total, sa.data$total) 
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  qsf.data$total and sa.data$total
+## t = 0.79393, df = 176, p-value = 0.4283
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.08812135  0.20502090
+## sample estimates:
+##        cor 
+## 0.05973762
+```
+
+ r = 0.05973762  ; p = 0.4283 ; 95% CI [ -0.08812135  0.20502090]
 
 
 ```r
 car::scatterplot(qsf.data$total, sa.data$total)
 ```
 
-```
-## Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
-```
-
-![plot of chunk unnamed-chunk-39](figure/unnamed-chunk-39-1.png)
+![plot of chunk unnamed-chunk-54](figure/unnamed-chunk-54-1.png)
 
  Quantitative Self-Confidence
 
@@ -1810,26 +2322,44 @@ car::scatterplot(qsf.data$total, sa.data$total)
 qsc.data <- full.data %>% select(
   QSC1E:QSC4E
 ) %>% mutate(
-  QSC2E = car::recode(QSC2E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'I feel insecure in my math/statistics abilities'
-  QSC3E = car::recode(QSC3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'I find it hard to think in terms of symbols'
+  QSC2E = car::recode(QSC2E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), 
+  # reverse code 'I feel insecure in my math/statistics abilities'
+  QSC3E = car::recode(QSC3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), 
+  # reverse code 'I find it hard to think in terms of symbols'
 ) %>% mutate(
   total = rowSums(.[1:ncol(.)], na.rm = TRUE)
 )
 ```
 
  Correlation
-cor.test(qsc.data$total, sa.data$total)  r = 0.1372719     ; p = 0.06767 ; 95% CI [ -0.01001498  0.27872892]
+
+
+```r
+cor.test(qsc.data$total, sa.data$total) 
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  qsc.data$total and sa.data$total
+## t = 1.8385, df = 176, p-value = 0.06767
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.01001498  0.27872892
+## sample estimates:
+##       cor 
+## 0.1372719
+```
+
+ r = 0.1372719     ; p = 0.06767 ; 95% CI [ -0.01001498  0.27872892]
 
 
 ```r
 car::scatterplot(qsc.data$total, sa.data$total)
 ```
 
-```
-## Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
-```
-
-![plot of chunk unnamed-chunk-41](figure/unnamed-chunk-41-1.png)
+![plot of chunk unnamed-chunk-57](figure/unnamed-chunk-57-1.png)
 
  Quantitative Self-Efficacy
 
@@ -1847,18 +2377,34 @@ qse.data <- full.data %>% select(
 ```
 
  Correlation
-cor.test(qse.data$total, sa.data$total)  r = 0.2474466  ; p = 0.0008684 ; 95% CI [0.1041526 0.3806764]
+
+
+```r
+cor.test(qse.data$total, sa.data$total) 
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  qse.data$total and sa.data$total
+## t = 3.3881, df = 176, p-value = 0.0008684
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.1041526 0.3806764
+## sample estimates:
+##       cor 
+## 0.2474466
+```
+
+ r = 0.2474466  ; p = 0.0008684 ; 95% CI [0.1041526 0.3806764]
 
 
 ```r
 car::scatterplot(qse.data$total, sa.data$total)
 ```
 
-```
-## Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
-```
-
-![plot of chunk unnamed-chunk-43](figure/unnamed-chunk-43-1.png)
+![plot of chunk unnamed-chunk-60](figure/unnamed-chunk-60-1.png)
 
 ```r
 end <- "end"

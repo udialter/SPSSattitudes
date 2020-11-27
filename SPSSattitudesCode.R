@@ -65,13 +65,17 @@ table(is.na(spss.data))
 
 ## -----------Assumptions----------
 # Checking multivariate normality
-mardia(spss.data) # Kurtosis = 15.17 >4. Will not assume mvn.
+mardia(spss.data)
+# Kurtosis = 15.17 >4. Will not assume mvn.
 
 ## -------EFA Appropriateness------
 # Barlett's Test of Sphericity which tests whether a matrix is significantly different from an identity matrix
-bart_spher(spss.data, use = "complete.obs") ## p-value < 2.22e-16
+bart_spher(spss.data, use = "complete.obs")
+# p-value < 2.22e-16
+
 # Kaiser-Meyer-Olkin Statistics
-KMOS(spss.data, use = "complete.obs") ## KMO-Criterion: 0.8795382
+KMOS(spss.data, use = "complete.obs")
+# KMO-Criterion: 0.8795382
 
 ## -----------Scatterplot matrix-----------------------
 car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')
@@ -79,18 +83,21 @@ car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')
 ## -----------Listwise Deletion-----------
 # Previous work suggests using listwise deletion when the missing data rates are extremely low (e.g., < 1%; Flora, 2018; Jakobsen et al., 2017).
 spss.data <- spss.data[-c(33, 141, 104), ]
-full.data <- full.data[-c(33, 141, 104), ] ## needed later for convergent/discriminant validity
+full.data <- full.data[-c(33, 141, 104), ]
+# needed later for convergent/discriminant validity
 
 spss.data <- data.frame(spss.data)
 str(spss.data)
 
 ## ----Polychoric Correlations-----------------------------------
-poly.spss.data <- psych::polychoric(spss.data) # wants numeric data
-write.csv(poly.spss.data$rho, file = "polyCorrTable.csv", row.names = TRUE) # for manuscript writing
+poly.spss.data <- psych::polychoric(spss.data)
+write.csv(poly.spss.data$rho, file = "polyCorrTable.csv", row.names = TRUE)
+# csv for manuscript writing
 
 # Confidence Intervals for Polychoric Correlations
 poly.spss.ci <- (cor.ci(spss.data, poly = TRUE, plot = FALSE))$ci
-write.csv(poly.spss.ci, file = "polyCorrTableCI.csv", row.names = TRUE) # for manuscript writing
+write.csv(poly.spss.ci, file = "polyCorrTableCI.csv", row.names = TRUE)
+# csv for manuscript writing
 
 # Polychoric correlations 
 # SPSS1E SPSS2 SPSS3 SPSS4 SPSS5 SPSS6 SPSS7 SPSS8 SPSS9 SPSS10
@@ -278,7 +285,6 @@ ldresults2 <- LD(spss.data, 2)
 plot(gcdresult2)
 plot(fS2)
 plot(ldresults2)
-
 
 ## ----------------------------3F EFA---------------------------
 fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
@@ -492,8 +498,10 @@ spss.data.f2 <- spss.data %>% select(c(SPSS2E, SPSS3E, SPSS10E))
 # psych::omega()
 ## poly = TRUE because we want to us the polychoric correlation matrix instead of Pearson because categorical data
 ## since nfactors = 1, only omega total is meaningful 
-omega(m = spss.data.f1, poly = TRUE, plot = F, nfactors = 1) # Omega Total 0.93 
-omega(m = spss.data.f2, poly = TRUE, plot = F, nfactors = 1) # Omega Total 0.8 
+omega(m = spss.data.f1, poly = TRUE, plot = F, nfactors = 1) 
+# Omega Total 0.93 
+omega(m = spss.data.f2, poly = TRUE, plot = F, nfactors = 1) 
+# Omega Total 0.8 
   # warning message regarding 'non-finite result is doubtful' refers to the NA or NaN values in the output. They should not be trusted, but exist because the input provided has NA values
 
 # MBESS:ci.reliability() for 95% CI
@@ -507,8 +515,10 @@ omega(m = spss.data.f2, poly = TRUE, plot = F, nfactors = 1) # Omega Total 0.8
 # ci.reliability(spss.data.f2, type="categorical", interval.type="bca")
 
 # The code below runs, but does not account for the categorical nature of the items - therefore possibly inappropriate estimate of the scale's reliability
-ci.reliability(spss.data.f1) # est 0.9077046, ci.lower 0.8816747, ci.upper 0.9337345
-ci.reliability(spss.data.f2) # est 0.7429931, ci.lower 0.6599966, ci.upper 0.8259896
+ci.reliability(spss.data.f1) 
+# est 0.9077046, ci.lower 0.8816747, ci.upper 0.9337345
+ci.reliability(spss.data.f2) 
+# est 0.7429931, ci.lower 0.6599966, ci.upper 0.8259896
 
 # Overall, I think MBESS::ci.reliability will not be appropriate here and psych::omega() is preferred
 
@@ -516,23 +526,29 @@ ci.reliability(spss.data.f2) # est 0.7429931, ci.lower 0.6599966, ci.upper 0.825
 # note that this is not appropriate for our 2F model, but may be requested by reviewers
 
 # psych::omega()
-omega(m = spss.data, poly = TRUE, plot = F, nfactors = 2) # Omega Total for total scores = 0.93, for F1 = 0.94 and for F2 = 0.80 ; side note: I probably could have ran this instead of splitting the data into each of its factors?
+omega(m = spss.data, poly = TRUE, plot = F, nfactors = 2) 
+# Omega Total for total scores = 0.93, for F1 = 0.94 and for F2 = 0.80 ; side note: I probably could have ran this instead of splitting the data into each of its factors?
 
 # MBESS:ci.reliability() for 95% CI
 # ci.reliability(spss.data, type="categorical", interval.type="perc") # again, runs infinitely...
 # ci.reliability(spss.data, type="categorical", interval.type="bca") # also runs infinitely...
-ci.reliability(spss.data) # runs, but not appropriate because does not account for categorical nature of items. est = 0.8677201, ci.lower = 0.8353075, ci.upper = 0.9001326
+ci.reliability(spss.data) 
+# runs, but not appropriate because does not account for categorical nature of items. est = 0.8677201, ci.lower = 0.8353075, ci.upper = 0.9001326
 
 ## --------Convergent Validity-------
 # Quantitative Attitudes
 qa.data <- full.data %>% select(
   MA1E:MA8E
 ) %>% select(
-  -MA6E # removed 'Statistics is a not a worthwhile or necessary subject' based on previous validation paper 
+  -MA6E 
+  # removed 'Statistics is a not a worthwhile or necessary subject' based on previous validation paper 
 ) %>% mutate(
-  MA2E = car::recode(MA2E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'Math is one of my most dreaded subjects'
-  MA3E = car::recode(MA3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'I have seldom liked studying mathematics'
-  MA7E = car::recode(MA7E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1") # reverse code 'I am not willing to take more than the required amount of statistics courses'
+  MA2E = car::recode(MA2E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), 
+  # reverse code 'Math is one of my most dreaded subjects'
+  MA3E = car::recode(MA3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), 
+  # reverse code 'I have seldom liked studying mathematics'
+  MA7E = car::recode(MA7E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1") 
+  # reverse code 'I am not willing to take more than the required amount of statistics courses'
 ) %>% mutate(
   total = rowSums(.[1:ncol(.)], na.rm = TRUE)
 )
@@ -541,7 +557,8 @@ sa.data <- spss.data %>% mutate(
   total = rowSums(.[1:ncol(.)], na.rm = TRUE)
 )
 # Correlation
-cor.test(qa.data$total, sa.data$total) # r = 0.2533858  ; p = 0.0006434 ; 95% CI [0.1104162 0.3860816]
+cor.test(qa.data$total, sa.data$total) 
+# r = 0.2533858  ; p = 0.0006434 ; 95% CI [0.1104162 0.3860816]
 car::scatterplot(qa.data$total, sa.data$total)
 
 ## --------Discriminant Validity------- 
@@ -552,7 +569,8 @@ qanx.data <- full.data %>% select(
   total = rowSums(.[1:ncol(.)], na.rm = TRUE)
 )
 # Correlation
-cor.test(qanx.data$total, sa.data$total) # r = -0.0787332  ; p = 0.2962 ; 95% CI [ -0.2232328  0.0691523]
+cor.test(qanx.data$total, sa.data$total) 
+# r = -0.0787332  ; p = 0.2962 ; 95% CI [ -0.2232328  0.0691523]
 car::scatterplot(qanx.data$total, sa.data$total)
 
 # Quantitative Hindrances
@@ -562,7 +580,8 @@ qh.data <- full.data %>% select(
   total = rowSums(.[1:ncol(.)], na.rm = TRUE)
 )
 # Correlation
-cor.test(qh.data$total, sa.data$total) # r = -0.05655468  ; p = 0.4534 ; 95% CI [-0.20195941  0.09128939]
+cor.test(qh.data$total, sa.data$total) 
+# r = -0.05655468  ; p = 0.4534 ; 95% CI [-0.20195941  0.09128939]
 car::scatterplot(qh.data$total, sa.data$total)
 
 ## --------Exploratory Convergent / Discriminant Validity?----
@@ -575,7 +594,8 @@ qi.data <- full.data %>% select(
   total = rowSums(.[1:ncol(.)], na.rm = TRUE)
 )
 # Correlation
-cor.test(qi.data$total, sa.data$total) # r = 0.07819996   ; p = 0.2995 ; 95% CI [-0.06968627  0.22272289]
+cor.test(qi.data$total, sa.data$total) 
+# r = 0.07819996   ; p = 0.2995 ; 95% CI [-0.06968627  0.22272289]
 car::scatterplot(qi.data$total, sa.data$total)
 
 # Quantitative Success Factors
@@ -585,20 +605,24 @@ qsf.data <- full.data %>% select(
   total = rowSums(.[1:ncol(.)], na.rm = TRUE)
 )
 # Correlation
-cor.test(qsf.data$total, sa.data$total) # r = 0.05973762  ; p = 0.4283 ; 95% CI [ -0.08812135  0.20502090]
+cor.test(qsf.data$total, sa.data$total) 
+# r = 0.05973762  ; p = 0.4283 ; 95% CI [ -0.08812135  0.20502090]
 car::scatterplot(qsf.data$total, sa.data$total)
 
 # Quantitative Self-Confidence
 qsc.data <- full.data %>% select(
   QSC1E:QSC4E
 ) %>% mutate(
-  QSC2E = car::recode(QSC2E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'I feel insecure in my math/statistics abilities'
-  QSC3E = car::recode(QSC3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'I find it hard to think in terms of symbols'
+  QSC2E = car::recode(QSC2E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), 
+  # reverse code 'I feel insecure in my math/statistics abilities'
+  QSC3E = car::recode(QSC3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), 
+  # reverse code 'I find it hard to think in terms of symbols'
 ) %>% mutate(
   total = rowSums(.[1:ncol(.)], na.rm = TRUE)
 )
 # Correlation
-cor.test(qsc.data$total, sa.data$total) # r = 0.1372719     ; p = 0.06767 ; 95% CI [ -0.01001498  0.27872892]
+cor.test(qsc.data$total, sa.data$total) 
+# r = 0.1372719     ; p = 0.06767 ; 95% CI [ -0.01001498  0.27872892]
 car::scatterplot(qsc.data$total, sa.data$total)
 
 # Quantitative Self-Efficacy
@@ -612,7 +636,8 @@ qse.data <- full.data %>% select(
   total = rowSums(.[1:ncol(.)], na.rm = TRUE)
 )
 # Correlation
-cor.test(qse.data$total, sa.data$total) # r = 0.2474466  ; p = 0.0008684 ; 95% CI [0.1041526 0.3806764]
+cor.test(qse.data$total, sa.data$total) 
+# r = 0.2474466  ; p = 0.0008684 ; 95% CI [0.1041526 0.3806764]
 car::scatterplot(qse.data$total, sa.data$total)
 
 end <- "end"

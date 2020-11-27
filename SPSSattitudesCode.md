@@ -205,9 +205,9 @@ table(is.na(spss.data))
 mardia(spss.data)  Kurtosis = 15.17 >4. Will not assume mvn.
 # -------EFA Appropriateness------
  Barlett's Test of Sphericity which tests whether a matrix is significantly different from an identity matrix
-bart_spher(spss.data, use = "complete.obs")  p-value < 2.22e-16
+bart_spher(spss.data, use = "complete.obs") # p-value < 2.22e-16
  Kaiser-Meyer-Olkin Statistics
-KMOS(spss.data, use = "complete.obs")  KMO-Criterion: 0.8795382
+KMOS(spss.data, use = "complete.obs") # KMO-Criterion: 0.8795382
 # -----------Scatterplot matrix-----------------------
 
 
@@ -225,7 +225,7 @@ car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')
 spss.data <- spss.data[-c(33, 141, 104), ]
 ```
 
-full.data <- full.data[-c(33, 141, 104), ]  needed later for convergent/discriminant validity
+full.data <- full.data[-c(33, 141, 104), ] # needed later for convergent/discriminant validity
 
 
 ```r
@@ -255,6 +255,10 @@ write.csv(poly.spss.data$rho, file = "polyCorrTable.csv", row.names = TRUE)  for
 
 ```r
 poly.spss.ci <- (cor.ci(spss.data, poly = TRUE, plot = FALSE))$ci
+```
+
+```
+## Warning in cor.smooth(mat): Matrix was not positive definite, smoothing was done
 ```
 
 write.csv(poly.spss.ci, file = "polyCorrTableCI.csv", row.names = TRUE)  for manuscript writing
@@ -357,6 +361,48 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
 ## estimated weights for the factor scores are probably incorrect. Try a different factor
 ## score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+```
+
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
+```
+
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+```
+
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
+## Heywood case was detected. Examine the results carefully
+```
+
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
+## estimated weights for the factor scores are probably incorrect. Try a different factor
+## score estimation method.
 ```
 
 ```
@@ -398,61 +444,6 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
 ## estimated weights for the factor scores are probably incorrect. Try a different factor
 ## score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
-## Heywood case was detected. Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
-## estimated weights for the factor scores are probably incorrect. Try a different factor
-## score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
-## Heywood case was detected. Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
-## estimated weights for the factor scores are probably incorrect. Try a different factor
-## score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
-## Heywood case was detected. Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
-## estimated weights for the factor scores are probably incorrect. Try a different factor
-## score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
-## Heywood case was detected. Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
-## estimated weights for the factor scores are probably incorrect. Try a different factor
-## score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
-## Heywood case was detected. Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
-## estimated weights for the factor scores are probably incorrect. Try a different factor
-## score estimation method.
 
 ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
 ## estimated weights for the factor scores are probably incorrect. Try a different factor
@@ -468,33 +459,7 @@ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
 ## estimated weights for the factor scores are probably incorrect. Try a different factor
 ## score estimation method.
-```
 
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
-## Heywood case was detected. Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
-## estimated weights for the factor scores are probably incorrect. Try a different factor
-## score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
-## estimated weights for the factor scores are probably incorrect. Try a different factor
-## score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
-## estimated weights for the factor scores are probably incorrect. Try a different factor
-## score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An ultra-
-## Heywood case was detected. Examine the results carefully
-```
-
-```
 ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, : The
 ## estimated weights for the factor scores are probably incorrect. Try a different factor
 ## score estimation method.

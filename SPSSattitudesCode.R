@@ -283,7 +283,7 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
 # Cumulative Proportion 0.69 0.94 1.00
 # 
 # With factor correlations of 
-# MR1  MR2  MR3
+#     MR1  MR2  MR3
 # MR1 1.00 0.39 0.01
 # MR2 0.39 1.00 0.16
 # MR3 0.01 0.16 1.00
@@ -485,7 +485,7 @@ ci.reliability(spss.data.f2) # est 0.7429931, ci.lower 0.6599966, ci.upper 0.825
 # note that this is not appropriate for our 2F model, but may be requested by reviewers
 
 # psych::omega()
-omega(m = spss.data, poly = TRUE, plot = F, nfactors = 2) # Omega Total for total scores = 0.93, for F1 = 0.94 and for F2 = 0.80 ; side note: I probably could have ran this instead of splitting the data into each of its factors
+omega(m = spss.data, poly = TRUE, plot = F, nfactors = 2) # Omega Total for total scores = 0.93, for F1 = 0.94 and for F2 = 0.80 ; side note: I probably could have ran this instead of splitting the data into each of its factors?
 
 # MBESS:ci.reliability() for 95% CI
 # ci.reliability(spss.data, type="categorical", interval.type="perc") # again, runs infinitely...

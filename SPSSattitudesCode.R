@@ -9,6 +9,7 @@ library(rsample)
 library(GPArotation)
 library(MBESS)
 library(REdaS)
+library(faoutlier)
 
 ## ----Uploading data and cleaning------------------------
 # Uploading raw data
@@ -79,6 +80,18 @@ car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')
 # Previous work suggests using listwise deletion when the missing data rates are extremely low (e.g., < 1%; Flora, 2018; Jakobsen et al., 2017).
 spss.data <- spss.data[-c(33, 141, 104), ]
 full.data <- full.data[-c(33, 141, 104), ] # needed later for convergent/discriminant validity
+
+spss.data <- data.frame(spss.data)
+str(spss.data)
+
+## ---------Outliers---------------
+fS1 <- forward.search(spss.data, 1, criteria = c("mah", "GOF"))
+gcdresult1 <- gCD(spss.data, 1)
+ldresults1 <- LD(spss.data, 1)
+
+plot(gcdresult1)
+plot(fS1)
+plot(ldresults1)
 
 ## ----Polychoric Correlations-----------------------------------
 poly.spss.data <- psych::polychoric(spss.data) # wants numeric data
@@ -257,6 +270,15 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 # 2F prob wins, but let's try 3F next anyways
 ####
 
+# outliers
+fS2 <- forward.search(spss.data, 2, criteria = c("mah", "GOF"))
+gcdresult2 <- gCD(spss.data, 2)
+ldresults2 <- LD(spss.data, 2)
+
+plot(gcdresult2)
+plot(fS2)
+plot(ldresults2)
+
 ## ----------------------------3F EFA---------------------------
 fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
 
@@ -318,6 +340,14 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
 # Concluding that 2F wins bc improvements in model fit isn't worth it & column and row parsimony worse than 2F model 
 ####
 
+# outliers
+fS3 <- forward.search(spss.data, 3, criteria = c("mah", "GOF"))
+gcdresult3 <- gCD(spss.data, 3)
+ldresults3 <- LD(spss.data, 3)
+
+plot(gcdresult3)
+plot(fS3)
+plot(ldresults3)
 
 ## ---------------------2F EFA bentlerQ Rotation----------------------------------
 fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = 'bentlerQ', nfactors = 2)

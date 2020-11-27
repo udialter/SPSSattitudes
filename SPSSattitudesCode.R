@@ -79,7 +79,7 @@ car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')
 ## -----------Listwise Deletion-----------
 # Previous work suggests using listwise deletion when the missing data rates are extremely low (e.g., < 1%; Flora, 2018; Jakobsen et al., 2017).
 spss.data <- spss.data[-c(33, 141, 104), ]
-full.data <- full.data[-c(33, 141, 104), ] # needed later for convergent/discriminant validity
+full.data <- full.data[-c(33, 141, 104), ] ## needed later for convergent/discriminant validity
 
 spss.data <- data.frame(spss.data)
 str(spss.data)

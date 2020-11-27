@@ -1,70 +1,223 @@
-SPSS Attitudes Measure Validation
-================
-Carmen Dang
-13/07/2020
+# ----Loading Packages, echo = FALSE---------------------
 
-    ## Warning: package 'readr' was built under R version 4.0.2
 
-    ## Warning: package 'haven' was built under R version 4.0.2
+```r
+library(readr)
+```
 
-    ## -- Attaching packages ------------------------------------------------------------------------------------------------------------------------------------ tidyverse 1.3.0 --
+```
+## Warning: package 'readr' was built under R version
+## 4.0.2
+```
 
-    ## v ggplot2 3.3.1     v dplyr   1.0.0
-    ## v tibble  3.0.1     v stringr 1.4.0
-    ## v tidyr   1.1.0     v forcats 0.5.0
-    ## v purrr   0.3.4
+```r
+library(haven)
+```
 
-    ## -- Conflicts --------------------------------------------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
+```
+## Warning: package 'haven' was built under R version
+## 4.0.2
+```
 
-    ## Warning: package 'lavaan' was built under R version 4.0.2
+```r
+library(tidyverse)
+```
 
-    ## This is lavaan 0.6-6
+```
+## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
+```
 
-    ## lavaan is BETA software! Please report any bugs.
+```
+## v ggplot2 3.3.1     v dplyr   1.0.0
+## v tibble  3.0.1     v stringr 1.4.0
+## v tidyr   1.1.0     v forcats 0.5.0
+## v purrr   0.3.4
+```
 
-    ## Warning: package 'psych' was built under R version 4.0.2
+```
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+```
 
-    ## 
-    ## Attaching package: 'psych'
+```r
+library(lavaan)
+```
 
-    ## The following object is masked from 'package:lavaan':
-    ## 
-    ##     cor2cov
+```
+## Warning: package 'lavaan' was built under R version
+## 4.0.2
+```
 
-    ## The following objects are masked from 'package:ggplot2':
-    ## 
-    ##     %+%, alpha
+```
+## This is lavaan 0.6-6
+```
 
-    ## Warning: package 'mirt' was built under R version 4.0.2
+```
+## lavaan is BETA software! Please report any bugs.
+```
 
-    ## Loading required package: stats4
+```r
+library(psych)
+```
 
-    ## Loading required package: lattice
+```
+## Warning: package 'psych' was built under R version
+## 4.0.2
+```
 
-    ## Warning: package 'rsample' was built under R version 4.0.2
+```
+## 
+## Attaching package: 'psych'
+```
 
-    ## Warning: package 'MBESS' was built under R version 4.0.2
+```
+## The following object is masked from 'package:lavaan':
+## 
+##     cor2cov
+```
 
-    ## 
-    ## Attaching package: 'MBESS'
+```
+## The following objects are masked from 'package:ggplot2':
+## 
+##     %+%, alpha
+```
 
-    ## The following object is masked from 'package:psych':
-    ## 
-    ##     cor2cov
+```r
+library(mirt)
+```
 
-    ## The following object is masked from 'package:lavaan':
-    ## 
-    ##     cor2cov
+```
+## Warning: package 'mirt' was built under R version 4.0.2
+```
 
-``` r
-# Uploading raw data
+```
+## Loading required package: stats4
+```
+
+```
+## Loading required package: lattice
+```
+
+```r
+library(rsample)
+```
+
+```
+## Warning: package 'rsample' was built under R version
+## 4.0.2
+```
+
+```r
+library(GPArotation)
+library(MBESS)
+```
+
+```
+## Warning: package 'MBESS' was built under R version
+## 4.0.2
+```
+
+```
+## 
+## Attaching package: 'MBESS'
+```
+
+```
+## The following object is masked from 'package:psych':
+## 
+##     cor2cov
+```
+
+```
+## The following object is masked from 'package:lavaan':
+## 
+##     cor2cov
+```
+
+```r
+library(REdaS)
+```
+
+```
+## Warning: package 'REdaS' was built under R version
+## 4.0.3
+```
+
+```
+## Loading required package: grid
+```
+
+```r
+library(faoutlier)
+```
+
+```
+## Warning: package 'faoutlier' was built under R version
+## 4.0.3
+```
+
+```
+## Loading required package: sem
+```
+
+```
+## Warning: package 'sem' was built under R version 4.0.2
+```
+
+```
+## Registered S3 methods overwritten by 'lme4':
+##   method                          from
+##   cooks.distance.influence.merMod car 
+##   influence.merMod                car 
+##   dfbeta.influence.merMod         car 
+##   dfbetas.influence.merMod        car
+```
+
+```
+## 
+## Attaching package: 'sem'
+```
+
+```
+## The following object is masked from 'package:mirt':
+## 
+##     fscores
+```
+
+```
+## The following objects are masked from 'package:lavaan':
+## 
+##     cfa, sem
+```
+
+```
+## Loading required package: mvtnorm
+```
+
+```
+## Loading required package: parallel
+```
+
+# ----Uploading data and cleaning------------------------
+ Uploading raw data
+
+
+```r
 full.data <- readxl::read_xlsx("spssdata.xlsx", col_names = TRUE)
-# Remove empty rows
-full.data <- full.data[1:181, ]
+```
 
-# Selecting only SPSS-related columns
+ Remove empty rows
+
+
+```r
+full.data <- full.data[1:181, ]
+```
+
+ Selecting only SPSS-related columns
+
+
+```r
   # Do not select StudentIDE col bc it'd be included with EFA/CFA
   # Num of rows corresponds to StudentIDE
 spss.data <- full.data %>% 
@@ -78,1438 +231,1896 @@ spss.data <- full.data %>%
                     SPSS8E,
                     SPSS9E,
                     SPSS10E)
+```
 
-# Reverse code SPSS items 2, 3, 10
+ Reverse code SPSS items 2, 3, 10
+
+
+```r
 spss.data$SPSS2E <- car::recode(spss.data$SPSS2E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1")
 spss.data$SPSS3E <- car::recode(spss.data$SPSS3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1")
 spss.data$SPSS10E <- car::recode(spss.data$SPSS10E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1")
 ```
 
-# Questionnaire Info
+# ----Descriptive Stats----------------------------------
 
-<!-- 1 Always True 2 Mostly True    3 Sometimes True 4 Rarely True 5 Never True -->
 
-<!-- SPSS1E SPSS helped me understand statistics concepts better. -->
-
-<!-- SPSS2E SPSS has not helped me do well in the course. -->
-
-<!-- SPSS3E SPSS has not helped me integrate and apply class concepts. -->
-
-<!-- SPSS4E SPSS has helped me become more comfortable with statistics. -->
-
-<!-- SPSS5E SPSS provided me with a good application experience. -->
-
-<!-- SPSS6E SPSS has been convenient for me to do assignments. -->
-
-<!-- SPSS7E I think the skills I’m learning with SPSS will be useful outside of class. -->
-
-<!-- SPSS8E SPSS helps me get involved in learning class material. -->
-
-<!-- SPSS9E SPSS has helped me gain confidence in the course material. -->
-
-<!-- SPSS10E    SPSS has not helped me make more sense out of the material. -->
-
-# Descriptives
-
-``` r
+```r
 describe(spss.data)
 ```
 
-    ##         vars   n mean   sd median trimmed  mad min max range  skew kurtosis
-    ## SPSS1E     1 180 3.49 1.04      4    3.55 1.48   1   5     4 -0.44    -0.30
-    ## SPSS2E     2 181 3.67 1.11      4    3.76 1.48   1   5     4 -0.58    -0.58
-    ## SPSS3E     3 180 3.51 1.11      4    3.58 1.48   1   5     4 -0.53    -0.43
-    ## SPSS4E     4 181 3.38 0.99      3    3.39 1.48   1   5     4 -0.30    -0.42
-    ## SPSS5E     5 180 3.70 1.05      4    3.79 1.48   1   5     4 -0.52    -0.27
-    ## SPSS6E     6 181 3.52 1.22      4    3.64 1.48   1   5     4 -0.51    -0.60
-    ## SPSS7E     7 181 3.32 1.18      3    3.34 1.48   1   5     4 -0.13    -0.98
-    ## SPSS8E     8 181 3.57 0.98      4    3.63 1.48   1   5     4 -0.40    -0.22
-    ## SPSS9E     9 181 3.43 1.03      3    3.46 1.48   1   5     4 -0.25    -0.44
-    ## SPSS10E   10 181 3.41 1.13      4    3.46 1.48   1   5     4 -0.33    -0.71
-    ##           se
-    ## SPSS1E  0.08
-    ## SPSS2E  0.08
-    ## SPSS3E  0.08
-    ## SPSS4E  0.07
-    ## SPSS5E  0.08
-    ## SPSS6E  0.09
-    ## SPSS7E  0.09
-    ## SPSS8E  0.07
-    ## SPSS9E  0.08
-    ## SPSS10E 0.08
+```
+##         vars   n mean   sd median trimmed  mad min max
+## SPSS1E     1 180 3.49 1.04      4    3.55 1.48   1   5
+## SPSS2E     2 181 3.67 1.11      4    3.76 1.48   1   5
+## SPSS3E     3 180 3.51 1.11      4    3.58 1.48   1   5
+## SPSS4E     4 181 3.38 0.99      3    3.39 1.48   1   5
+## SPSS5E     5 180 3.70 1.05      4    3.79 1.48   1   5
+## SPSS6E     6 181 3.52 1.22      4    3.64 1.48   1   5
+## SPSS7E     7 181 3.32 1.18      3    3.34 1.48   1   5
+## SPSS8E     8 181 3.57 0.98      4    3.63 1.48   1   5
+## SPSS9E     9 181 3.43 1.03      3    3.46 1.48   1   5
+## SPSS10E   10 181 3.41 1.13      4    3.46 1.48   1   5
+##         range  skew kurtosis   se
+## SPSS1E      4 -0.44    -0.30 0.08
+## SPSS2E      4 -0.58    -0.58 0.08
+## SPSS3E      4 -0.53    -0.43 0.08
+## SPSS4E      4 -0.30    -0.42 0.07
+## SPSS5E      4 -0.52    -0.27 0.08
+## SPSS6E      4 -0.51    -0.60 0.09
+## SPSS7E      4 -0.13    -0.98 0.09
+## SPSS8E      4 -0.40    -0.22 0.07
+## SPSS9E      4 -0.25    -0.44 0.08
+## SPSS10E     4 -0.33    -0.71 0.08
+```
 
-``` r
-# Contingency table of the counts
+ Contingency table of the counts
+
+
+```r
 table(spss.data$SPSS1E)
 ```
 
-    ## 
-    ##  1  2  3  4  5 
-    ##  8 21 55 66 30
+```
+## 
+##  1  2  3  4  5 
+##  8 21 55 66 30
+```
 
-``` r
+```r
 table(spss.data$SPSS2E)
 ```
 
-    ## 
-    ##  1  2  3  4  5 
-    ##  6 28 31 70 46
+```
+## 
+##  1  2  3  4  5 
+##  6 28 31 70 46
+```
 
-``` r
+```r
 table(spss.data$SPSS3E)
 ```
 
-    ## 
-    ##  1  2  3  4  5 
-    ## 10 24 43 70 33
+```
+## 
+##  1  2  3  4  5 
+## 10 24 43 70 33
+```
 
-``` r
+```r
 table(spss.data$SPSS4E)
 ```
 
-    ## 
-    ##  1  2  3  4  5 
-    ##  6 28 59 67 21
+```
+## 
+##  1  2  3  4  5 
+##  6 28 59 67 21
+```
 
-``` r
+```r
 table(spss.data$SPSS5E)
 ```
 
-    ## 
-    ##  1  2  3  4  5 
-    ##  6 15 52 61 46
+```
+## 
+##  1  2  3  4  5 
+##  6 15 52 61 46
+```
 
-``` r
+```r
 table(spss.data$SPSS6E)
 ```
 
-    ## 
-    ##  1  2  3  4  5 
-    ## 16 17 51 50 47
+```
+## 
+##  1  2  3  4  5 
+## 16 17 51 50 47
+```
 
-``` r
+```r
 table(spss.data$SPSS7E)
 ```
 
-    ## 
-    ##  1  2  3  4  5 
-    ## 10 40 48 48 35
+```
+## 
+##  1  2  3  4  5 
+## 10 40 48 48 35
+```
 
-``` r
+```r
 table(spss.data$SPSS8E)
 ```
 
-    ## 
-    ##  1  2  3  4  5 
-    ##  5 18 58 68 32
+```
+## 
+##  1  2  3  4  5 
+##  5 18 58 68 32
+```
 
-``` r
+```r
 table(spss.data$SPSS9E)
 ```
 
-    ## 
-    ##  1  2  3  4  5 
-    ##  7 24 64 57 29
+```
+## 
+##  1  2  3  4  5 
+##  7 24 64 57 29
+```
 
-``` r
+```r
 table(spss.data$SPSS10E)
 ```
 
-    ## 
-    ##  1  2  3  4  5 
-    ## 10 30 49 59 33
+```
+## 
+##  1  2  3  4  5 
+## 10 30 49 59 33
+```
 
-``` r
-## Missing Data Calculations ##
+# Missing Data Calculations ##
+
+
+```r
 table(is.na(spss.data))
 ```
 
-    ## 
-    ## FALSE  TRUE 
-    ##  1807     3
-
-``` r
-# FALSE  TRUE 
-#  1807     3
-
-# 3 / (3 + 1807) = 0.001657459
-# 0.001657459 * 100 = 0.1657459
-
-## Less than 1% missing data, proceeding with complete case analyses
+```
+## 
+## FALSE  TRUE 
+##  1807     3
 ```
 
-``` r
+ FALSE  TRUE 
+  1807     3
+ 3 / (3 + 1807) = 0.001657459
+ 0.001657459 * 100 = 0.1657459
+# Less than 1% missing data, proceeding with complete case analyses
+# -----------Assumptions----------
+ Checking multivariate normality
+mardia(spss.data)  Kurtosis = 15.17 >4. Will not assume mvn.
+# -------EFA Appropriateness------
+ Barlett's Test of Sphericity which tests whether a matrix is significantly different from an identity matrix
+bart_spher(spss.data, use = "complete.obs")  p-value < 2.22e-16
+ Kaiser-Meyer-Olkin Statistics
+KMOS(spss.data, use = "complete.obs")  KMO-Criterion: 0.8795382
+# -----------Scatterplot matrix-----------------------
+
+
+```r
 car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')
 ```
 
-![](SPSSattitudesCode_files/figure-gfm/Scatterplot%20matrix-1.png)<!-- -->
-\#\# Correlations
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
 
-``` r
-poly.spss.data <- psych::polychoric(spss.data) # wants numeric data
+# -----------Listwise Deletion-----------
+ Previous work suggests using listwise deletion when the missing data rates are extremely low (e.g., < 1%; Flora, 2018; Jakobsen et al., 2017).
 
-# 44 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.Call: psych::polychoric(x = spss.data)
-# Polychoric correlations 
-#         SPSS1E SPSS2 SPSS3 SPSS4 SPSS5 SPSS6 SPSS7 SPSS8 SPSS9 SPSS10
-# SPSS1E  1.00                                                         
-# SPSS2E  0.37   1.00                                                  
-# SPSS3E  0.34   0.66  1.00                                            
-# SPSS4E  0.76   0.30  0.35  1.00                                      
-# SPSS5E  0.67   0.34  0.27  0.66  1.00                                
-# SPSS6E  0.52   0.27  0.23  0.52  0.56  1.00                          
-# SPSS7E  0.52   0.25  0.14  0.53  0.51  0.44  1.00                    
-# SPSS8E  0.71   0.32  0.35  0.66  0.67  0.57  0.54  1.00              
-# SPSS9E  0.74   0.29  0.34  0.76  0.65  0.58  0.56  0.71  1.00        
-# SPSS10E 0.26   0.49  0.50  0.23  0.13  0.06  0.03  0.23  0.12  1.00  
-# 
-#  with tau of 
-#            1     2      3    4
-# SPSS1E  -1.7 -0.99 -0.084 0.97
-# SPSS2E  -1.8 -0.89 -0.361 0.66
-# SPSS3E  -1.6 -0.88 -0.182 0.90
-# SPSS4E  -1.8 -0.89  0.035 1.20
-# SPSS5E  -1.8 -1.19 -0.239 0.66
-# SPSS6E  -1.4 -0.91 -0.090 0.64
-# SPSS7E  -1.6 -0.59  0.104 0.87
-# SPSS8E  -1.9 -1.14 -0.132 0.93
-# SPSS9E  -1.8 -0.95  0.062 0.99
-# SPSS10E -1.6 -0.77 -0.021 0.91
 
-####
-# Used polychoric bc Likert data
-# All Qs are more correlated w eachother than they are with 2,3,10. But 2,3, and 10 are more correlated to each other than other Qs.
-####
-
-write.csv(poly.spss.data$rho, file = "polyCorrTable.csv", row.names = TRUE)
+```r
+spss.data <- spss.data[-c(33, 141, 104), ]
 ```
 
-# MAP / PA
+full.data <- full.data[-c(33, 141, 104), ]  needed later for convergent/discriminant validity
 
-``` r
+
+```r
+spss.data <- data.frame(spss.data)
+str(spss.data)
+```
+
+```
+## 'data.frame':	178 obs. of  10 variables:
+##  $ SPSS1E : num  4 4 3 2 4 2 4 2 3 4 ...
+##  $ SPSS2E : num  4 5 3 4 5 2 3 2 4 5 ...
+##  $ SPSS3E : num  4 5 3 4 4 2 1 2 5 5 ...
+##  $ SPSS4E : num  3 4 2 2 3 3 2 3 3 4 ...
+##  $ SPSS5E : num  3 4 3 2 4 2 4 3 3 3 ...
+##  $ SPSS6E : num  3 4 2 2 4 1 4 3 1 5 ...
+##  $ SPSS7E : num  4 4 2 2 3 3 2 3 4 4 ...
+##  $ SPSS8E : num  4 4 3 2 4 3 3 3 3 2 ...
+##  $ SPSS9E : num  4 4 3 2 3 3 2 2 2 4 ...
+##  $ SPSS10E: num  4 5 3 4 5 3 3 3 4 3 ...
+```
+
+# ----Polychoric Correlations-----------------------------------
+poly.spss.data <- psych::polychoric(spss.data)  wants numeric data
+write.csv(poly.spss.data$rho, file = "polyCorrTable.csv", row.names = TRUE)  for manuscript writing
+ Confidence Intervals for Polychoric Correlations
+
+
+```r
+poly.spss.ci <- (cor.ci(spss.data, poly = TRUE, plot = FALSE))$ci
+```
+
+```
+## Warning in cor.smooth(mat): Matrix was not positive
+## definite, smoothing was done
+
+## Warning in cor.smooth(mat): Matrix was not positive
+## definite, smoothing was done
+
+## Warning in cor.smooth(mat): Matrix was not positive
+## definite, smoothing was done
+```
+
+write.csv(poly.spss.ci, file = "polyCorrTableCI.csv", row.names = TRUE)  for manuscript writing
+ Polychoric correlations 
+ SPSS1E SPSS2 SPSS3 SPSS4 SPSS5 SPSS6 SPSS7 SPSS8 SPSS9 SPSS10
+ SPSS1E  1.00                                                         
+ SPSS2E  0.38   1.00                                                  
+ SPSS3E  0.35   0.69  1.00                                            
+ SPSS4E  0.85   0.32  0.37  1.00                                      
+ SPSS5E  0.70   0.35  0.27  0.73  1.00                                
+ SPSS6E  0.55   0.27  0.23  0.56  0.58  1.00                          
+ SPSS7E  0.56   0.23  0.14  0.56  0.55  0.46  1.00                    
+ SPSS8E  0.78   0.32  0.35  0.74  0.73  0.61  0.60  1.00              
+ SPSS9E  0.81   0.30  0.36  0.86  0.71  0.62  0.58  0.80  1.00        
+ SPSS10E 0.26   0.50  0.49  0.23  0.12  0.05  0.02  0.24  0.12  1.00  
+ 
+ with tau of 
+ 1     2      3    4
+ SPSS1E  -1.7 -0.98 -0.099 0.96
+ SPSS2E  -1.8 -0.87 -0.375 0.65
+ SPSS3E  -1.6 -0.87 -0.198 0.90
+ SPSS4E  -1.8 -0.87  0.014 1.19
+ SPSS5E  -1.8 -1.19 -0.242 0.65
+ SPSS6E  -1.3 -0.90 -0.099 0.63
+ SPSS7E  -1.6 -0.60  0.085 0.85
+ SPSS8E  -1.9 -1.13 -0.141 0.92
+ SPSS9E  -1.8 -0.94  0.056 0.98
+ SPSS10E -1.6 -0.76 -0.028 0.90
+###
+ Used polychoric correlations bc of 5-point Likert data
+ All Qs are more correlated w each other than they are with 2,3,10. But 2,3, and 10 are more correlated to each other than other Qs.
+###
+# -------MAP and Parallel Analysis----------------------------------------
+
+
+```r
 VSS(spss.data, fm = 'minres', cor = 'poly', plot = F)
 ```
 
-    ## 
-    ## Very Simple Structure
-    ## Call: vss(x = x, n = n, rotate = rotate, diagonal = diagonal, fm = fm, 
-    ##     n.obs = n.obs, plot = plot, title = title, use = use, cor = cor)
-    ## VSS complexity 1 achieves a maximimum of 0.87  with  1  factors
-    ## VSS complexity 2 achieves a maximimum of 0.95  with  2  factors
-    ## 
-    ## The Velicer MAP achieves a minimum of 0.05  with  2  factors 
-    ## BIC achieves a minimum of  NA  with  2  factors
-    ## Sample Size adjusted BIC achieves a minimum of  NA  with  4  factors
-    ## 
-    ## Statistics by number of factors 
-    ##   vss1 vss2   map dof   chisq    prob sqresid  fit RMSEA BIC SABIC complex
-    ## 1 0.87 0.00 0.057  35 2.3e+02 1.8e-31    4.49 0.87 0.178  53 163.9     1.0
-    ## 2 0.86 0.95 0.049  26 8.5e+01 3.6e-08    1.58 0.95 0.112 -50  32.1     1.1
-    ## 3 0.86 0.95 0.071  18 5.2e+01 3.2e-05    1.28 0.96 0.103 -41  15.9     1.2
-    ## 4 0.86 0.94 0.118  11 1.6e+01 1.6e-01    1.17 0.97 0.048 -42  -6.8     1.3
-    ## 5 0.86 0.89 0.163   5 4.0e+00 5.5e-01    0.99 0.97 0.000 -22  -6.2     1.4
-    ## 6 0.86 0.93 0.241   0 6.3e-01      NA    0.98 0.97    NA  NA    NA     1.4
-    ## 7 0.86 0.93 0.414  -4 2.3e-10      NA    0.92 0.97    NA  NA    NA     1.4
-    ## 8 0.86 0.95 0.483  -7 9.0e-09      NA    0.85 0.97    NA  NA    NA     1.4
-    ##    eChisq    SRMR eCRMS eBIC
-    ## 1 2.4e+02 1.2e-01 0.138   60
-    ## 2 1.6e+01 3.1e-02 0.041 -119
-    ## 3 6.6e+00 2.0e-02 0.032  -87
-    ## 4 2.6e+00 1.3e-02 0.026  -55
-    ## 5 4.3e-01 5.1e-03 0.015  -26
-    ## 6 5.7e-02 1.9e-03    NA   NA
-    ## 7 5.0e-11 5.5e-08    NA   NA
-    ## 8 6.2e-10 1.9e-07    NA   NA
+```
+## 
+## Very Simple Structure
+## Call: vss(x = x, n = n, rotate = rotate, diagonal = diagonal, fm = fm, 
+##     n.obs = n.obs, plot = plot, title = title, use = use, cor = cor)
+## VSS complexity 1 achieves a maximimum of 0.87  with  1  factors
+## VSS complexity 2 achieves a maximimum of 0.95  with  2  factors
+## 
+## The Velicer MAP achieves a minimum of 0.05  with  2  factors 
+## BIC achieves a minimum of  NA  with  2  factors
+## Sample Size adjusted BIC achieves a minimum of  NA  with  4  factors
+## 
+## Statistics by number of factors 
+##   vss1 vss2   map dof   chisq    prob sqresid  fit
+## 1 0.87 0.00 0.057  35 2.3e+02 2.6e-31    4.48 0.87
+## 2 0.86 0.95 0.049  26 8.7e+01 1.7e-08    1.57 0.95
+## 3 0.86 0.95 0.072  18 5.4e+01 1.9e-05    1.27 0.96
+## 4 0.86 0.94 0.116  11 1.6e+01 1.3e-01    1.17 0.97
+## 5 0.86 0.89 0.165   5 4.6e+00 4.7e-01    0.98 0.97
+## 6 0.85 0.91 0.240   0 7.6e-01      NA    0.90 0.97
+## 7 0.86 0.93 0.410  -4 5.1e-07      NA    0.90 0.97
+## 8 0.86 0.95 0.480  -7 1.5e-12      NA    0.85 0.98
+##   RMSEA BIC SABIC complex  eChisq    SRMR eCRMS eBIC
+## 1 0.179  53 163.7     1.0 2.4e+02 1.2e-01 0.138   57
+## 2 0.115 -48  34.6     1.1 1.6e+01 3.2e-02 0.042 -119
+## 3 0.106 -39  17.6     1.2 6.6e+00 2.0e-02 0.032  -87
+## 4 0.052 -41  -5.8     1.3 2.7e+00 1.3e-02 0.026  -54
+## 5 0.000 -21  -5.5     1.4 4.8e-01 5.5e-03 0.016  -25
+## 6    NA  NA    NA     1.5 6.1e-02 2.0e-03    NA   NA
+## 7    NA  NA    NA     1.4 1.0e-07 2.5e-06    NA   NA
+## 8    NA  NA    NA     1.4 1.3e-13 2.9e-09    NA   NA
+```
 
-``` r
-# Very Simple Structure
-# Call: vss(x = x, n = n, rotate = rotate, diagonal = diagonal, fm = fm, 
-#     n.obs = n.obs, plot = plot, title = title, use = use, cor = cor)
-# VSS complexity 1 achieves a maximimum of 0.85  with  1  factors
-# VSS complexity 2 achieves a maximimum of 0.94  with  2  factors
-# 
-# The Velicer MAP achieves a minimum of 0.04  with  2  factors 
-# BIC achieves a minimum of  NA  with  2  factors
-# Sample Size adjusted BIC achieves a minimum of  NA  with  3  factors
-# 
-# Statistics by number of factors 
+ Very Simple Structure
+ Call: vss(x = x, n = n, rotate = rotate, diagonal = diagonal, fm = fm, 
+           n.obs = n.obs, plot = plot, title = title, use = use, cor = cor)
+ VSS complexity 1 achieves a maximimum of 0.87  with  1  factors
+ VSS complexity 2 achieves a maximimum of 0.95  with  2  factors
+ 
+ The Velicer MAP achieves a minimum of 0.05  with  2  factors 
+ BIC achieves a minimum of  NA  with  2  factors
+ Sample Size adjusted BIC achieves a minimum of  NA  with  4  factors
 
+
+```r
 fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 ```
 
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
 
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
 
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
 
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
 
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-    
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
 
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-    
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-    
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-    
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-    
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-    
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-    
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-    
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-    
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-    
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-    
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-![](SPSSattitudesCode_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
-
-    ## Parallel analysis suggests that the number of factors =  2  and the number of components =  2
-
-``` r
-# Parallel analysis suggests that the number of factors =  2  and the number of components =  2 
-
-####
-# Both MAP and PA suggest 2F
-# PA should be interpreted w caution for polychoric
-####
-
-# Running 1F, 2F and 3F model (i.e. 1 above and 1 below suggested num. of factors) next to help determine which model is best
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
 ```
 
-# EFAs
-
-## 1F
-
-``` r
-efa1 <- fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfactors = 1)
-
-# 44 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.Factor Analysis using method =  minres
-# Call: fa(r = spss.data, nfactors = 1, rotate = "oblimin", fm = "minres", 
-#     cor = "poly")
-# Standardized loadings (pattern matrix) based upon correlation matrix
-# 
-#                 MR1
-# SS loadings    4.74
-# Proportion Var 0.47
-# 
-# Mean item complexity =  1
-# Test of the hypothesis that 1 factor is sufficient.
-# 
-# The degrees of freedom for the null model are  45  and the objective function was  5.86 with Chi Square of  1030.98
-# The degrees of freedom for the model are 35  and the objective function was  1.03 
-# 
-# The root mean square of the residuals (RMSR) is  0.12 
-# The df corrected root mean square of the residuals is  0.13 
-# 
-# The harmonic number of observations is  180 with the empirical chi square  218.15  with prob <  2.5e-28 
-# The total number of observations was  181  with Likelihood Chi Square =  179.94  with prob <  2.1e-21 
-# 
-# Tucker Lewis Index of factoring reliability =  0.81
-# RMSEA index =  0.151  and the 90 % confidence intervals are  0.13 0.174
-# BIC =  -2.01
-# Fit based upon off diagonal values = 0.94
-# Measures of factor score adequacy             
-#                                                    MR1
-# Correlation of (regression) scores with factors   0.96
-# Multiple R square of scores with factors          0.93
-# Minimum correlation of possible factor scores     0.86
-# 
-#         MR1       h2          u2    com
-# SPSS1E    0.85    0.72856429  0.2714357   1     
-# SPSS2E    0.47    0.21794717  0.7820528   1     *
-# SPSS3E    0.45    0.20643367  0.7935663   1     *
-# SPSS4E    0.83    0.69670807  0.3032919   1
-# SPSS5E    0.78    0.60983397  0.3901660   1
-# SPSS6E    0.65    0.42275333  0.5772467   1
-# SPSS7E    0.61    0.37574147  0.6242585   1
-# SPSS8E    0.83    0.68331094  0.3166891   1
-# SPSS9E    0.85    0.71463561  0.2853644   1
-# SPSS10E   0.28    0.08033225  0.9196677   1     **
-
-####
-# RMSR = 0.12 *BAD*
-# Prop. var explained = 0.47 
-# SPSS10E *BAD* factor loading (<.4) and communality (0.08)
-# SPSS2E and SPSS3E factor loading almost <.4 and communality almost <.2
-#
-# Based on model fit (RMSR), 1F sucks
-####
-write.csv(efa1$loadings, file = "efa1Loadings.csv", row.names = TRUE)
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs =
+## n.obs, rotate = rotate, : An ultra-Heywood case was
+## detected. Examine the results carefully
 ```
 
-## 2F
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
 
-``` r
-efa2oblimin <- fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
-
-# 44 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.Factor Analysis using method =  minres
-# Call: fa(r = spss.data, nfactors = 2, fm = "minres", cor = "poly")
-# Standardized loadings (pattern matrix) based upon correlation matrix
-# 
-#                        MR1  MR2
-# SS loadings           4.35 1.71
-# Proportion Var        0.43 0.17 PROP EXPLAINED PER FACTOR
-# Cumulative Var        0.43 0.61 *
-# Proportion Explained  0.72 0.28
-# Cumulative Proportion 0.72 1.00
-# 
-#  With factor correlations of 
-#      MR1  MR2
-# MR1 1.00 0.44
-# MR2 0.44 1.00
-# 
-# Mean item complexity =  1
-# Test of the hypothesis that 2 factors are sufficient.
-# 
-# The degrees of freedom for the null model are  45  and the objective function was  5.86 with Chi Square of  1030.98
-# The degrees of freedom for the model are 26  and the objective function was  0.25 
-# 
-# The root mean square of the residuals (RMSR) is  0.03 
-# The df corrected root mean square of the residuals is  0.04 
-# 
-# The harmonic number of observations is  180 with the empirical chi square  13.09  with prob <  0.98 
-# The total number of observations was  181  with Likelihood Chi Square =  44.2  with prob <  0.014 
-# 
-# Tucker Lewis Index of factoring reliability =  0.968
-# RMSEA index =  0.062  and the 90 % confidence intervals are  0.028 0.093
-# BIC =  -90.96
-# Fit based upon off diagonal values = 1
-# Measures of factor score adequacy             
-#                                                    MR1  MR2
-# Correlation of (regression) scores with factors   0.96 0.91
-# Multiple R square of scores with factors          0.93 0.82
-# Minimum correlation of possible factor scores     0.86 0.65
-# 
-#         MR1   MR2       h2        u2    com
-# SPSS1E    0.81    0.08    0.7236662   0.2763338   1.019276
-# SPSS2E    0.06    0.76    0.6178306   0.3821694   1.012793
-# SPSS3E    0.02    0.82    0.6827871   0.3172129   1.000986
-# SPSS4E    0.82    0.04    0.7018363   0.2981637   1.004479
-# SPSS5E    0.80    -0.01   0.6295613   0.3704387   1.000441
-# SPSS6E    0.68    -0.04   0.4448130   0.5551870   1.006886
-# SPSS7E    0.69    -0.11   0.4244661   0.5755339   1.054229
-# SPSS8E    0.80    0.05    0.6842864   0.3157136   1.009224
-# SPSS9E    0.88    -0.04   0.7508519   0.2491481   1.003669
-# SPSS10E   -0.09   0.66    0.3975595   0.6024405   1.036934
-
-####
-# RMSR = 0.03 *WOW!* huge decrease by adding 1 more factor
-# Prop. var explained = 0.61, 14% raw difference from 1F model
-# No poor factor loadings or low communalities
-# Column and row parsimony is pretty amazing
-# Notice that all negatively worded items load onto factor 2 & all positively worded items load onto factor 1
-# 2F prob wins, but let's try 3F next anyways
-####
-
-write.csv(efa2oblimin$loadings, file = "efa2Oblimin.csv", row.names = TRUE)
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
 ```
 
-## 3F
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs =
+## n.obs, rotate = rotate, : An ultra-Heywood case was
+## detected. Examine the results carefully
+```
 
-``` r
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
+```
+
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs =
+## n.obs, rotate = rotate, : An ultra-Heywood case was
+## detected. Examine the results carefully
+```
+
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
+```
+
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs =
+## n.obs, rotate = rotate, : An ultra-Heywood case was
+## detected. Examine the results carefully
+```
+
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
+```
+
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs =
+## n.obs, rotate = rotate, : An ultra-Heywood case was
+## detected. Examine the results carefully
+```
+
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
+```
+
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs =
+## n.obs, rotate = rotate, : An ultra-Heywood case was
+## detected. Examine the results carefully
+```
+
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
+```
+
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs =
+## n.obs, rotate = rotate, : An ultra-Heywood case was
+## detected. Examine the results carefully
+```
+
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
+```
+
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs =
+## n.obs, rotate = rotate, : An ultra-Heywood case was
+## detected. Examine the results carefully
+```
+
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
+
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
+```
+
+```
+## Warning in fac(r = r, nfactors = nfactors, n.obs =
+## n.obs, rotate = rotate, : An ultra-Heywood case was
+## detected. Examine the results carefully
+```
+
+```
+## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
+## n.obs, np.obs = np.obs, : The estimated weights for the
+## factor scores are probably incorrect. Try a different
+## factor score estimation method.
+```
+
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
+
+```
+## Parallel analysis suggests that the number of factors =  2  and the number of components =  2
+```
+
+ Parallel analysis suggests that the number of factors =  2  and the number of components =  2 
+###
+ Both MAP and PA suggest 2F 
+ PA should be interpreted w caution for polychoric correlations
+ Next, running 1F, 2F and 3F model (i.e. 1 above and 1 below suggested num. of factors) next to help determine which model is best
+###
+# -------1F EFA----------------------------------------
+
+
+```r
+fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfactors = 1)
+```
+
+```
+## Factor Analysis using method =  minres
+## Call: fa(r = spss.data, nfactors = 1, rotate = "oblimin", fm = "minres", 
+##     cor = "poly")
+## Standardized loadings (pattern matrix) based upon correlation matrix
+##          MR1    h2   u2 com
+## SPSS1E  0.89 0.791 0.21   1
+## SPSS2E  0.45 0.203 0.80   1
+## SPSS3E  0.44 0.197 0.80   1
+## SPSS4E  0.89 0.801 0.20   1
+## SPSS5E  0.80 0.642 0.36   1
+## SPSS6E  0.66 0.429 0.57   1
+## SPSS7E  0.63 0.393 0.61   1
+## SPSS8E  0.88 0.768 0.23   1
+## SPSS9E  0.90 0.803 0.20   1
+## SPSS10E 0.27 0.071 0.93   1
+## 
+##                 MR1
+## SS loadings    5.10
+## Proportion Var 0.51
+## 
+## Mean item complexity =  1
+## Test of the hypothesis that 1 factor is sufficient.
+## 
+## The degrees of freedom for the null model are  45  and the objective function was  7.36 with Chi Square of  1272.53
+## The degrees of freedom for the model are 35  and the objective function was  1.36 
+## 
+## The root mean square of the residuals (RMSR) is  0.12 
+## The df corrected root mean square of the residuals is  0.14 
+## 
+## The harmonic number of observations is  178 with the empirical chi square  238.29  with prob <  4.4e-32 
+## The total number of observations was  178  with Likelihood Chi Square =  234.19  with prob <  2.6e-31 
+## 
+## Tucker Lewis Index of factoring reliability =  0.791
+## RMSEA index =  0.179  and the 90 % confidence intervals are  0.158 0.201
+## BIC =  52.83
+## Fit based upon off diagonal values = 0.94
+## Measures of factor score adequacy             
+##                                                    MR1
+## Correlation of (regression) scores with factors   0.97
+## Multiple R square of scores with factors          0.95
+## Minimum correlation of possible factor scores     0.90
+```
+
+ Factor Analysis using method =  minres
+ Call: fa(r = spss.data, nfactors = 1, rotate = "oblimin", fm = "minres", 
+          cor = "poly")
+ Standardized loadings (pattern matrix) based upon correlation matrix
+           MR1    h2   u2 com
+ SPSS1E  0.89 0.791 0.21   1
+ SPSS2E  0.45 0.203 0.80   1   *
+ SPSS3E  0.44 0.197 0.80   1   *
+ SPSS4E  0.89 0.801 0.20   1
+ SPSS5E  0.80 0.642 0.36   1
+ SPSS6E  0.66 0.429 0.57   1
+ SPSS7E  0.63 0.393 0.61   1
+ SPSS8E  0.88 0.768 0.23   1
+ SPSS9E  0.90 0.803 0.20   1
+ SPSS10E 0.27 0.071 0.93   1   **
+ 
+ MR1
+ SS loadings    5.10
+ Proportion Var 0.51
+ 
+ Mean item complexity =  1
+ Test of the hypothesis that 1 factor is sufficient.
+ 
+ The degrees of freedom for the null model are  45  and the objective function was  7.36 with Chi Square of  1272.53
+ The degrees of freedom for the model are 35  and the objective function was  1.36 
+ 
+ The root mean square of the residuals (RMSR) is  0.12 
+ The df corrected root mean square of the residuals is  0.14 
+ 
+ The harmonic number of observations is  178 with the empirical chi square  238.29  with prob <  4.4e-32 
+ The total number of observations was  178  with Likelihood Chi Square =  234.19  with prob <  2.6e-31 
+ 
+ Tucker Lewis Index of factoring reliability =  0.791
+ RMSEA index =  0.179  and the 90 % confidence intervals are  0.158 0.201
+ BIC =  52.83
+ Fit based upon off diagonal values = 0.94
+ Measures of factor score adequacy             
+ MR1
+ Correlation of (regression) scores with factors   0.97
+ Multiple R square of scores with factors          0.95
+ Minimum correlation of possible factor scores     0.90
+###
+ RMSR = 0.12 *BAD*
+ Prop. var explained = 0.51 
+ SPSS10E *BAD* factor loading (<.4) and communality (0.07)
+ SPSS2E and SPSS3E factor loading almost <.4 and communality almost <.2
+
+ Based on model fit (RMSR), 1F sucks
+###
+# ---------Outliers 1F ---------------
+
+
+```r
+fS1 <- forward.search(spss.data, 1, criteria = c("mah", "GOF"))
+```
+
+```
+## Remaining iterations: 106 
+## Remaining iterations: 105 
+## Remaining iterations: 104 
+## Remaining iterations: 103 
+## Remaining iterations: 102 
+## Remaining iterations: 101 
+## Remaining iterations: 100 
+## Remaining iterations: 99 
+## Remaining iterations: 98 
+## Remaining iterations: 97 
+## Remaining iterations: 96 
+## Remaining iterations: 95 
+## Remaining iterations: 94 
+## Remaining iterations: 93 
+## Remaining iterations: 92 
+## Remaining iterations: 91 
+## Remaining iterations: 90 
+## Remaining iterations: 89 
+## Remaining iterations: 88 
+## Remaining iterations: 87 
+## Remaining iterations: 86 
+## Remaining iterations: 85 
+## Remaining iterations: 84 
+## Remaining iterations: 83 
+## Remaining iterations: 82 
+## Remaining iterations: 81 
+## Remaining iterations: 80 
+## Remaining iterations: 79 
+## Remaining iterations: 78 
+## Remaining iterations: 77 
+## Remaining iterations: 76 
+## Remaining iterations: 75 
+## Remaining iterations: 74 
+## Remaining iterations: 73 
+## Remaining iterations: 72 
+## Remaining iterations: 71 
+## Remaining iterations: 70 
+## Remaining iterations: 69 
+## Remaining iterations: 68 
+## Remaining iterations: 67 
+## Remaining iterations: 66 
+## Remaining iterations: 65 
+## Remaining iterations: 64 
+## Remaining iterations: 63 
+## Remaining iterations: 62 
+## Remaining iterations: 61 
+## Remaining iterations: 60 
+## Remaining iterations: 59 
+## Remaining iterations: 58 
+## Remaining iterations: 57 
+## Remaining iterations: 56 
+## Remaining iterations: 55 
+## Remaining iterations: 54 
+## Remaining iterations: 53 
+## Remaining iterations: 52 
+## Remaining iterations: 51 
+## Remaining iterations: 50 
+## Remaining iterations: 49 
+## Remaining iterations: 48 
+## Remaining iterations: 47 
+## Remaining iterations: 46 
+## Remaining iterations: 45 
+## Remaining iterations: 44 
+## Remaining iterations: 43 
+## Remaining iterations: 42 
+## Remaining iterations: 41 
+## Remaining iterations: 40 
+## Remaining iterations: 39 
+## Remaining iterations: 38 
+## Remaining iterations: 37 
+## Remaining iterations: 36 
+## Remaining iterations: 35 
+## Remaining iterations: 34 
+## Remaining iterations: 33 
+## Remaining iterations: 32 
+## Remaining iterations: 31 
+## Remaining iterations: 30 
+## Remaining iterations: 29 
+## Remaining iterations: 28 
+## Remaining iterations: 27 
+## Remaining iterations: 26 
+## Remaining iterations: 25 
+## Remaining iterations: 24 
+## Remaining iterations: 23 
+## Remaining iterations: 22 
+## Remaining iterations: 21 
+## Remaining iterations: 20 
+## Remaining iterations: 19 
+## Remaining iterations: 18 
+## Remaining iterations: 17 
+## Remaining iterations: 16 
+## Remaining iterations: 15 
+## Remaining iterations: 14 
+## Remaining iterations: 13 
+## Remaining iterations: 12 
+## Remaining iterations: 11 
+## Remaining iterations: 10 
+## Remaining iterations: 9 
+## Remaining iterations: 8 
+## Remaining iterations: 7 
+## Remaining iterations: 6 
+## Remaining iterations: 5 
+## Remaining iterations: 4 
+## Remaining iterations: 3 
+## Remaining iterations: 2 
+## Remaining iterations: 1 
+## Remaining iterations: 0
+```
+
+```r
+gcdresult1 <- gCD(spss.data, 1)
+ldresults1 <- LD(spss.data, 1)
+
+plot(gcdresult1)
+```
+
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png)
+
+```r
+plot(fS1)
+```
+
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-2.png)
+
+```r
+plot(ldresults1)
+```
+
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-3.png)
+
+# ---------------2F EFA-----------------------------------
+
+
+```r
+fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
+```
+
+```
+## Factor Analysis using method =  minres
+## Call: fa(r = spss.data, nfactors = 2, fm = "minres", cor = "poly")
+## Standardized loadings (pattern matrix) based upon correlation matrix
+##           MR1   MR2   h2   u2 com
+## SPSS1E   0.85  0.08 0.78 0.22 1.0
+## SPSS2E   0.05  0.79 0.66 0.34 1.0
+## SPSS3E   0.02  0.82 0.69 0.31 1.0
+## SPSS4E   0.88  0.04 0.80 0.20 1.0
+## SPSS5E   0.82 -0.02 0.66 0.34 1.0
+## SPSS6E   0.69 -0.04 0.45 0.55 1.0
+## SPSS7E   0.71 -0.12 0.44 0.56 1.1
+## SPSS8E   0.86  0.04 0.77 0.23 1.0
+## SPSS9E   0.93 -0.03 0.83 0.17 1.0
+## SPSS10E -0.09  0.66 0.39 0.61 1.0
+## 
+##                        MR1  MR2
+## SS loadings           4.74 1.75
+## Proportion Var        0.47 0.17
+## Cumulative Var        0.47 0.65
+## Proportion Explained  0.73 0.27
+## Cumulative Proportion 0.73 1.00
+## 
+##  With factor correlations of 
+##      MR1  MR2
+## MR1 1.00 0.42
+## MR2 0.42 1.00
+## 
+## Mean item complexity =  1
+## Test of the hypothesis that 2 factors are sufficient.
+## 
+## The degrees of freedom for the null model are  45  and the objective function was  7.36 with Chi Square of  1272.53
+## The degrees of freedom for the model are 26  and the objective function was  0.51 
+## 
+## The root mean square of the residuals (RMSR) is  0.03 
+## The df corrected root mean square of the residuals is  0.04 
+## 
+## The harmonic number of observations is  178 with the empirical chi square  16.17  with prob <  0.93 
+## The total number of observations was  178  with Likelihood Chi Square =  87  with prob <  1.7e-08 
+## 
+## Tucker Lewis Index of factoring reliability =  0.913
+## RMSEA index =  0.115  and the 90 % confidence intervals are  0.089 0.142
+## BIC =  -47.72
+## Fit based upon off diagonal values = 1
+## Measures of factor score adequacy             
+##                                                    MR1
+## Correlation of (regression) scores with factors   0.98
+## Multiple R square of scores with factors          0.95
+## Minimum correlation of possible factor scores     0.90
+##                                                    MR2
+## Correlation of (regression) scores with factors   0.91
+## Multiple R square of scores with factors          0.84
+## Minimum correlation of possible factor scores     0.67
+```
+
+ Factor Analysis using method =  minres
+ Call: fa(r = spss.data, nfactors = 2, fm = "minres", cor = "poly")
+ Standardized loadings (pattern matrix) based upon correlation matrix
+           MR1   MR2   h2   u2 com
+ SPSS1E   0.85  0.08 0.78 0.22 1.0
+ SPSS2E   0.05  0.79 0.66 0.34 1.0
+ SPSS3E   0.02  0.82 0.69 0.31 1.0
+ SPSS4E   0.88  0.04 0.80 0.20 1.0
+ SPSS5E   0.82 -0.02 0.66 0.34 1.0
+ SPSS6E   0.69 -0.04 0.45 0.55 1.0
+ SPSS7E   0.71 -0.12 0.44 0.56 1.1
+ SPSS8E   0.86  0.04 0.77 0.23 1.0
+ SPSS9E   0.93 -0.03 0.83 0.17 1.0
+ SPSS10E -0.09  0.66 0.39 0.61 1.0
+ 
+ MR1  MR2
+ SS loadings           4.74 1.75
+ Proportion Var        0.47 0.17 PROP EXPLAINED PER FACTOR
+ Cumulative Var        0.47 0.65 *
+ Proportion Explained  0.73 0.27
+ Cumulative Proportion 0.73 1.00
+ 
+ With factor correlations of 
+ MR1  MR2
+ MR1 1.00 0.42
+ MR2 0.42 1.00
+ 
+ Mean item complexity =  1
+ Test of the hypothesis that 2 factors are sufficient.
+ 
+ The degrees of freedom for the null model are  45  and the objective function was  7.36 with Chi Square of  1272.53
+ The degrees of freedom for the model are 26  and the objective function was  0.51 
+ 
+ The root mean square of the residuals (RMSR) is  0.03 
+ The df corrected root mean square of the residuals is  0.04 
+ 
+ The harmonic number of observations is  178 with the empirical chi square  16.17  with prob <  0.93 
+ The total number of observations was  178  with Likelihood Chi Square =  87  with prob <  1.7e-08 
+ 
+ Tucker Lewis Index of factoring reliability =  0.913
+ RMSEA index =  0.115  and the 90 % confidence intervals are  0.089 0.142
+ BIC =  -47.72
+ Fit based upon off diagonal values = 1
+ Measures of factor score adequacy             
+ MR1  MR2
+ Correlation of (regression) scores with factors   0.98 0.91
+ Multiple R square of scores with factors          0.95 0.84
+ Minimum correlation of possible factor scores     0.90 0.67
+###
+ RMSR = 0.03 *WOW!* huge decrease by adding 1 more factor
+ Prop. var explained = 0.65, 14% raw difference from 1F model
+ No poor factor loadings or low communalities
+ Column and row parsimony is pretty amazing
+ Notice that all negatively worded items load onto factor 2 & all positively worded items load onto factor 1
+ 2F prob wins, but let's try 3F next anyways
+###
+# ------- Outliers 2F ---------
+
+
+```r
+fS2 <- forward.search(spss.data, 2, criteria = c("mah", "GOF"))
+```
+
+```
+## Remaining iterations: 106 
+## Remaining iterations: 105 
+## Remaining iterations: 104 
+## Remaining iterations: 103 
+## Remaining iterations: 102 
+## Remaining iterations: 101 
+## Remaining iterations: 100 
+## Remaining iterations: 99 
+## Remaining iterations: 98 
+## Remaining iterations: 97 
+## Remaining iterations: 96 
+## Remaining iterations: 95 
+## Remaining iterations: 94 
+## Remaining iterations: 93 
+## Remaining iterations: 92 
+## Remaining iterations: 91 
+## Remaining iterations: 90 
+## Remaining iterations: 89 
+## Remaining iterations: 88 
+## Remaining iterations: 87 
+## Remaining iterations: 86 
+## Remaining iterations: 85 
+## Remaining iterations: 84 
+## Remaining iterations: 83 
+## Remaining iterations: 82 
+## Remaining iterations: 81 
+## Remaining iterations: 80 
+## Remaining iterations: 79 
+## Remaining iterations: 78 
+## Remaining iterations: 77 
+## Remaining iterations: 76 
+## Remaining iterations: 75 
+## Remaining iterations: 74 
+## Remaining iterations: 73 
+## Remaining iterations: 72 
+## Remaining iterations: 71 
+## Remaining iterations: 70 
+## Remaining iterations: 69 
+## Remaining iterations: 68 
+## Remaining iterations: 67 
+## Remaining iterations: 66 
+## Remaining iterations: 65 
+## Remaining iterations: 64 
+## Remaining iterations: 63 
+## Remaining iterations: 62 
+## Remaining iterations: 61 
+## Remaining iterations: 60 
+## Remaining iterations: 59 
+## Remaining iterations: 58 
+## Remaining iterations: 57 
+## Remaining iterations: 56 
+## Remaining iterations: 55 
+## Remaining iterations: 54 
+## Remaining iterations: 53 
+## Remaining iterations: 52 
+## Remaining iterations: 51 
+## Remaining iterations: 50 
+## Remaining iterations: 49 
+## Remaining iterations: 48 
+## Remaining iterations: 47 
+## Remaining iterations: 46 
+## Remaining iterations: 45 
+## Remaining iterations: 44 
+## Remaining iterations: 43 
+## Remaining iterations: 42 
+## Remaining iterations: 41 
+## Remaining iterations: 40 
+## Remaining iterations: 39 
+## Remaining iterations: 38 
+## Remaining iterations: 37 
+## Remaining iterations: 36 
+## Remaining iterations: 35 
+## Remaining iterations: 34 
+## Remaining iterations: 33 
+## Remaining iterations: 32 
+## Remaining iterations: 31 
+## Remaining iterations: 30 
+## Remaining iterations: 29 
+## Remaining iterations: 28 
+## Remaining iterations: 27 
+## Remaining iterations: 26 
+## Remaining iterations: 25 
+## Remaining iterations: 24 
+## Remaining iterations: 23 
+## Remaining iterations: 22 
+## Remaining iterations: 21 
+## Remaining iterations: 20 
+## Remaining iterations: 19 
+## Remaining iterations: 18 
+## Remaining iterations: 17 
+## Remaining iterations: 16 
+## Remaining iterations: 15 
+## Remaining iterations: 14 
+## Remaining iterations: 13 
+## Remaining iterations: 12 
+## Remaining iterations: 11 
+## Remaining iterations: 10 
+## Remaining iterations: 9 
+## Remaining iterations: 8 
+## Remaining iterations: 7 
+## Remaining iterations: 6 
+## Remaining iterations: 5 
+## Remaining iterations: 4 
+## Remaining iterations: 3 
+## Remaining iterations: 2 
+## Remaining iterations: 1 
+## Remaining iterations: 0
+```
+
+```r
+gcdresult2 <- gCD(spss.data, 2)
+ldresults2 <- LD(spss.data, 2)
+
+plot(gcdresult2)
+```
+
+![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-1.png)
+
+```r
+plot(fS2)
+```
+
+![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-2.png)
+
+```r
+plot(ldresults2)
+```
+
+![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-3.png)
+
+# ----------------------------3F EFA---------------------------
+
+
+```r
 fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
 ```
 
-    ## Factor Analysis using method =  minres
-    ## Call: fa(r = spss.data, nfactors = 3, fm = "minres", cor = "poly")
-    ## Standardized loadings (pattern matrix) based upon correlation matrix
-    ##           MR1   MR2   MR3   h2    u2 com
-    ## SPSS1E   0.88  0.02  0.11 0.81 0.191 1.0
-    ## SPSS2E  -0.01  0.99 -0.08 0.95 0.051 1.0
-    ## SPSS3E   0.13  0.63  0.24 0.59 0.406 1.4
-    ## SPSS4E   0.93 -0.04  0.14 0.85 0.148 1.1
-    ## SPSS5E   0.78  0.07 -0.17 0.67 0.325 1.1
-    ## SPSS6E   0.64  0.07 -0.21 0.48 0.519 1.3
-    ## SPSS7E   0.65  0.00 -0.22 0.47 0.533 1.2
-    ## SPSS8E   0.86  0.04  0.00 0.77 0.235 1.0
-    ## SPSS9E   0.93 -0.04 -0.01 0.83 0.166 1.0
-    ## SPSS10E  0.02  0.46  0.43 0.47 0.526 2.0
-    ## 
-    ##                        MR1  MR2  MR3
-    ## SS loadings           4.74 1.71 0.45
-    ## Proportion Var        0.47 0.17 0.04
-    ## Cumulative Var        0.47 0.65 0.69
-    ## Proportion Explained  0.69 0.25 0.06
-    ## Cumulative Proportion 0.69 0.94 1.00
-    ## 
-    ##  With factor correlations of 
-    ##      MR1  MR2  MR3
-    ## MR1 1.00 0.38 0.02
-    ## MR2 0.38 1.00 0.19
-    ## MR3 0.02 0.19 1.00
-    ## 
-    ## Mean item complexity =  1.2
-    ## Test of the hypothesis that 3 factors are sufficient.
-    ## 
-    ## The degrees of freedom for the null model are  45  and the objective function was  7.31 with Chi Square of  1284.96
-    ## The degrees of freedom for the model are 18  and the objective function was  0.3 
-    ## 
-    ## The root mean square of the residuals (RMSR) is  0.02 
-    ## The df corrected root mean square of the residuals is  0.03 
-    ## 
-    ## The harmonic number of observations is  180 with the empirical chi square  6.6  with prob <  0.99 
-    ## The total number of observations was  181  with Likelihood Chi Square =  52.43  with prob <  3.2e-05 
-    ## 
-    ## Tucker Lewis Index of factoring reliability =  0.93
-    ## RMSEA index =  0.103  and the 90 % confidence intervals are  0.071 0.136
-    ## BIC =  -41.15
-    ## Fit based upon off diagonal values = 1
-    ## Measures of factor score adequacy             
-    ##                                                    MR1  MR2  MR3
-    ## Correlation of (regression) scores with factors   0.98 0.98 0.72
-    ## Multiple R square of scores with factors          0.96 0.96 0.52
-    ## Minimum correlation of possible factor scores     0.91 0.92 0.03
-
-``` r
-# 44 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.Factor Analysis using method =  minres
-# Call: fa(r = spss.data, nfactors = 3, fm = "minres", cor = "poly")
-# Standardized loadings (pattern matrix) based upon correlation matrix
-# 
-#                        MR1  MR2  MR3
-# SS loadings           4.39 1.49 0.65
-# Proportion Var        0.44 0.15 0.07
-# Cumulative Var        0.44 0.59 0.65 *
-# Proportion Explained  0.67 0.23 0.10
-# Cumulative Proportion 0.67 0.90 1.00
-# 
-#  With factor correlations of 
-#      MR1  MR2  MR3
-# MR1 1.00 0.39 0.13
-# MR2 0.39 1.00 0.37
-# MR3 0.13 0.37 1.00
-# 
-# Mean item complexity =  1.2
-# Test of the hypothesis that 3 factors are sufficient.
-# 
-# The degrees of freedom for the null model are  45  and the objective function was  5.86 with Chi Square of  1030.98
-# The degrees of freedom for the model are 18  and the objective function was  0.14 
-# 
-# The root mean square of the residuals (RMSR) is  0.02 
-# The df corrected root mean square of the residuals is  0.03 
-# 
-# The harmonic number of observations is  180 with the empirical chi square  5.49  with prob <  1 
-# The total number of observations was  181  with Likelihood Chi Square =  24.9  with prob <  0.13 
-# 
-# Tucker Lewis Index of factoring reliability =  0.982
-# RMSEA index =  0.046  and the 90 % confidence intervals are  0 0.086
-# BIC =  -68.68
-# Fit based upon off diagonal values = 1
-# Measures of factor score adequacy             
-#                                                    MR1 MR2  MR3
-# Correlation of (regression) scores with factors   0.97   1 0.76
-# Multiple R square of scores with factors          0.93   1 0.58
-# Minimum correlation of possible factor scores     0.87   1 0.16
-# 
-#         MR1   MR2   MR3       h2        u2      com
-# SPSS1E    0.84    -0.01   0.11    0.7403837   0.259616297 1.036000
-# SPSS2E    -0.01   1.00    0.00    0.9956504   0.004349638 1.000068
-# SPSS3E    0.15    0.47    0.36    0.5686618   0.431338226 2.084417
-# SPSS4E    0.86    -0.07   0.12    0.7317213   0.268278681 1.055702
-# SPSS5E    0.77    0.08    -0.11   0.6345384   0.365461572 1.067785
-# SPSS6E    0.64    0.10    -0.18   0.4664426   0.533557360 1.205680
-# SPSS7E    0.64    0.07    -0.22   0.4508917   0.549108279 1.270510
-# SPSS8E    0.82    0.01    0.04    0.6870119   0.312988095 1.006366
-# SPSS9E    0.88    -0.03   -0.02   0.7511585   0.248841506 1.003480
-# SPSS10E   0.04    0.27    0.56    0.5062815   0.493718467 1.455608
-
-####
-# RMSR = 0.02 *MEH* only decreased by 0.01 after adding an additional factor - not worth it bc RMSR always decreases when adding an additional factor.
-# Prop. var explained = 0.65, 4% raw difference from 2F model
-# No low communalities, BUT
-  # SPSS3E has a cross-loading
-  # In general, column and row parsimony is not nearly as good as 2F model
-  # A question: SPSS2E loads onto MR2 at 1.00(!)
-# Concluding that 2F wins bc improvements in model fit isn't worth it & column and row parsimony worse than 2F model 
-####
+```
+## Factor Analysis using method =  minres
+## Call: fa(r = spss.data, nfactors = 3, fm = "minres", cor = "poly")
+## Standardized loadings (pattern matrix) based upon correlation matrix
+##           MR1   MR2   MR3   h2    u2 com
+## SPSS1E   0.88  0.02  0.11 0.81 0.190 1.0
+## SPSS2E  -0.01  0.98 -0.09 0.94 0.064 1.0
+## SPSS3E   0.12  0.65  0.23 0.60 0.401 1.3
+## SPSS4E   0.93 -0.04  0.15 0.85 0.145 1.1
+## SPSS5E   0.78  0.07 -0.17 0.68 0.322 1.1
+## SPSS6E   0.64  0.07 -0.22 0.49 0.513 1.3
+## SPSS7E   0.65 -0.01 -0.22 0.47 0.531 1.2
+## SPSS8E   0.86  0.04  0.00 0.77 0.231 1.0
+## SPSS9E   0.93 -0.03 -0.01 0.83 0.165 1.0
+## SPSS10E  0.01  0.48  0.41 0.47 0.532 1.9
+## 
+##                        MR1  MR2  MR3
+## SS loadings           4.75 1.73 0.43
+## Proportion Var        0.47 0.17 0.04
+## Cumulative Var        0.47 0.65 0.69
+## Proportion Explained  0.69 0.25 0.06
+## Cumulative Proportion 0.69 0.94 1.00
+## 
+##  With factor correlations of 
+##      MR1  MR2  MR3
+## MR1 1.00 0.39 0.01
+## MR2 0.39 1.00 0.16
+## MR3 0.01 0.16 1.00
+## 
+## Mean item complexity =  1.2
+## Test of the hypothesis that 3 factors are sufficient.
+## 
+## The degrees of freedom for the null model are  45  and the objective function was  7.36 with Chi Square of  1272.53
+## The degrees of freedom for the model are 18  and the objective function was  0.32 
+## 
+## The root mean square of the residuals (RMSR) is  0.02 
+## The df corrected root mean square of the residuals is  0.03 
+## 
+## The harmonic number of observations is  178 with the empirical chi square  6.59  with prob <  0.99 
+## The total number of observations was  178  with Likelihood Chi Square =  53.87  with prob <  1.9e-05 
+## 
+## Tucker Lewis Index of factoring reliability =  0.926
+## RMSEA index =  0.106  and the 90 % confidence intervals are  0.074 0.139
+## BIC =  -39.4
+## Fit based upon off diagonal values = 1
+## Measures of factor score adequacy             
+##                                                    MR1
+## Correlation of (regression) scores with factors   0.98
+## Multiple R square of scores with factors          0.96
+## Minimum correlation of possible factor scores     0.91
+##                                                    MR2
+## Correlation of (regression) scores with factors   0.97
+## Multiple R square of scores with factors          0.95
+## Minimum correlation of possible factor scores     0.89
+##                                                    MR3
+## Correlation of (regression) scores with factors   0.72
+## Multiple R square of scores with factors          0.51
+## Minimum correlation of possible factor scores     0.03
 ```
 
-# 2F with rotations
+ Factor Analysis using method =  minres
+ Call: fa(r = spss.data, nfactors = 3, fm = "minres", cor = "poly")
+ Standardized loadings (pattern matrix) based upon correlation matrix
+           MR1   MR2   MR3   h2    u2 com
+ SPSS1E   0.88  0.02  0.11 0.81 0.190 1.0
+ SPSS2E  -0.01  0.98 -0.09 0.94 0.064 1.0
+ SPSS3E   0.12  0.65  0.23 0.60 0.401 1.3
+ SPSS4E   0.93 -0.04  0.15 0.85 0.145 1.1
+ SPSS5E   0.78  0.07 -0.17 0.68 0.322 1.1
+ SPSS6E   0.64  0.07 -0.22 0.49 0.513 1.3
+ SPSS7E   0.65 -0.01 -0.22 0.47 0.531 1.2
+ SPSS8E   0.86  0.04  0.00 0.77 0.231 1.0
+ SPSS9E   0.93 -0.03 -0.01 0.83 0.165 1.0
+ SPSS10E  0.01  0.48  0.41 0.47 0.532 1.9
+ 
+ MR1  MR2  MR3
+ SS loadings           4.75 1.73 0.43
+ Proportion Var        0.47 0.17 0.04
+ Cumulative Var        0.47 0.65 0.69  *
+ Proportion Explained  0.69 0.25 0.06
+ Cumulative Proportion 0.69 0.94 1.00
+ 
+ With factor correlations of 
+     MR1  MR2  MR3
+ MR1 1.00 0.39 0.01
+ MR2 0.39 1.00 0.16
+ MR3 0.01 0.16 1.00
+ 
+ Mean item complexity =  1.2
+ Test of the hypothesis that 3 factors are sufficient.
+ 
+ The degrees of freedom for the null model are  45  and the objective function was  7.36 with Chi Square of  1272.53
+ The degrees of freedom for the model are 18  and the objective function was  0.32 
+ 
+ The root mean square of the residuals (RMSR) is  0.02 
+ The df corrected root mean square of the residuals is  0.03 
+ 
+ The harmonic number of observations is  178 with the empirical chi square  6.59  with prob <  0.99 
+ The total number of observations was  178  with Likelihood Chi Square =  53.87  with prob <  1.9e-05 
+ 
+ Tucker Lewis Index of factoring reliability =  0.926
+ RMSEA index =  0.106  and the 90 % confidence intervals are  0.074 0.139
+ BIC =  -39.4
+ Fit based upon off diagonal values = 1
+ Measures of factor score adequacy             
+ MR1  MR2  MR3
+ Correlation of (regression) scores with factors   0.98 0.97 0.72
+ Multiple R square of scores with factors          0.96 0.95 0.51
+ Minimum correlation of possible factor scores     0.91 0.89 0.03
+###
+ RMSR = 0.02 *MEH* only decreased by 0.01 after adding an additional factor - not worth it bc RMSR always decreases when adding an additional factor.
+ Prop. var explained = 0.69, 4% raw difference from 2F model
+ No low communalities, BUT
 
-<!-- The original with oblimin: -->
 
-<!-- #         MR1   MR2       h2        u2    com -->
+```r
+  # In general, column and row parsimony is not nearly as good as 2F model
+```
 
-<!-- # SPSS1E   0.81    0.08    0.7236662   0.2763338   1.019276 -->
+ Concluding that 2F wins bc improvements in model fit isn't worth it & column and row parsimony worse than 2F model 
+###
+# ----- Outliers 3F -------
 
-<!-- # SPSS2E   0.06    0.76    0.6178306   0.3821694   1.012793 -->
 
-<!-- # SPSS3E   0.02    0.82    0.6827871   0.3172129   1.000986 -->
+```r
+fS3 <- forward.search(spss.data, 3, criteria = c("mah", "GOF"))
+```
 
-<!-- # SPSS4E   0.82    0.04    0.7018363   0.2981637   1.004479 -->
+```
+## Remaining iterations: 106 
+## Remaining iterations: 105 
+## Remaining iterations: 104 
+## Remaining iterations: 103 
+## Remaining iterations: 102 
+## Remaining iterations: 101 
+## Remaining iterations: 100 
+## Remaining iterations: 99 
+## Remaining iterations: 98 
+## Remaining iterations: 97 
+## Remaining iterations: 96 
+## Remaining iterations: 95 
+## Remaining iterations: 94 
+## Remaining iterations: 93 
+## Remaining iterations: 92 
+## Remaining iterations: 91 
+## Remaining iterations: 90 
+## Remaining iterations: 89 
+## Remaining iterations: 88 
+## Remaining iterations: 87 
+## Remaining iterations: 86 
+## Remaining iterations: 85 
+## Remaining iterations: 84 
+## Remaining iterations: 83 
+## Remaining iterations: 82 
+## Remaining iterations: 81 
+## Remaining iterations: 80 
+## Remaining iterations: 79 
+## Remaining iterations: 78 
+## Remaining iterations: 77 
+## Remaining iterations: 76 
+## Remaining iterations: 75 
+## Remaining iterations: 74 
+## Remaining iterations: 73 
+## Remaining iterations: 72 
+## Remaining iterations: 71 
+## Remaining iterations: 70 
+## Remaining iterations: 69 
+## Remaining iterations: 68 
+## Remaining iterations: 67 
+## Remaining iterations: 66 
+## Remaining iterations: 65 
+## Remaining iterations: 64 
+## Remaining iterations: 63 
+## Remaining iterations: 62 
+## Remaining iterations: 61 
+## Remaining iterations: 60 
+## Remaining iterations: 59 
+## Remaining iterations: 58 
+## Remaining iterations: 57 
+## Remaining iterations: 56 
+## Remaining iterations: 55 
+## Remaining iterations: 54 
+## Remaining iterations: 53 
+## Remaining iterations: 52 
+## Remaining iterations: 51 
+## Remaining iterations: 50 
+## Remaining iterations: 49 
+## Remaining iterations: 48 
+## Remaining iterations: 47 
+## Remaining iterations: 46 
+## Remaining iterations: 45 
+## Remaining iterations: 44 
+## Remaining iterations: 43 
+## Remaining iterations: 42 
+## Remaining iterations: 41 
+## Remaining iterations: 40 
+## Remaining iterations: 39 
+## Remaining iterations: 38 
+## Remaining iterations: 37 
+## Remaining iterations: 36 
+## Remaining iterations: 35 
+## Remaining iterations: 34 
+## Remaining iterations: 33 
+## Remaining iterations: 32 
+## Remaining iterations: 31 
+## Remaining iterations: 30 
+## Remaining iterations: 29 
+## Remaining iterations: 28 
+## Remaining iterations: 27 
+## Remaining iterations: 26 
+## Remaining iterations: 25 
+## Remaining iterations: 24 
+## Remaining iterations: 23 
+## Remaining iterations: 22 
+## Remaining iterations: 21 
+## Remaining iterations: 20 
+## Remaining iterations: 19 
+## Remaining iterations: 18 
+## Remaining iterations: 17 
+## Remaining iterations: 16 
+## Remaining iterations: 15 
+## Remaining iterations: 14 
+## Remaining iterations: 13 
+## Remaining iterations: 12 
+## Remaining iterations: 11 
+## Remaining iterations: 10 
+## Remaining iterations: 9 
+## Remaining iterations: 8 
+## Remaining iterations: 7 
+## Remaining iterations: 6 
+## Remaining iterations: 5 
+## Remaining iterations: 4 
+## Remaining iterations: 3 
+## Remaining iterations: 2 
+## Remaining iterations: 1 
+## Remaining iterations: 0
+```
 
-<!-- # SPSS5E   0.80    -0.01   0.6295613   0.3704387   1.000441 -->
+```r
+gcdresult3 <- gCD(spss.data, 3)
+ldresults3 <- LD(spss.data, 3)
 
-<!-- # SPSS6E   0.68    -0.04   0.4448130   0.5551870   1.006886 -->
+plot(gcdresult3)
+```
 
-<!-- # SPSS7E   0.69    -0.11   0.4244661   0.5755339   1.054229 -->
+![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-1.png)
 
-<!-- # SPSS8E   0.80    0.05    0.6842864   0.3157136   1.009224 -->
+```r
+plot(fS3)
+```
 
-<!-- # SPSS9E   0.88    -0.04   0.7508519   0.2491481   1.003669 -->
+![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-2.png)
 
-<!-- # SPSS10E  -0.09   0.66    0.3975595   0.6024405   1.036934 -->
+```r
+plot(ldresults3)
+```
 
-``` r
+![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-3.png)
+
+# ---------------------2F EFA bentlerQ Rotation----------------------------------
+
+
+```r
 fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = 'bentlerQ', nfactors = 2)
 ```
 
-    ## Factor Analysis using method =  minres
-    ## Call: fa(r = spss.data, nfactors = 2, rotate = "bentlerQ", fm = "minres", 
-    ##     cor = "poly")
-    ## Standardized loadings (pattern matrix) based upon correlation matrix
-    ##           MR1   MR2   h2   u2 com
-    ## SPSS1E   0.85  0.08 0.79 0.21 1.0
-    ## SPSS2E   0.04  0.79 0.66 0.34 1.0
-    ## SPSS3E   0.02  0.82 0.69 0.31 1.0
-    ## SPSS4E   0.88  0.04 0.80 0.20 1.0
-    ## SPSS5E   0.82 -0.02 0.66 0.34 1.0
-    ## SPSS6E   0.68 -0.04 0.45 0.55 1.0
-    ## SPSS7E   0.71 -0.12 0.44 0.56 1.1
-    ## SPSS8E   0.86  0.04 0.77 0.23 1.0
-    ## SPSS9E   0.93 -0.04 0.83 0.17 1.0
-    ## SPSS10E -0.09  0.66 0.39 0.61 1.0
-    ## 
-    ##                        MR1  MR2
-    ## SS loadings           4.72 1.75
-    ## Proportion Var        0.47 0.17
-    ## Cumulative Var        0.47 0.65
-    ## Proportion Explained  0.73 0.27
-    ## Cumulative Proportion 0.73 1.00
-    ## 
-    ##  With factor correlations of 
-    ##      MR1  MR2
-    ## MR1 1.00 0.43
-    ## MR2 0.43 1.00
-    ## 
-    ## Mean item complexity =  1
-    ## Test of the hypothesis that 2 factors are sufficient.
-    ## 
-    ## The degrees of freedom for the null model are  45  and the objective function was  7.31 with Chi Square of  1284.96
-    ## The degrees of freedom for the model are 26  and the objective function was  0.49 
-    ## 
-    ## The root mean square of the residuals (RMSR) is  0.03 
-    ## The df corrected root mean square of the residuals is  0.04 
-    ## 
-    ## The harmonic number of observations is  180 with the empirical chi square  16.09  with prob <  0.93 
-    ## The total number of observations was  181  with Likelihood Chi Square =  84.89  with prob <  3.6e-08 
-    ## 
-    ## Tucker Lewis Index of factoring reliability =  0.917
-    ## RMSEA index =  0.112  and the 90 % confidence intervals are  0.086 0.139
-    ## BIC =  -50.27
-    ## Fit based upon off diagonal values = 1
-    ## Measures of factor score adequacy             
-    ##                                                    MR1  MR2
-    ## Correlation of (regression) scores with factors   0.98 0.91
-    ## Multiple R square of scores with factors          0.95 0.84
-    ## Minimum correlation of possible factor scores     0.90 0.67
-
-``` r
-#          MR1   MR2       h2        u2    com
-# SPSS1E    0.81    0.08    0.7236662   0.2763338   1.018186
-# SPSS2E    0.05    0.76    0.6178306   0.3821694   1.010090
-# SPSS3E    0.01    0.82    0.6827871   0.3172129   1.000358
-# SPSS4E    0.82    0.04    0.7018363   0.2981637   1.003928
-# SPSS5E    0.80    -0.01   0.6295613   0.3704387   1.000650
-# SPSS6E    0.68    -0.04   0.4448130   0.5551870   1.007671
-# SPSS7E    0.70    -0.12   0.4244661   0.5755339   1.056426
-# SPSS8E    0.80    0.05    0.6842864   0.3157136   1.008445
-# SPSS9E    0.88    -0.04   0.7508519   0.2491481   1.004244
-# SPSS10E   -0.10   0.67    0.3975595   0.6024405   1.041620
-
-####
-# Very close to begin identifical to oblimin
-####
+```
+## Factor Analysis using method =  minres
+## Call: fa(r = spss.data, nfactors = 2, rotate = "bentlerQ", fm = "minres", 
+##     cor = "poly")
+## Standardized loadings (pattern matrix) based upon correlation matrix
+##           MR1   MR2   h2   u2 com
+## SPSS1E   0.85  0.08 0.78 0.22 1.0
+## SPSS2E   0.04  0.79 0.66 0.34 1.0
+## SPSS3E   0.02  0.82 0.69 0.31 1.0
+## SPSS4E   0.88  0.04 0.80 0.20 1.0
+## SPSS5E   0.82 -0.02 0.66 0.34 1.0
+## SPSS6E   0.69 -0.05 0.45 0.55 1.0
+## SPSS7E   0.71 -0.12 0.44 0.56 1.1
+## SPSS8E   0.86  0.04 0.77 0.23 1.0
+## SPSS9E   0.93 -0.04 0.83 0.17 1.0
+## SPSS10E -0.09  0.66 0.39 0.61 1.0
+## 
+##                        MR1  MR2
+## SS loadings           4.74 1.75
+## Proportion Var        0.47 0.17
+## Cumulative Var        0.47 0.65
+## Proportion Explained  0.73 0.27
+## Cumulative Proportion 0.73 1.00
+## 
+##  With factor correlations of 
+##      MR1  MR2
+## MR1 1.00 0.43
+## MR2 0.43 1.00
+## 
+## Mean item complexity =  1
+## Test of the hypothesis that 2 factors are sufficient.
+## 
+## The degrees of freedom for the null model are  45  and the objective function was  7.36 with Chi Square of  1272.53
+## The degrees of freedom for the model are 26  and the objective function was  0.51 
+## 
+## The root mean square of the residuals (RMSR) is  0.03 
+## The df corrected root mean square of the residuals is  0.04 
+## 
+## The harmonic number of observations is  178 with the empirical chi square  16.17  with prob <  0.93 
+## The total number of observations was  178  with Likelihood Chi Square =  87  with prob <  1.7e-08 
+## 
+## Tucker Lewis Index of factoring reliability =  0.913
+## RMSEA index =  0.115  and the 90 % confidence intervals are  0.089 0.142
+## BIC =  -47.72
+## Fit based upon off diagonal values = 1
+## Measures of factor score adequacy             
+##                                                    MR1
+## Correlation of (regression) scores with factors   0.98
+## Multiple R square of scores with factors          0.95
+## Minimum correlation of possible factor scores     0.90
+##                                                    MR2
+## Correlation of (regression) scores with factors   0.91
+## Multiple R square of scores with factors          0.84
+## Minimum correlation of possible factor scores     0.67
 ```
 
-## GeominQ
+           MR1   MR2   h2   u2 com
+ SPSS1E   0.85  0.08 0.78 0.22 1.0
+ SPSS2E   0.04  0.79 0.66 0.34 1.0
+ SPSS3E   0.02  0.82 0.69 0.31 1.0
+ SPSS4E   0.88  0.04 0.80 0.20 1.0
+ SPSS5E   0.82 -0.02 0.66 0.34 1.0
+ SPSS6E   0.69 -0.05 0.45 0.55 1.0
+ SPSS7E   0.71 -0.12 0.44 0.56 1.1
+ SPSS8E   0.86  0.04 0.77 0.23 1.0
+ SPSS9E   0.93 -0.04 0.83 0.17 1.0
+ SPSS10E -0.09  0.66 0.39 0.61 1.0
+###
+ Very close to begin identifical to oblimin
+###
+# ---------------------2F EFA geominQ Rotation----------------------------------
 
-``` r
+
+```r
 fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = 'geominQ', nfactors = 2)
 ```
 
-    ## Factor Analysis using method =  minres
-    ## Call: fa(r = spss.data, nfactors = 2, rotate = "geominQ", fm = "minres", 
-    ##     cor = "poly")
-    ## Standardized loadings (pattern matrix) based upon correlation matrix
-    ##           MR1   MR2   h2   u2 com
-    ## SPSS1E   0.85  0.09 0.79 0.21 1.0
-    ## SPSS2E   0.05  0.79 0.66 0.34 1.0
-    ## SPSS3E   0.03  0.82 0.69 0.31 1.0
-    ## SPSS4E   0.88  0.05 0.80 0.20 1.0
-    ## SPSS5E   0.82 -0.01 0.66 0.34 1.0
-    ## SPSS6E   0.68 -0.03 0.45 0.55 1.0
-    ## SPSS7E   0.70 -0.11 0.44 0.56 1.1
-    ## SPSS8E   0.85  0.05 0.77 0.23 1.0
-    ## SPSS9E   0.92 -0.03 0.83 0.17 1.0
-    ## SPSS10E -0.09  0.66 0.39 0.61 1.0
-    ## 
-    ##                        MR1  MR2
-    ## SS loadings           4.71 1.76
-    ## Proportion Var        0.47 0.18
-    ## Cumulative Var        0.47 0.65
-    ## Proportion Explained  0.73 0.27
-    ## Cumulative Proportion 0.73 1.00
-    ## 
-    ##  With factor correlations of 
-    ##      MR1  MR2
-    ## MR1 1.00 0.41
-    ## MR2 0.41 1.00
-    ## 
-    ## Mean item complexity =  1
-    ## Test of the hypothesis that 2 factors are sufficient.
-    ## 
-    ## The degrees of freedom for the null model are  45  and the objective function was  7.31 with Chi Square of  1284.96
-    ## The degrees of freedom for the model are 26  and the objective function was  0.49 
-    ## 
-    ## The root mean square of the residuals (RMSR) is  0.03 
-    ## The df corrected root mean square of the residuals is  0.04 
-    ## 
-    ## The harmonic number of observations is  180 with the empirical chi square  16.09  with prob <  0.93 
-    ## The total number of observations was  181  with Likelihood Chi Square =  84.89  with prob <  3.6e-08 
-    ## 
-    ## Tucker Lewis Index of factoring reliability =  0.917
-    ## RMSEA index =  0.112  and the 90 % confidence intervals are  0.086 0.139
-    ## BIC =  -50.27
-    ## Fit based upon off diagonal values = 1
-    ## Measures of factor score adequacy             
-    ##                                                    MR1  MR2
-    ## Correlation of (regression) scores with factors   0.97 0.91
-    ## Multiple R square of scores with factors          0.95 0.83
-    ## Minimum correlation of possible factor scores     0.90 0.67
-
-``` r
-#           MR1   MR2       h2        u2    com
-# SPSS1E    0.81    0.09    0.7236662   0.2763338   1.022965
-# SPSS2E    0.06    0.76    0.6178306   0.3821694   1.014742
-# SPSS3E    0.02    0.82    0.6827871   0.3172129   1.001591
-# SPSS4E    0.82    0.05    0.7018363   0.2981637   1.006339
-# SPSS5E    0.80    0.00    0.6295613   0.3704387   1.000070
-# SPSS6E    0.68    -0.03   0.4448130   0.5551870   1.004967
-# SPSS7E    0.69    -0.11   0.4244661   0.5755339   1.048740
-# SPSS8E    0.80    0.06    0.6842864   0.3157136   1.011826
-# SPSS9E    0.88    -0.03   0.7508519   0.2491481   1.002307
-# SPSS10E   -0.09   0.66    0.3975595   0.6024405   1.033722
-
-####
-# Identical to oblimin
-####
+```
+## Factor Analysis using method =  minres
+## Call: fa(r = spss.data, nfactors = 2, rotate = "geominQ", fm = "minres", 
+##     cor = "poly")
+## Standardized loadings (pattern matrix) based upon correlation matrix
+##           MR1   MR2   h2   u2 com
+## SPSS1E   0.85  0.09 0.78 0.22 1.0
+## SPSS2E   0.05  0.79 0.66 0.34 1.0
+## SPSS3E   0.03  0.82 0.69 0.31 1.0
+## SPSS4E   0.88  0.05 0.80 0.20 1.0
+## SPSS5E   0.82 -0.01 0.66 0.34 1.0
+## SPSS6E   0.68 -0.04 0.45 0.55 1.0
+## SPSS7E   0.70 -0.11 0.44 0.56 1.1
+## SPSS8E   0.86  0.05 0.77 0.23 1.0
+## SPSS9E   0.92 -0.03 0.83 0.17 1.0
+## SPSS10E -0.08  0.65 0.39 0.61 1.0
+## 
+##                        MR1  MR2
+## SS loadings           4.72 1.76
+## Proportion Var        0.47 0.18
+## Cumulative Var        0.47 0.65
+## Proportion Explained  0.73 0.27
+## Cumulative Proportion 0.73 1.00
+## 
+##  With factor correlations of 
+##      MR1  MR2
+## MR1 1.00 0.41
+## MR2 0.41 1.00
+## 
+## Mean item complexity =  1
+## Test of the hypothesis that 2 factors are sufficient.
+## 
+## The degrees of freedom for the null model are  45  and the objective function was  7.36 with Chi Square of  1272.53
+## The degrees of freedom for the model are 26  and the objective function was  0.51 
+## 
+## The root mean square of the residuals (RMSR) is  0.03 
+## The df corrected root mean square of the residuals is  0.04 
+## 
+## The harmonic number of observations is  178 with the empirical chi square  16.17  with prob <  0.93 
+## The total number of observations was  178  with Likelihood Chi Square =  87  with prob <  1.7e-08 
+## 
+## Tucker Lewis Index of factoring reliability =  0.913
+## RMSEA index =  0.115  and the 90 % confidence intervals are  0.089 0.142
+## BIC =  -47.72
+## Fit based upon off diagonal values = 1
+## Measures of factor score adequacy             
+##                                                    MR1
+## Correlation of (regression) scores with factors   0.98
+## Multiple R square of scores with factors          0.95
+## Minimum correlation of possible factor scores     0.90
+##                                                    MR2
+## Correlation of (regression) scores with factors   0.91
+## Multiple R square of scores with factors          0.83
+## Minimum correlation of possible factor scores     0.67
 ```
 
-## Quartimin
+           MR1   MR2   h2   u2 com
+ SPSS1E   0.85  0.09 0.78 0.22 1.0
+ SPSS2E   0.05  0.79 0.66 0.34 1.0
+ SPSS3E   0.03  0.82 0.69 0.31 1.0
+ SPSS4E   0.88  0.05 0.80 0.20 1.0
+ SPSS5E   0.82 -0.01 0.66 0.34 1.0
+ SPSS6E   0.68 -0.04 0.45 0.55 1.0
+ SPSS7E   0.70 -0.11 0.44 0.56 1.1
+ SPSS8E   0.86  0.05 0.77 0.23 1.0
+ SPSS9E   0.92 -0.03 0.83 0.17 1.0
+ SPSS10E -0.08  0.65 0.39 0.61 1.0
+###
+ Almost identical to oblimin
+###
+# ------------------2F EFA quartimin Rotation-------------------------------------
 
-``` r
+
+```r
 fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "quartimin", nfactors = 2)
 ```
 
-    ## Factor Analysis using method =  minres
-    ## Call: fa(r = spss.data, nfactors = 2, rotate = "quartimin", fm = "minres", 
-    ##     cor = "poly")
-    ## Standardized loadings (pattern matrix) based upon correlation matrix
-    ##           MR1   MR2   h2   u2 com
-    ## SPSS1E   0.85  0.08 0.79 0.21 1.0
-    ## SPSS2E   0.05  0.79 0.66 0.34 1.0
-    ## SPSS3E   0.02  0.82 0.69 0.31 1.0
-    ## SPSS4E   0.88  0.04 0.80 0.20 1.0
-    ## SPSS5E   0.82 -0.02 0.66 0.34 1.0
-    ## SPSS6E   0.68 -0.04 0.45 0.55 1.0
-    ## SPSS7E   0.70 -0.12 0.44 0.56 1.1
-    ## SPSS8E   0.86  0.05 0.77 0.23 1.0
-    ## SPSS9E   0.93 -0.04 0.83 0.17 1.0
-    ## SPSS10E -0.09  0.66 0.39 0.61 1.0
-    ## 
-    ##                        MR1  MR2
-    ## SS loadings           4.72 1.75
-    ## Proportion Var        0.47 0.17
-    ## Cumulative Var        0.47 0.65
-    ## Proportion Explained  0.73 0.27
-    ## Cumulative Proportion 0.73 1.00
-    ## 
-    ##  With factor correlations of 
-    ##      MR1  MR2
-    ## MR1 1.00 0.42
-    ## MR2 0.42 1.00
-    ## 
-    ## Mean item complexity =  1
-    ## Test of the hypothesis that 2 factors are sufficient.
-    ## 
-    ## The degrees of freedom for the null model are  45  and the objective function was  7.31 with Chi Square of  1284.96
-    ## The degrees of freedom for the model are 26  and the objective function was  0.49 
-    ## 
-    ## The root mean square of the residuals (RMSR) is  0.03 
-    ## The df corrected root mean square of the residuals is  0.04 
-    ## 
-    ## The harmonic number of observations is  180 with the empirical chi square  16.09  with prob <  0.93 
-    ## The total number of observations was  181  with Likelihood Chi Square =  84.89  with prob <  3.6e-08 
-    ## 
-    ## Tucker Lewis Index of factoring reliability =  0.917
-    ## RMSEA index =  0.112  and the 90 % confidence intervals are  0.086 0.139
-    ## BIC =  -50.27
-    ## Fit based upon off diagonal values = 1
-    ## Measures of factor score adequacy             
-    ##                                                    MR1  MR2
-    ## Correlation of (regression) scores with factors   0.98 0.91
-    ## Multiple R square of scores with factors          0.95 0.83
-    ## Minimum correlation of possible factor scores     0.90 0.67
-
-``` r
-#          MR1   MR2       h2        u2    com
-# SPSS1E    0.81    0.08    0.7236662   0.2763338   1.019276
-# SPSS2E    0.06    0.76    0.6178306   0.3821694   1.012793
-# SPSS3E    0.02    0.82    0.6827871   0.3172129   1.000986
-# SPSS4E    0.82    0.04    0.7018363   0.2981637   1.004479
-# SPSS5E    0.80    -0.01   0.6295613   0.3704387   1.000441
-# SPSS6E    0.68    -0.04   0.4448130   0.5551870   1.006886
-# SPSS7E    0.69    -0.11   0.4244661   0.5755339   1.054229
-# SPSS8E    0.80    0.05    0.6842864   0.3157136   1.009224
-# SPSS9E    0.88    -0.04   0.7508519   0.2491481   1.003669
-# SPSS10E   -0.09   0.66    0.3975595   0.6024405   1.036934
-
-####
-# Identical to oblimin
-####
+```
+## Factor Analysis using method =  minres
+## Call: fa(r = spss.data, nfactors = 2, rotate = "quartimin", fm = "minres", 
+##     cor = "poly")
+## Standardized loadings (pattern matrix) based upon correlation matrix
+##           MR1   MR2   h2   u2 com
+## SPSS1E   0.85  0.08 0.78 0.22 1.0
+## SPSS2E   0.05  0.79 0.66 0.34 1.0
+## SPSS3E   0.02  0.82 0.69 0.31 1.0
+## SPSS4E   0.88  0.04 0.80 0.20 1.0
+## SPSS5E   0.82 -0.02 0.66 0.34 1.0
+## SPSS6E   0.69 -0.04 0.45 0.55 1.0
+## SPSS7E   0.71 -0.12 0.44 0.56 1.1
+## SPSS8E   0.86  0.04 0.77 0.23 1.0
+## SPSS9E   0.93 -0.03 0.83 0.17 1.0
+## SPSS10E -0.09  0.66 0.39 0.61 1.0
+## 
+##                        MR1  MR2
+## SS loadings           4.74 1.75
+## Proportion Var        0.47 0.17
+## Cumulative Var        0.47 0.65
+## Proportion Explained  0.73 0.27
+## Cumulative Proportion 0.73 1.00
+## 
+##  With factor correlations of 
+##      MR1  MR2
+## MR1 1.00 0.42
+## MR2 0.42 1.00
+## 
+## Mean item complexity =  1
+## Test of the hypothesis that 2 factors are sufficient.
+## 
+## The degrees of freedom for the null model are  45  and the objective function was  7.36 with Chi Square of  1272.53
+## The degrees of freedom for the model are 26  and the objective function was  0.51 
+## 
+## The root mean square of the residuals (RMSR) is  0.03 
+## The df corrected root mean square of the residuals is  0.04 
+## 
+## The harmonic number of observations is  178 with the empirical chi square  16.17  with prob <  0.93 
+## The total number of observations was  178  with Likelihood Chi Square =  87  with prob <  1.7e-08 
+## 
+## Tucker Lewis Index of factoring reliability =  0.913
+## RMSEA index =  0.115  and the 90 % confidence intervals are  0.089 0.142
+## BIC =  -47.72
+## Fit based upon off diagonal values = 1
+## Measures of factor score adequacy             
+##                                                    MR1
+## Correlation of (regression) scores with factors   0.98
+## Multiple R square of scores with factors          0.95
+## Minimum correlation of possible factor scores     0.90
+##                                                    MR2
+## Correlation of (regression) scores with factors   0.91
+## Multiple R square of scores with factors          0.84
+## Minimum correlation of possible factor scores     0.67
 ```
 
-## Promax
+         MR1   MR2   h2   u2 com
+ SPSS1E   0.85  0.08 0.78 0.22 1.0
+ SPSS2E   0.05  0.79 0.66 0.34 1.0
+ SPSS3E   0.02  0.82 0.69 0.31 1.0
+ SPSS4E   0.88  0.04 0.80 0.20 1.0
+ SPSS5E   0.82 -0.02 0.66 0.34 1.0
+ SPSS6E   0.69 -0.04 0.45 0.55 1.0
+ SPSS7E   0.71 -0.12 0.44 0.56 1.1
+ SPSS8E   0.86  0.04 0.77 0.23 1.0
+ SPSS9E   0.93 -0.03 0.83 0.17 1.0
+ SPSS10E -0.09  0.66 0.39 0.61 1.0
+###
+ Identical to oblimin
+###
+# -----------------------2F EFA Promax Rotation--------------------------------
 
-``` r
+
+```r
 fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "Promax", nfactors = 2)
 ```
 
-    ## Factor Analysis using method =  minres
-    ## Call: fa(r = spss.data, nfactors = 2, rotate = "Promax", fm = "minres", 
-    ##     cor = "poly")
-    ## Standardized loadings (pattern matrix) based upon correlation matrix
-    ##           MR1   MR2   h2   u2 com
-    ## SPSS1E   0.85  0.09 0.79 0.21   1
-    ## SPSS2E   0.08  0.78 0.66 0.34   1
-    ## SPSS3E   0.06  0.81 0.69 0.31   1
-    ## SPSS4E   0.87  0.05 0.80 0.20   1
-    ## SPSS5E   0.81 -0.01 0.66 0.34   1
-    ## SPSS6E   0.68 -0.03 0.45 0.55   1
-    ## SPSS7E   0.69 -0.11 0.44 0.56   1
-    ## SPSS8E   0.85  0.06 0.77 0.23   1
-    ## SPSS9E   0.92 -0.02 0.83 0.17   1
-    ## SPSS10E -0.06  0.65 0.39 0.61   1
-    ## 
-    ##                        MR1  MR2
-    ## SS loadings           4.72 1.75
-    ## Proportion Var        0.47 0.17
-    ## Cumulative Var        0.47 0.65
-    ## Proportion Explained  0.73 0.27
-    ## Cumulative Proportion 0.73 1.00
-    ## 
-    ##  With factor correlations of 
-    ##      MR1  MR2
-    ## MR1 1.00 0.37
-    ## MR2 0.37 1.00
-    ## 
-    ## Mean item complexity =  1
-    ## Test of the hypothesis that 2 factors are sufficient.
-    ## 
-    ## The degrees of freedom for the null model are  45  and the objective function was  7.31 with Chi Square of  1284.96
-    ## The degrees of freedom for the model are 26  and the objective function was  0.49 
-    ## 
-    ## The root mean square of the residuals (RMSR) is  0.03 
-    ## The df corrected root mean square of the residuals is  0.04 
-    ## 
-    ## The harmonic number of observations is  180 with the empirical chi square  16.09  with prob <  0.93 
-    ## The total number of observations was  181  with Likelihood Chi Square =  84.89  with prob <  3.6e-08 
-    ## 
-    ## Tucker Lewis Index of factoring reliability =  0.917
-    ## RMSEA index =  0.112  and the 90 % confidence intervals are  0.086 0.139
-    ## BIC =  -50.27
-    ## Fit based upon off diagonal values = 1
-    ## Measures of factor score adequacy             
-    ##                                                    MR1  MR2
-    ## Correlation of (regression) scores with factors   0.97 0.91
-    ## Multiple R square of scores with factors          0.95 0.83
-    ## Minimum correlation of possible factor scores     0.90 0.66
-
-``` r
-#         MR1   MR2       h2        u2    com
-# SPSS1E    0.81    0.09    0.7236662   0.2763338   1.025101
-# SPSS2E    0.09    0.75    0.6178306   0.3821694   1.026425
-# SPSS3E    0.05    0.81    0.6827871   0.3172129   1.006460
-# SPSS4E    0.82    0.05    0.7018363   0.2981637   1.007655
-# SPSS5E    0.79    0.00    0.6295613   0.3704387   1.000000
-# SPSS6E    0.68    -0.03   0.4448130   0.5551870   1.003746
-# SPSS7E    0.69    -0.10   0.4244661   0.5755339   1.044521
-# SPSS8E    0.80    0.07    0.6842864   0.3157136   1.013513
-# SPSS9E    0.88    -0.02   0.7508519   0.2491481   1.001514
-# SPSS10E   -0.07   0.65    0.3975595   0.6024405   1.021111
-
-####
-# Not very differnt from oblimin, if anything - .01 worse than oblimin
-####
+```
+## Factor Analysis using method =  minres
+## Call: fa(r = spss.data, nfactors = 2, rotate = "Promax", fm = "minres", 
+##     cor = "poly")
+## Standardized loadings (pattern matrix) based upon correlation matrix
+##           MR1   MR2   h2   u2 com
+## SPSS1E   0.85  0.09 0.78 0.22   1
+## SPSS2E   0.08  0.78 0.66 0.34   1
+## SPSS3E   0.06  0.81 0.69 0.31   1
+## SPSS4E   0.87  0.05 0.80 0.20   1
+## SPSS5E   0.81  0.00 0.66 0.34   1
+## SPSS6E   0.68 -0.03 0.45 0.55   1
+## SPSS7E   0.70 -0.11 0.44 0.56   1
+## SPSS8E   0.86  0.05 0.77 0.23   1
+## SPSS9E   0.92 -0.02 0.83 0.17   1
+## SPSS10E -0.06  0.64 0.39 0.61   1
+## 
+##                        MR1  MR2
+## SS loadings           4.74 1.75
+## Proportion Var        0.47 0.17
+## Cumulative Var        0.47 0.65
+## Proportion Explained  0.73 0.27
+## Cumulative Proportion 0.73 1.00
+## 
+##  With factor correlations of 
+##      MR1  MR2
+## MR1 1.00 0.37
+## MR2 0.37 1.00
+## 
+## Mean item complexity =  1
+## Test of the hypothesis that 2 factors are sufficient.
+## 
+## The degrees of freedom for the null model are  45  and the objective function was  7.36 with Chi Square of  1272.53
+## The degrees of freedom for the model are 26  and the objective function was  0.51 
+## 
+## The root mean square of the residuals (RMSR) is  0.03 
+## The df corrected root mean square of the residuals is  0.04 
+## 
+## The harmonic number of observations is  178 with the empirical chi square  16.17  with prob <  0.93 
+## The total number of observations was  178  with Likelihood Chi Square =  87  with prob <  1.7e-08 
+## 
+## Tucker Lewis Index of factoring reliability =  0.913
+## RMSEA index =  0.115  and the 90 % confidence intervals are  0.089 0.142
+## BIC =  -47.72
+## Fit based upon off diagonal values = 1
+## Measures of factor score adequacy             
+##                                                    MR1
+## Correlation of (regression) scores with factors   0.97
+## Multiple R square of scores with factors          0.95
+## Minimum correlation of possible factor scores     0.90
+##                                                    MR2
+## Correlation of (regression) scores with factors   0.91
+## Multiple R square of scores with factors          0.83
+## Minimum correlation of possible factor scores     0.66
 ```
 
-I quickly ran the remaining oblique rotations mentioned in the ‘fa’
-function’s documentation. They’re all nearly identical to oblimin as the
-ones above.
+ MR1   MR2   h2   u2 com
+ SPSS1E   0.85  0.09 0.78 0.22   1
+ SPSS2E   0.08  0.78 0.66 0.34   1
+ SPSS3E   0.06  0.81 0.69 0.31   1
+ SPSS4E   0.87  0.05 0.80 0.20   1
+ SPSS5E   0.81  0.00 0.66 0.34   1
+ SPSS6E   0.68 -0.03 0.45 0.55   1
+ SPSS7E   0.70 -0.11 0.44 0.56   1
+ SPSS8E   0.86  0.05 0.77 0.23   1
+ SPSS9E   0.92 -0.02 0.83 0.17   1
+ SPSS10E -0.06  0.64 0.39 0.61   1
+###
+ Also, not very different from oblimin
+###
+ Decided to just stick with oblimin rotation as factor loadings did not really differ between the rotations
+# -------------------------Bifactor EFA attempt------------------------------
 
-# Bifactor model
 
-``` r
+```r
 psych::schmid(model = poly.spss.data$rho, nfactors = 2, fm = 'minres', rotate = 'oblimin', na.obs = NA, option = 'equal')
 ```
 
-    ## 
-    ## Three factors are required for identification -- general factor loadings set to be equal. 
-    ## Proceed with caution. 
-    ## Think about redoing the analysis with alternative values of the 'option' setting.
-
-    ## Schmid-Leiman analysis 
-    ## Call: psych::schmid(model = poly.spss.data$rho, nfactors = 2, fm = "minres", 
-    ##     rotate = "oblimin", option = "equal", na.obs = NA)
-    ## 
-    ## Schmid Leiman Factor loadings greater than  0.2 
-    ##            g   F1*   F2*   h2   u2   p2
-    ## SPSS1E  0.61  0.64       0.79 0.21 0.47
-    ## SPSS2E  0.54        0.60 0.66 0.34 0.45
-    ## SPSS3E  0.55        0.62 0.69 0.31 0.44
-    ## SPSS4E  0.60  0.67       0.80 0.20 0.45
-    ## SPSS5E  0.52  0.62       0.66 0.34 0.41
-    ## SPSS6E  0.42  0.52       0.45 0.55 0.40
-    ## SPSS7E  0.38  0.53       0.44 0.56 0.33
-    ## SPSS8E  0.59  0.65       0.77 0.23 0.45
-    ## SPSS9E  0.58  0.70       0.83 0.17 0.40
-    ## SPSS10E 0.37        0.50 0.39 0.61 0.35
-    ## 
-    ## With eigenvalues of:
-    ##   g F1* F2* 
-    ## 2.7 2.7 1.0 
-    ## 
-    ## general/max  1   max/min =   2.69
-    ## mean percent general =  0.42    with sd =  0.05 and cv of  0.11 
-    ## 
-    ##  The orthogonal loadings were 
-    ## Unstandardized loadings based upon covariance matrix
-    ##           F1   F2   h2   u2   H2   U2
-    ## SPSS1E  0.84 0.27 0.79 0.21 0.79 0.21
-    ## SPSS2E  0.21 0.78 0.66 0.34 0.66 0.34
-    ## SPSS3E  0.20 0.81 0.69 0.31 0.69 0.31
-    ## SPSS4E  0.87 0.24 0.80 0.20 0.80 0.20
-    ## SPSS5E  0.79 0.16 0.66 0.34 0.66 0.34
-    ## SPSS6E  0.66 0.12 0.45 0.55 0.45 0.55
-    ## SPSS7E  0.66 0.04 0.44 0.56 0.44 0.56
-    ## SPSS8E  0.84 0.24 0.77 0.23 0.77 0.23
-    ## SPSS9E  0.90 0.17 0.83 0.17 0.83 0.17
-    ## SPSS10E 0.05 0.62 0.39 0.61 0.39 0.61
-    ## 
-    ##                  F1   F2
-    ## SS loadings    4.57 1.91
-    ## Proportion Var 0.46 0.19
-    ## Cumulative Var 0.46 0.65
-    ## 
-    ## The degrees of freedom are 26  and the fit is  0.49 
-    ## 
-    ## The root mean square of the residuals is  0.03 
-    ## The df corrected root mean square of the residuals is  0.04
-
-``` r
-#### Carmen's random notes:
-  
-# nfactors: number of factors to extract. Note that it already assumes the general factor
-# What is digits??
-# n.obs is calculated if input is raw data. "NA" is default.
-# 3 factors are the minimum number necessary to define the solution uniquely, but 2F can be done.
-  # A message is issued suggesting that the model is not really well defined.
-  # There are three possible options for this condition: setting the general factor loadings between the two lower order factors to be "equal" which will be the sqrt(oblique correlations between the factors) or to "first" or "second" in which case the general factor is equated with either the first or second group factor.
-
-#### Actual output below:
-
-# Three factors are required for identification -- general factor loadings set to be equal. 
-# Proceed with caution. 
-# Think about redoing the analysis with alternative values of the 'option' setting.
-# 
-# Schmid-Leiman analysis 
-# Call: psych::schmid(model = poly.spss.data$rho, nfactors = 2, fm = "minres", 
-#     rotate = "oblimin", option = "equal", na.obs = NA)
-# 
-# Schmid Leiman Factor loadings greater than  0.2 
-# 
-# With eigenvalues of:
-#    g  F1*  F2* 
-# 2.63 2.46 0.97 
-# 
-# general/max  1.07   max/min =   2.54
-# mean percent general =  0.43    with sd =  0.05 and cv of  0.11 
-# 
-#  The orthogonal loadings were 
-# Unstandardized loadings based upon covariance matrix
-# 
-#                  F1   F2
-# SS loadings    4.20 1.86
-# Proportion Var 0.42 0.19
-# Cumulative Var 0.42 0.60
-# 
-# The degrees of freedom are 26  and the fit is  0.25 
-# 
-# The root mean square of the residuals is  0.03 
-# The df corrected root mean square of the residuals is  0.04
-# 
-#         g     F1*   F2*    h2    u2    p2
-# SPSS1E    0.59    0.61            0.72    0.28    0.48
-# SPSS2E    0.54            0.57    0.62    0.38    0.47
-# SPSS3E    0.55            0.61    0.68    0.32    0.45
-# SPSS4E    0.57    0.62            0.70    0.30    0.46
-# SPSS5E    0.52    0.60            0.63    0.37    0.43
-# SPSS6E    0.42    0.51            0.44    0.56    0.41
-# SPSS7E    0.38    0.52            0.42    0.58    0.34
-# SPSS8E    0.57    0.60            0.68    0.32    0.47
-# SPSS9E    0.56    0.66            0.75    0.25    0.41
-# SPSS10E   0.38            0.50    0.40    0.60    0.36
-# 
-#         F1    F2    h2        u2    H2        U2
-# SPSS1E    0.81    0.26    0.7236662   0.28    0.7210228   0.2789772
-# SPSS2E    0.22    0.75    0.6178306   0.38    0.6191738   0.3808262
-# SPSS3E    0.20    0.80    0.6827871   0.32    0.6808894   0.3191106
-# SPSS4E    0.81    0.23    0.7018363   0.30    0.7005499   0.2994501
-# SPSS5E    0.77    0.17    0.6295613   0.37    0.6298376   0.3701624
-# SPSS6E    0.66    0.12    0.4448130   0.56    0.4426824   0.5573176
-# SPSS7E    0.65    0.05    0.4244661   0.58    0.4225788   0.5774212
-# SPSS8E    0.79    0.24    0.6842864   0.32    0.6813658   0.3186342
-# SPSS9E    0.85    0.17    0.7508519   0.25    0.7502128   0.2497872
-# SPSS10E   0.06    0.63    0.3975595   0.60    0.3985321   0.6014679
-
-####
-# *NOTICE* the warning - that 3 factors are required for identification - what does this mean? Can we interpret model fit stats? Below are my interpretations (ignoring this warning)
-
-# Below is based on R console output:
-# 'g' and 'F1*' have eigenvals > 1 - F2 is slightly < 1.
-# Prop. var explained = .60 *AS GOOD AS 2F MODEL*
-# RMSR: .03 *GOOD*
-
-# Below is based off the first df in output (i.e. "sl")
-  # All positive valenced items load onto F1 and all negative valenced items load onto F2 (good)
-  # All questions load onto 'g' (i.e. general factor) OK except SPSS10E and SPSS7E (could be better)
-    # ...to be discussed why (are these bad items? if so, why?)
-
-# I think the second df in output is "orthog" (i.e. original orthogonal factor loadings - ignore)
-####
+```
+## Error in psych::schmid(model = poly.spss.data$rho, nfactors = 2, fm = "minres", : object 'poly.spss.data' not found
 ```
 
-``` r
-# fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "bifactor", nfactors = 2) # orthogonal rotation*
-# fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "biquartimin", nfactors = 2)
+ Three factors are required for identification -- general factor loadings set to be equal. 
+ Proceed with caution. 
+ Think about redoing the analysis with alternative values of the 'option' setting.
+ 
+ Schmid-Leiman analysis 
+ Call: psych::schmid(model = poly.spss.data$rho, nfactors = 2, fm = "minres", 
+                     rotate = "oblimin", option = "equal", na.obs = NA)
+ 
+ Schmid Leiman Factor loadings greater than  0.2 
+ g   F1*   F2*   h2   u2   p2
+ SPSS1E  0.61  0.64       0.78 0.22 0.47
+ SPSS2E  0.54        0.60 0.66 0.34 0.45
+ SPSS3E  0.55        0.62 0.69 0.31 0.44
+ SPSS4E  0.60  0.67       0.80 0.20 0.45
+ SPSS5E  0.52  0.62       0.66 0.34 0.41
+ SPSS6E  0.42  0.52       0.45 0.55 0.39
+ SPSS7E  0.38  0.54       0.44 0.56 0.33
+ SPSS8E  0.59  0.65       0.77 0.23 0.45
+ SPSS9E  0.58  0.70       0.83 0.17 0.41
+ SPSS10E 0.37        0.50 0.39 0.61 0.35
+ 
+ With eigenvalues of:
+   g F1* F2* 
+   2.7 2.7 1.0 
+ 
+ general/max  1   max/min =   2.7
+ mean percent general =  0.42    with sd =  0.05 and cv of  0.11 
+ 
+ The orthogonal loadings were 
+ Unstandardized loadings based upon covariance matrix
+ F1   F2   h2   u2   H2   U2
+ SPSS1E  0.85 0.26 0.78 0.22 0.78 0.22
+ SPSS2E  0.22 0.78 0.66 0.34 0.66 0.34
+ SPSS3E  0.20 0.81 0.69 0.31 0.69 0.31
+ SPSS4E  0.87 0.23 0.80 0.20 0.80 0.20
+ SPSS5E  0.80 0.16 0.66 0.34 0.66 0.34
+ SPSS6E  0.66 0.10 0.45 0.55 0.45 0.55
+ SPSS7E  0.66 0.03 0.44 0.56 0.44 0.56
+ SPSS8E  0.85 0.22 0.77 0.23 0.77 0.23
+ SPSS9E  0.90 0.16 0.83 0.17 0.83 0.17
+ SPSS10E 0.06 0.62 0.39 0.61 0.39 0.61
+ 
+ F1   F2
+ SS loadings    4.61 1.88
+ Proportion Var 0.46 0.19
+ Cumulative Var 0.46 0.65
+ 
+ The degrees of freedom are 26  and the fit is  0.51 
+ 
+ The root mean square of the residuals is  0.03 
+ The df corrected root mean square of the residuals is  0.04
+# --------------Reliability per Factor-----------------------------------------
+ split dataset into each factor
 
-# Error in matrix(1, k, k) : non-numeric matrix extent
 
-# fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "bifactor", nfactors = 3)
-  # for some reason this runs when nfactors is changed from 2 to 3
+```r
+spss.data.f1 <- spss.data %>% select(-c(SPSS2E, SPSS3E, SPSS10E)) 
+spss.data.f2 <- spss.data %>% select(c(SPSS2E, SPSS3E, SPSS10E)) 
 ```
 
-# Reliability
+ psych::omega()
+# poly = TRUE because we want to us the polychoric correlation matrix instead of Pearson because categorical data
+# since nfactors = 1, only omega total is meaningful 
+omega(m = spss.data.f1, poly = TRUE, plot = F, nfactors = 1)  Omega Total 0.93 
+omega(m = spss.data.f2, poly = TRUE, plot = F, nfactors = 1)  Omega Total 0.8 
 
-SPSS attitudes measure is unit-weighted and cogeneric (i.e., violates
-tau equivalence) so we are interested in Omega, but which one?
 
-My guess is omega total because omega hierarchial only calculates
-reliability for ‘g’
-
-Should we use ‘psych’ or ‘MBESS’ pkg? I receive warnings from ‘psych’, I
-think it has to do with the Schmid-Leiman stuff(?)
-
-``` r
-# calculate reliability for scale overall and for each factor
-# split dataset 
-spss.data.f1 <- spss.data %>% select(-c(SPSS2E, SPSS3E, SPSS10E))
-spss.data.f2 <- spss.data %>% select(c(SPSS2E, SPSS3E, SPSS10E))
+```r
+  # warning message regarding 'non-finite result is doubtful' refers to the NA or NaN values in the output. They should not be trusted, but exist because the input provided has NA values
 ```
 
-## Overall
+ MBESS:ci.reliability() for 95% CI
+ The code below follows Flora (2020), but it runs infinitely...
+ ci.reliability(spss.data.f1, type="categorical", interval.type="perc")
+ ci.reliability(spss.data.f2, type="categorical", interval.type="perc")
+ Changed the interval.type to = "bca" because the ci.reliability() documentation recommends it for categorical omega, but it also runs infinitely...
+ ci.reliability(spss.data.f1, type="categorical", interval.type="bca")
+ ci.reliability(spss.data.f2, type="categorical", interval.type="bca")
+ The code below runs, but does not account for the categorical nature of the items - therefore possibly inappropriate estimate of the scale's reliability
+ci.reliability(spss.data.f1)  est 0.9077046, ci.lower 0.8816747, ci.upper 0.9337345
+ci.reliability(spss.data.f2)  est 0.7429931, ci.lower 0.6599966, ci.upper 0.8259896
+ Overall, I think MBESS::ci.reliability will not be appropriate here and psych::omega() is preferred
+# --------------Reliability Overall-----------------------------------------
+ note that this is not appropriate for our 2F model, but may be requested by reviewers
+ psych::omega()
+omega(m = spss.data, poly = TRUE, plot = F, nfactors = 2)  Omega Total for total scores = 0.93, for F1 = 0.94 and for F2 = 0.80 ; side note: I probably could have ran this instead of splitting the data into each of its factors?
+ MBESS:ci.reliability() for 95% CI
+ ci.reliability(spss.data, type="categorical", interval.type="perc") # again, runs infinitely...
+ ci.reliability(spss.data, type="categorical", interval.type="bca") # also runs infinitely...
+ci.reliability(spss.data)  runs, but not appropriate because does not account for categorical nature of items. est = 0.8677201, ci.lower = 0.8353075, ci.upper = 0.9001326
+# --------Convergent Validity-------
+ Quantitative Attitudes
 
-YOU MUST HAVE POLY = TRUE
 
-``` r
-omega(m = spss.data, poly = TRUE, plot = F)
+```r
+qa.data <- full.data %>% select(
+  MA1E:MA8E
+) %>% select(
+  -MA6E # removed 'Statistics is a not a worthwhile or necessary subject' based on previous validation paper 
+) %>% mutate(
+  MA2E = car::recode(MA2E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'Math is one of my most dreaded subjects'
+  MA3E = car::recode(MA3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'I have seldom liked studying mathematics'
+  MA7E = car::recode(MA7E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1") # reverse code 'I am not willing to take more than the required amount of statistics courses'
+) %>% mutate(
+  total = rowSums(.[1:ncol(.)], na.rm = TRUE)
+)
 ```
 
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
+ SPSS Attitudes 
 
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
 
-    ## Warning in cov2cor(t(w) %*% r %*% w): diag(.) had 0 or NA entries; non-finite
-    ## result is doubtful
-
-    ## Omega 
-    ## Call: omegah(m = m, nfactors = nfactors, fm = fm, key = key, flip = flip, 
-    ##     digits = digits, title = title, sl = sl, labels = labels, 
-    ##     plot = plot, n.obs = n.obs, rotate = rotate, Phi = Phi, option = option, 
-    ##     covar = covar)
-    ## Alpha:                 0.9 
-    ## G.6:                   0.93 
-    ## Omega Hierarchical:    0.38 
-    ## Omega H asymptotic:    0.4 
-    ## Omega Total            0.94 
-    ## 
-    ## Schmid Leiman Factor loadings greater than  0.2 
-    ##            g   F1* F2*   F3*   h2   u2   p2
-    ## SPSS1E  0.37  0.82           0.81 0.19 0.17
-    ## SPSS2E  0.97                 0.95 0.05 1.00
-    ## SPSS3E  0.72           -0.24 0.59 0.41 0.87
-    ## SPSS4E  0.33  0.86           0.85 0.15 0.13
-    ## SPSS5E  0.34  0.72           0.67 0.33 0.17
-    ## SPSS6E  0.28  0.59      0.21 0.48 0.52 0.16
-    ## SPSS7E  0.21  0.60      0.22 0.47 0.53 0.09
-    ## SPSS8E  0.36  0.80           0.77 0.23 0.17
-    ## SPSS9E  0.31  0.86           0.83 0.17 0.12
-    ## SPSS10E 0.54           -0.42 0.47 0.53 0.62
-    ## 
-    ## With eigenvalues of:
-    ##    g  F1*  F2*  F3* 
-    ## 2.47 4.02 0.00 0.39 
-    ## 
-    ## general/max  0.61   max/min =   Inf
-    ## mean percent general =  0.35    with sd =  0.34 and cv of  0.98 
-    ## Explained Common Variance of the general factor =  0.36 
-    ## 
-    ## The degrees of freedom are 18  and the fit is  0.3 
-    ## The number of observations was  181  with Chi Square =  52.43  with prob <  3.2e-05
-    ## The root mean square of the residuals is  0.02 
-    ## The df corrected root mean square of the residuals is  0.03
-    ## RMSEA index =  0.103  and the 10 % confidence intervals are  0.071 0.136
-    ## BIC =  -41.15
-    ## 
-    ## Compare this with the adequacy of just a general factor and no group factors
-    ## The degrees of freedom for just the general factor are 35  and the fit is  5.47 
-    ## The number of observations was  181  with Chi Square =  958.96  with prob <  1.2e-178
-    ## The root mean square of the residuals is  0.39 
-    ## The df corrected root mean square of the residuals is  0.45 
-    ## 
-    ## RMSEA index =  0.382  and the 10 % confidence intervals are  0.362 0.404
-    ## BIC =  777.02 
-    ## 
-    ## Measures of factor score adequacy             
-    ##                                                  g  F1* F2*  F3*
-    ## Correlation of scores with factors            0.98 0.97   0 0.72
-    ## Multiple R square of scores with factors      0.96 0.95   0 0.51
-    ## Minimum correlation of factor score estimates 0.92 0.90  -1 0.03
-    ## 
-    ##  Total, General and Subset omega for each subset
-    ##                                                  g  F1* F2*  F3*
-    ## Omega total for total scores and subscales    0.94 0.93  NA 0.84
-    ## Omega general for total scores and subscales  0.38 0.14  NA 0.78
-    ## Omega group for total scores and subscales    0.54 0.79  NA 0.05
-
-``` r
-# Omega total for total scores and subscales: amount of variance accounted for by 'g' and group 
-# Omega general for total scores and subscales: amount of variance that is accounted for by 'g'.
-# Omega group for total scores and subscales: i.e., omegaS / subset omega.
+```r
+sa.data <- spss.data %>% mutate(
+  total = rowSums(.[1:ncol(.)], na.rm = TRUE)
+)
 ```
 
-``` r
-# value under $est
-# provides CI
-ci.reliability(spss.data)
+ Correlation
+cor.test(qa.data$total, sa.data$total)  r = 0.2533858  ; p = 0.0006434 ; 95% CI [0.1104162 0.3860816]
+
+
+```r
+car::scatterplot(qa.data$total, sa.data$total)
 ```
 
-    ## $est
-    ## [1] 0.8673275
-    ## 
-    ## $se
-    ## [1] 0.01654805
-    ## 
-    ## $ci.lower
-    ## [1] 0.8348939
-    ## 
-    ## $ci.upper
-    ## [1] 0.8997611
-    ## 
-    ## $conf.level
-    ## [1] 0.95
-    ## 
-    ## $type
-    ## [1] "omega"
-    ## 
-    ## $interval.type
-    ## [1] "robust maximum likelihood (wald ci)"
-
-``` r
-# # I think, I should be using the polychoric covariance matrix instead
-# 
-# ci.reliability(poly.spss.data$rho)
-# 
-# # But I receive the following error: "Error in if (se != "none" && any(errorcheck <= 0)) converged <- FALSE : missing value where TRUE/FALSE needed...lavaan WARNING: estimation of the baseline model failed."
-# 
-# # The documentation for the function says that the default parameter 'type' is 'omega'. But the function can calculate other types of reliability such as alpha, omega, omega hierarchical and omega categorical. From the documentation, "Categorical omega is a method to calculate coefficient omega for categorical items (Green and Yang, 2009)"
-# 
-# ci.reliability(spss.data, type = "categorical")
-# 
-# # The above code gives me the following error, "Error in .ci.reliability.data(data = data, aux = aux, type = type, interval.type = interval.type,  : Any normal-theory or ADF methods are not available for hierarchical omega or categorical omega."
-# 
-# # The documentation says, "If type is specified as NULL, the default is to use hierarchical omega for continuous items and categorical omega for categorical items". So I ran the code below, but it gave me the same ADF error as above 
-# 
-# ci.reliability(spss.data, type = NULL)
+```
+## Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
 ```
 
-## Per factor
+![plot of chunk unnamed-chunk-31](figure/unnamed-chunk-31-1.png)
 
-``` r
-omega(m = spss.data.f1, poly = TRUE, plot = F)
+# --------Discriminant Validity------- 
+ Quantitative Anxiety
+
+
+```r
+qanx.data <- full.data %>% select(
+  QANX1E:QANX4E
+) %>% mutate(
+  total = rowSums(.[1:ncol(.)], na.rm = TRUE)
+)
 ```
 
-    ## Omega 
-    ## Call: omegah(m = m, nfactors = nfactors, fm = fm, key = key, flip = flip, 
-    ##     digits = digits, title = title, sl = sl, labels = labels, 
-    ##     plot = plot, n.obs = n.obs, rotate = rotate, Phi = Phi, option = option, 
-    ##     covar = covar)
-    ## Alpha:                 0.93 
-    ## G.6:                   0.93 
-    ## Omega Hierarchical:    0.85 
-    ## Omega H asymptotic:    0.9 
-    ## Omega Total            0.95 
-    ## 
-    ## Schmid Leiman Factor loadings greater than  0.2 
-    ##           g   F1*  F2*   F3*   h2   u2   p2
-    ## SPSS1E 0.82  0.31       0.20 0.81 0.19 0.83
-    ## SPSS4E 0.85  0.52            1.00 0.00 0.72
-    ## SPSS5E 0.77                  0.66 0.34 0.90
-    ## SPSS6E 0.67       0.32       0.55 0.45 0.81
-    ## SPSS7E 0.62                  0.43 0.57 0.89
-    ## SPSS8E 0.85             0.29 0.83 0.17 0.86
-    ## SPSS9E 0.85  0.26            0.82 0.18 0.89
-    ## 
-    ## With eigenvalues of:
-    ##    g  F1*  F2*  F3* 
-    ## 4.26 0.46 0.21 0.16 
-    ## 
-    ## general/max  9.2   max/min =   2.87
-    ## mean percent general =  0.84    with sd =  0.06 and cv of  0.08 
-    ## Explained Common Variance of the general factor =  0.84 
-    ## 
-    ## The degrees of freedom are 3  and the fit is  0.01 
-    ## The number of observations was  181  with Chi Square =  1.68  with prob <  0.64
-    ## The root mean square of the residuals is  0.01 
-    ## The df corrected root mean square of the residuals is  0.02
-    ## RMSEA index =  0  and the 10 % confidence intervals are  0 0.1
-    ## BIC =  -13.92
-    ## 
-    ## Compare this with the adequacy of just a general factor and no group factors
-    ## The degrees of freedom for just the general factor are 14  and the fit is  0.46 
-    ## The number of observations was  181  with Chi Square =  81.77  with prob <  1.3e-11
-    ## The root mean square of the residuals is  0.07 
-    ## The df corrected root mean square of the residuals is  0.09 
-    ## 
-    ## RMSEA index =  0.163  and the 10 % confidence intervals are  0.131 0.199
-    ## BIC =  8.99 
-    ## 
-    ## Measures of factor score adequacy             
-    ##                                                  g  F1*   F2*   F3*
-    ## Correlation of scores with factors            0.93 0.77  0.46  0.58
-    ## Multiple R square of scores with factors      0.86 0.59  0.21  0.34
-    ## Minimum correlation of factor score estimates 0.72 0.18 -0.58 -0.32
-    ## 
-    ##  Total, General and Subset omega for each subset
-    ##                                                  g  F1*  F2*  F3*
-    ## Omega total for total scores and subscales    0.95 0.94 0.76 0.80
-    ## Omega general for total scores and subscales  0.85 0.79 0.69 0.71
-    ## Omega group for total scores and subscales    0.05 0.15 0.07 0.08
+ Correlation
+cor.test(qanx.data$total, sa.data$total)  r = -0.0787332  ; p = 0.2962 ; 95% CI [ -0.2232328  0.0691523]
 
-``` r
-omega(m = spss.data.f2, poly = TRUE, plot = F)
+
+```r
+car::scatterplot(qanx.data$total, sa.data$total)
 ```
 
-    ## Warning in cov2cor(t(w) %*% r %*% w): diag(.) had 0 or NA entries; non-finite
-    ## result is doubtful
-
-    ## Omega 
-    ## Call: omegah(m = m, nfactors = nfactors, fm = fm, key = key, flip = flip, 
-    ##     digits = digits, title = title, sl = sl, labels = labels, 
-    ##     plot = plot, n.obs = n.obs, rotate = rotate, Phi = Phi, option = option, 
-    ##     covar = covar)
-    ## Alpha:                 0.79 
-    ## G.6:                   0.73 
-    ## Omega Hierarchical:    0.12 
-    ## Omega H asymptotic:    0.15 
-    ## Omega Total            0.8 
-    ## 
-    ## Schmid Leiman Factor loadings greater than  0.2 
-    ##            g  F1*   F2*   F3*   h2   u2   p2
-    ## SPSS2E  0.32 0.77             0.69 0.31 0.14
-    ## SPSS3E  0.31 0.77             0.68 0.32 0.14
-    ## SPSS10E 0.26 0.54             0.37 0.63 0.18
-    ## 
-    ## With eigenvalues of:
-    ##    g  F1*  F2*  F3* 
-    ## 0.26 1.48 0.01 0.00 
-    ## 
-    ## general/max  0.18   max/min =   Inf
-    ## mean percent general =  0.15    with sd =  0.02 and cv of  0.15 
-    ## Explained Common Variance of the general factor =  0.15 
-    ## 
-    ## The degrees of freedom are -3  and the fit is  0 
-    ## The number of observations was  181  with Chi Square =  0  with prob <  NA
-    ## The root mean square of the residuals is  0 
-    ## The df corrected root mean square of the residuals is  NA
-    ## 
-    ## Compare this with the adequacy of just a general factor and no group factors
-    ## The degrees of freedom for just the general factor are 0  and the fit is  0.73 
-    ## The number of observations was  181  with Chi Square =  130.23  with prob <  NA
-    ## The root mean square of the residuals is  0.48 
-    ## The df corrected root mean square of the residuals is  NA 
-    ## 
-    ## Measures of factor score adequacy             
-    ##                                                   g  F1*   F2* F3*
-    ## Correlation of scores with factors             0.35 0.84  0.12   0
-    ## Multiple R square of scores with factors       0.12 0.71  0.01   0
-    ## Minimum correlation of factor score estimates -0.75 0.42 -0.97  -1
-    ## 
-    ##  Total, General and Subset omega for each subset
-    ##                                                  g  F1* F2* F3*
-    ## Omega total for total scores and subscales    0.80 0.80  NA  NA
-    ## Omega general for total scores and subscales  0.12 0.12  NA  NA
-    ## Omega group for total scores and subscales    0.68 0.68  NA  NA
-
-``` r
-ci.reliability(spss.data.f1)
+```
+## Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
 ```
 
-    ## $est
-    ## [1] 0.907176
-    ## 
-    ## $se
-    ## [1] 0.01330616
-    ## 
-    ## $ci.lower
-    ## [1] 0.8810964
-    ## 
-    ## $ci.upper
-    ## [1] 0.9332556
-    ## 
-    ## $conf.level
-    ## [1] 0.95
-    ## 
-    ## $type
-    ## [1] "omega"
-    ## 
-    ## $interval.type
-    ## [1] "robust maximum likelihood (wald ci)"
+![plot of chunk unnamed-chunk-33](figure/unnamed-chunk-33-1.png)
 
-``` r
-ci.reliability(spss.data.f2)
+ Quantitative Hindrances
+
+
+```r
+qh.data <- full.data %>% select(
+  QHIND1E:QHIND5E
+) %>% mutate(
+  total = rowSums(.[1:ncol(.)], na.rm = TRUE)
+)
 ```
 
-    ## $est
-    ## [1] 0.7437227
-    ## 
-    ## $se
-    ## [1] 0.04214397
-    ## 
-    ## $ci.lower
-    ## [1] 0.661122
-    ## 
-    ## $ci.upper
-    ## [1] 0.8263233
-    ## 
-    ## $conf.level
-    ## [1] 0.95
-    ## 
-    ## $type
-    ## [1] "omega"
-    ## 
-    ## $interval.type
-    ## [1] "robust maximum likelihood (wald ci)"
+ Correlation
+cor.test(qh.data$total, sa.data$total)  r = -0.05655468  ; p = 0.4534 ; 95% CI [-0.20195941  0.09128939]
 
-# Assumptions
 
-1.  MV normality - N/A because we are using minres/ULS and not ML
-2.  Multicollinearity - not violated if the model converges (which it
-    does)
-3.  Linearity - N/A bc polychoric correlations are used
+```r
+car::scatterplot(qh.data$total, sa.data$total)
+```
+
+```
+## Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
+```
+
+![plot of chunk unnamed-chunk-35](figure/unnamed-chunk-35-1.png)
+
+# --------Exploratory Convergent / Discriminant Validity?----
+ The above were predictions we made a priori - below is me playing around
+ Quantitative Influences
+
+
+```r
+qi.data <- full.data %>% select(
+  QINFL1E:QINFL7E
+) %>% mutate(
+  total = rowSums(.[1:ncol(.)], na.rm = TRUE)
+)
+```
+
+ Correlation
+cor.test(qi.data$total, sa.data$total)  r = 0.07819996   ; p = 0.2995 ; 95% CI [-0.06968627  0.22272289]
+
+
+```r
+car::scatterplot(qi.data$total, sa.data$total)
+```
+
+```
+## Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
+```
+
+![plot of chunk unnamed-chunk-37](figure/unnamed-chunk-37-1.png)
+
+ Quantitative Success Factors
+
+
+```r
+qsf.data <- full.data %>% select(
+  QSF1E:QSF4E
+) %>% mutate(
+  total = rowSums(.[1:ncol(.)], na.rm = TRUE)
+)
+```
+
+ Correlation
+cor.test(qsf.data$total, sa.data$total)  r = 0.05973762  ; p = 0.4283 ; 95% CI [ -0.08812135  0.20502090]
+
+
+```r
+car::scatterplot(qsf.data$total, sa.data$total)
+```
+
+```
+## Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
+```
+
+![plot of chunk unnamed-chunk-39](figure/unnamed-chunk-39-1.png)
+
+ Quantitative Self-Confidence
+
+
+```r
+qsc.data <- full.data %>% select(
+  QSC1E:QSC4E
+) %>% mutate(
+  QSC2E = car::recode(QSC2E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'I feel insecure in my math/statistics abilities'
+  QSC3E = car::recode(QSC3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1"), # reverse code 'I find it hard to think in terms of symbols'
+) %>% mutate(
+  total = rowSums(.[1:ncol(.)], na.rm = TRUE)
+)
+```
+
+ Correlation
+cor.test(qsc.data$total, sa.data$total)  r = 0.1372719     ; p = 0.06767 ; 95% CI [ -0.01001498  0.27872892]
+
+
+```r
+car::scatterplot(qsc.data$total, sa.data$total)
+```
+
+```
+## Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
+```
+
+![plot of chunk unnamed-chunk-41](figure/unnamed-chunk-41-1.png)
+
+ Quantitative Self-Efficacy
+
+
+```r
+qse.data <- full.data %>% select(
+  QSE1E:QSE6E
+) %>% select(
+  -c(QSE1E, QSE2E)
+  # removed “Balance my checkbook without a mistake” based on previous validation study 
+  # removed “Read a table, such as what is in back of math books, to determine an answer.” based on previous validation study 
+) %>% mutate(
+  total = rowSums(.[1:ncol(.)], na.rm = TRUE)
+)
+```
+
+ Correlation
+cor.test(qse.data$total, sa.data$total)  r = 0.2474466  ; p = 0.0008684 ; 95% CI [0.1041526 0.3806764]
+
+
+```r
+car::scatterplot(qse.data$total, sa.data$total)
+```
+
+```
+## Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
+```
+
+![plot of chunk unnamed-chunk-43](figure/unnamed-chunk-43-1.png)
+
+```r
+end <- "end"
+```
+

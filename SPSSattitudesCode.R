@@ -84,15 +84,6 @@ full.data <- full.data[-c(33, 141, 104), ] # needed later for convergent/discrim
 spss.data <- data.frame(spss.data)
 str(spss.data)
 
-## ---------Outliers---------------
-fS1 <- forward.search(spss.data, 1, criteria = c("mah", "GOF"))
-gcdresult1 <- gCD(spss.data, 1)
-ldresults1 <- LD(spss.data, 1)
-
-plot(gcdresult1)
-plot(fS1)
-plot(ldresults1)
-
 ## ----Polychoric Correlations-----------------------------------
 poly.spss.data <- psych::polychoric(spss.data) # wants numeric data
 write.csv(poly.spss.data$rho, file = "polyCorrTable.csv", row.names = TRUE) # for manuscript writing
@@ -209,6 +200,15 @@ fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfactors = 1)
 # Based on model fit (RMSR), 1F sucks
 ####
 
+## ---------Outliers 1F ---------------
+fS1 <- forward.search(spss.data, 1, criteria = c("mah", "GOF"))
+gcdresult1 <- gCD(spss.data, 1)
+ldresults1 <- LD(spss.data, 1)
+
+plot(gcdresult1)
+plot(fS1)
+plot(ldresults1)
+
 ## ---------------2F EFA-----------------------------------
 fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 
@@ -270,7 +270,7 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 # 2F prob wins, but let's try 3F next anyways
 ####
 
-# outliers
+## ------- Outliers 2F ---------
 fS2 <- forward.search(spss.data, 2, criteria = c("mah", "GOF"))
 gcdresult2 <- gCD(spss.data, 2)
 ldresults2 <- LD(spss.data, 2)
@@ -278,6 +278,7 @@ ldresults2 <- LD(spss.data, 2)
 plot(gcdresult2)
 plot(fS2)
 plot(ldresults2)
+
 
 ## ----------------------------3F EFA---------------------------
 fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
@@ -340,7 +341,7 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
 # Concluding that 2F wins bc improvements in model fit isn't worth it & column and row parsimony worse than 2F model 
 ####
 
-# outliers
+## ----- Outliers 3F -------
 fS3 <- forward.search(spss.data, 3, criteria = c("mah", "GOF"))
 gcdresult3 <- gCD(spss.data, 3)
 ldresults3 <- LD(spss.data, 3)

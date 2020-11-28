@@ -12,7 +12,7 @@ library(REdaS)
 library(faoutlier)
 
 ## ----Uploading data and cleaning------------------------
-#' Uploading raw data
+# Uploading raw data
 full.data <- readxl::read_xlsx("spssdata.xlsx", col_names = TRUE)
 # Remove empty rows
 full.data <- full.data[1:181, ]
@@ -641,5 +641,5 @@ cor.test(qse.data$total, sa.data$total)
 car::scatterplot(qse.data$total, sa.data$total)
 
 
-knitr::spin('SPSSattitudesCode.R', doc = '^## ----', comment = '#')
+knitr::spin('SPSSattitudesCode.R', doc = '#')
 print("end")

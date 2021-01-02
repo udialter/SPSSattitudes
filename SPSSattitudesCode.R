@@ -63,22 +63,22 @@ table(is.na(spss.data))
 
 ## Less than 1% missing data, proceeding with complete case analyses
 
-## -----------Assumptions----------
-# Checking multivariate normality
-mardia(spss.data)
-# Kurtosis = 15.17 >4. Will not assume mvn.
-
-## -------EFA Appropriateness------
-# Barlett's Test of Sphericity which tests whether a matrix is significantly different from an identity matrix
-bart_spher(spss.data, use = "complete.obs")
-# p-value < 2.22e-16
-
-# Kaiser-Meyer-Olkin Statistics
-KMOS(spss.data, use = "complete.obs")
-# KMO-Criterion: 0.8795382
-
-## -----------Scatterplot matrix-----------------------
-car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')
+# ## -----------Assumptions----------
+# # Checking multivariate normality
+# mardia(spss.data)
+# # Kurtosis = 15.17 >4. Will not assume mvn.
+# 
+# ## -------EFA Appropriateness------
+# # Barlett's Test of Sphericity which tests whether a matrix is significantly different from an identity matrix
+# bart_spher(spss.data, use = "complete.obs")
+# # p-value < 2.22e-16
+# 
+# # Kaiser-Meyer-Olkin Statistics
+# KMOS(spss.data, use = "complete.obs")
+# # KMO-Criterion: 0.8795382
+# 
+# ## -----------Scatterplot matrix-----------------------
+# car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')
 
 ## -----------Listwise Deletion-----------
 # Previous work suggests using listwise deletion when the missing data rates are extremely low (e.g., < 1%; Flora, 2018; Jakobsen et al., 2017).
@@ -130,28 +130,28 @@ write.csv(poly.spss.ci, file = "polyCorrTableCI.csv", row.names = TRUE)
 # All Qs are more correlated w each other than they are with 2,3,10. But 2,3, and 10 are more correlated to each other than other Qs.
 ####
 
-## -------MAP and Parallel Analysis----------------------------------------
-VSS(spss.data, fm = 'minres', cor = 'poly', plot = F)
-
-# Very Simple Structure
-# Call: vss(x = x, n = n, rotate = rotate, diagonal = diagonal, fm = fm, 
-#           n.obs = n.obs, plot = plot, title = title, use = use, cor = cor)
-# VSS complexity 1 achieves a maximimum of 0.87  with  1  factors
-# VSS complexity 2 achieves a maximimum of 0.95  with  2  factors
+# ## -------MAP and Parallel Analysis----------------------------------------
+# VSS(spss.data, fm = 'minres', cor = 'poly', plot = F)
 # 
-# The Velicer MAP achieves a minimum of 0.05  with  2  factors 
-# BIC achieves a minimum of  NA  with  2  factors
-# Sample Size adjusted BIC achieves a minimum of  NA  with  4  factors
-
-fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
-
-# Parallel analysis suggests that the number of factors =  2  and the number of components =  2 
-
-####
-# Both MAP and PA suggest 2F 
-# PA should be interpreted w caution for polychoric correlations
-# Next, running 1F, 2F and 3F model (i.e. 1 above and 1 below suggested num. of factors) next to help determine which model is best
-####
+# # Very Simple Structure
+# # Call: vss(x = x, n = n, rotate = rotate, diagonal = diagonal, fm = fm, 
+# #           n.obs = n.obs, plot = plot, title = title, use = use, cor = cor)
+# # VSS complexity 1 achieves a maximimum of 0.87  with  1  factors
+# # VSS complexity 2 achieves a maximimum of 0.95  with  2  factors
+# # 
+# # The Velicer MAP achieves a minimum of 0.05  with  2  factors 
+# # BIC achieves a minimum of  NA  with  2  factors
+# # Sample Size adjusted BIC achieves a minimum of  NA  with  4  factors
+# 
+# fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
+# 
+# # Parallel analysis suggests that the number of factors =  2  and the number of components =  2 
+# 
+# ####
+# # Both MAP and PA suggest 2F 
+# # PA should be interpreted w caution for polychoric correlations
+# # Next, running 1F, 2F and 3F model (i.e. 1 above and 1 below suggested num. of factors) next to help determine which model is best
+# ####
 
 ## -------1F EFA----------------------------------------
 fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfactors = 1)
@@ -207,14 +207,14 @@ fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfactors = 1)
 # Based on model fit (RMSR), 1F sucks
 ####
 
-## ---------Outliers 1F ---------------
-fS1 <- forward.search(spss.data, 1, criteria = c("mah", "GOF"))
-gcdresult1 <- gCD(spss.data, 1)
-ldresults1 <- LD(spss.data, 1)
-
-plot(gcdresult1)
-plot(fS1)
-plot(ldresults1)
+# ## ---------Outliers 1F ---------------
+# fS1 <- forward.search(spss.data, 1, criteria = c("mah", "GOF"))
+# gcdresult1 <- gCD(spss.data, 1)
+# ldresults1 <- LD(spss.data, 1)
+# 
+# plot(gcdresult1)
+# plot(fS1)
+# plot(ldresults1)
 
 ## ---------------2F EFA-----------------------------------
 fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
@@ -277,14 +277,14 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 # 2F prob wins, but let's try 3F next anyways
 ####
 
-## ------- Outliers 2F ---------
-fS2 <- forward.search(spss.data, 2, criteria = c("mah", "GOF"))
-gcdresult2 <- gCD(spss.data, 2)
-ldresults2 <- LD(spss.data, 2)
-
-plot(gcdresult2)
-plot(fS2)
-plot(ldresults2)
+# ## ------- Outliers 2F ---------
+# fS2 <- forward.search(spss.data, 2, criteria = c("mah", "GOF"))
+# gcdresult2 <- gCD(spss.data, 2)
+# ldresults2 <- LD(spss.data, 2)
+# 
+# plot(gcdresult2)
+# plot(fS2)
+# plot(ldresults2)
 
 ## ----------------------------3F EFA---------------------------
 fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
@@ -347,14 +347,14 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
 # Concluding that 2F wins bc improvements in model fit isn't worth it & column and row parsimony worse than 2F model 
 ####
 
-## ----- Outliers 3F -------
-fS3 <- forward.search(spss.data, 3, criteria = c("mah", "GOF"))
-gcdresult3 <- gCD(spss.data, 3)
-ldresults3 <- LD(spss.data, 3)
-
-plot(gcdresult3)
-plot(fS3)
-plot(ldresults3)
+# ## ----- Outliers 3F -------
+# fS3 <- forward.search(spss.data, 3, criteria = c("mah", "GOF"))
+# gcdresult3 <- gCD(spss.data, 3)
+# ldresults3 <- LD(spss.data, 3)
+# 
+# plot(gcdresult3)
+# plot(fS3)
+# plot(ldresults3)
 
 ## ---------------------2F EFA bentlerQ Rotation----------------------------------
 fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = 'bentlerQ', nfactors = 2)
@@ -641,5 +641,5 @@ cor.test(qse.data$total, sa.data$total)
 car::scatterplot(qse.data$total, sa.data$total)
 
 
-knitr::spin('SPSSattitudesCode.R', doc = '#')
+# knitr::spin('SPSSattitudesCode.R', doc = '#')
 print("end")

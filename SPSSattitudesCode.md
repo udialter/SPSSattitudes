@@ -3,194 +3,16 @@
 
 ```r
 library(readr)
-```
-
-```
-## Warning: package 'readr' was built under R version 4.0.2
-```
-
-```r
 library(haven)
-```
-
-```
-## Warning: package 'haven' was built under R version 4.0.2
-```
-
-```r
 library(tidyverse)
-```
-
-```
-## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
-```
-
-```
-## v ggplot2 3.3.1     v dplyr   1.0.0
-## v tibble  3.0.1     v stringr 1.4.0
-## v tidyr   1.1.0     v forcats 0.5.0
-## v purrr   0.3.4
-```
-
-```
-## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()
-```
-
-```r
 library(lavaan)
-```
-
-```
-## Warning: package 'lavaan' was built under R version 4.0.2
-```
-
-```
-## This is lavaan 0.6-6
-```
-
-```
-## lavaan is BETA software! Please report any bugs.
-```
-
-```r
 library(psych)
-```
-
-```
-## Warning: package 'psych' was built under R version 4.0.2
-```
-
-```
-## 
-## Attaching package: 'psych'
-```
-
-```
-## The following object is masked from 'package:lavaan':
-## 
-##     cor2cov
-```
-
-```
-## The following objects are masked from 'package:ggplot2':
-## 
-##     %+%, alpha
-```
-
-```r
 library(mirt)
-```
-
-```
-## Warning: package 'mirt' was built under R version 4.0.2
-```
-
-```
-## Loading required package: stats4
-```
-
-```
-## Loading required package: lattice
-```
-
-```r
 library(rsample)
-```
-
-```
-## Warning: package 'rsample' was built under R version
-## 4.0.2
-```
-
-```r
 library(GPArotation)
 library(MBESS)
-```
-
-```
-## Warning: package 'MBESS' was built under R version 4.0.2
-```
-
-```
-## 
-## Attaching package: 'MBESS'
-```
-
-```
-## The following object is masked from 'package:psych':
-## 
-##     cor2cov
-```
-
-```
-## The following object is masked from 'package:lavaan':
-## 
-##     cor2cov
-```
-
-```r
 library(REdaS)
-```
-
-```
-## Warning: package 'REdaS' was built under R version 4.0.3
-```
-
-```
-## Loading required package: grid
-```
-
-```r
 library(faoutlier)
-```
-
-```
-## Warning: package 'faoutlier' was built under R version
-## 4.0.3
-```
-
-```
-## Loading required package: sem
-```
-
-```
-## Warning: package 'sem' was built under R version 4.0.2
-```
-
-```
-## Registered S3 methods overwritten by 'lme4':
-##   method                          from
-##   cooks.distance.influence.merMod car 
-##   influence.merMod                car 
-##   dfbeta.influence.merMod         car 
-##   dfbetas.influence.merMod        car
-```
-
-```
-## 
-## Attaching package: 'sem'
-```
-
-```
-## The following object is masked from 'package:mirt':
-## 
-##     fscores
-```
-
-```
-## The following objects are masked from 'package:lavaan':
-## 
-##     cfa, sem
-```
-
-```
-## Loading required package: mvtnorm
-```
-
-```
-## Loading required package: parallel
 ```
 
 # ----Uploading data and cleaning------------------------
@@ -244,28 +66,17 @@ describe(spss.data)
 ```
 
 ```
-##         vars   n mean   sd median trimmed  mad min max
-## SPSS1E     1 180 3.49 1.04      4    3.55 1.48   1   5
-## SPSS2E     2 181 3.67 1.11      4    3.76 1.48   1   5
-## SPSS3E     3 180 3.51 1.11      4    3.58 1.48   1   5
-## SPSS4E     4 181 3.38 0.99      3    3.39 1.48   1   5
-## SPSS5E     5 180 3.70 1.05      4    3.79 1.48   1   5
-## SPSS6E     6 181 3.52 1.22      4    3.64 1.48   1   5
-## SPSS7E     7 181 3.32 1.18      3    3.34 1.48   1   5
-## SPSS8E     8 181 3.57 0.98      4    3.63 1.48   1   5
-## SPSS9E     9 181 3.43 1.03      3    3.46 1.48   1   5
-## SPSS10E   10 181 3.41 1.13      4    3.46 1.48   1   5
-##         range  skew kurtosis   se
-## SPSS1E      4 -0.44    -0.30 0.08
-## SPSS2E      4 -0.58    -0.58 0.08
-## SPSS3E      4 -0.53    -0.43 0.08
-## SPSS4E      4 -0.30    -0.42 0.07
-## SPSS5E      4 -0.52    -0.27 0.08
-## SPSS6E      4 -0.51    -0.60 0.09
-## SPSS7E      4 -0.13    -0.98 0.09
-## SPSS8E      4 -0.40    -0.22 0.07
-## SPSS9E      4 -0.25    -0.44 0.08
-## SPSS10E     4 -0.33    -0.71 0.08
+##         vars   n mean   sd median trimmed  mad min max range  skew kurtosis   se
+## SPSS1E     1 180 3.49 1.04      4    3.55 1.48   1   5     4 -0.44    -0.30 0.08
+## SPSS2E     2 181 3.67 1.11      4    3.76 1.48   1   5     4 -0.58    -0.58 0.08
+## SPSS3E     3 180 3.51 1.11      4    3.58 1.48   1   5     4 -0.53    -0.43 0.08
+## SPSS4E     4 181 3.38 0.99      3    3.39 1.48   1   5     4 -0.30    -0.42 0.07
+## SPSS5E     5 180 3.70 1.05      4    3.79 1.48   1   5     4 -0.52    -0.27 0.08
+## SPSS6E     6 181 3.52 1.22      4    3.64 1.48   1   5     4 -0.51    -0.60 0.09
+## SPSS7E     7 181 3.32 1.18      3    3.34 1.48   1   5     4 -0.13    -0.98 0.09
+## SPSS8E     8 181 3.57 0.98      4    3.63 1.48   1   5     4 -0.40    -0.22 0.07
+## SPSS9E     9 181 3.43 1.03      3    3.46 1.48   1   5     4 -0.25    -0.44 0.08
+## SPSS10E   10 181 3.41 1.13      4    3.46 1.48   1   5     4 -0.33    -0.71 0.08
 ```
 
  Contingency table of the counts
@@ -389,84 +200,22 @@ table(is.na(spss.data))
  3 / (3 + 1807) = 0.001657459
  0.001657459 * 100 = 0.1657459
 # Less than 1% missing data, proceeding with complete case analyses
-# -----------Assumptions----------
- Checking multivariate normality
-
-
-```r
-mardia(spss.data)
-```
-
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
-
-```
-## Call: mardia(x = spss.data)
-## 
-## Mardia tests of multivariate skew and kurtosis
-## Use describe(x) the to get univariate tests
-## n.obs = 178   num.vars =  10 
-## b1p =  19.29   skew =  572.2  with probability =  0
-##  small sample skew =  583.62  with probability =  0
-## b2p =  155.23   kurtosis =  15.17  with probability =  0
-```
-
- Kurtosis = 15.17 >4. Will not assume mvn.
-# -------EFA Appropriateness------
- Barlett's Test of Sphericity which tests whether a matrix is significantly different from an identity matrix
-
-
-```r
-bart_spher(spss.data, use = "complete.obs")
-```
-
-```
-## 
-## 	Bartlett's Test of Sphericity
-## 
-## Call: bart_spher(x = spss.data, use = "complete.obs")
-## 
-##      X2 = 969.939
-##      df = 45
-## p-value < 2.22e-16
-```
-
-```
-## Warning: Used n = 178.
-```
-
- p-value < 2.22e-16
- Kaiser-Meyer-Olkin Statistics
-
-
-```r
-KMOS(spss.data, use = "complete.obs")
-```
-
-```
-## 
-## Kaiser-Meyer-Olkin Statistics
-## 
-## Call: KMOS(x = spss.data, use = "complete.obs")
-## 
-## Measures of Sampling Adequacy (MSA):
-##    SPSS1E    SPSS2E    SPSS3E    SPSS4E    SPSS5E 
-## 0.9098933 0.7138465 0.7359144 0.8758975 0.9281158 
-##    SPSS6E    SPSS7E    SPSS8E    SPSS9E   SPSS10E 
-## 0.9543978 0.9378408 0.9022414 0.8956706 0.6953167 
-## 
-## KMO-Criterion: 0.8795382
-```
-
- KMO-Criterion: 0.8795382
-# -----------Scatterplot matrix-----------------------
-
-
-```r
-car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')
-```
-
-![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png)
-
+ ## -----------Assumptions----------
+ # Checking multivariate normality
+ mardia(spss.data)
+ # Kurtosis = 15.17 >4. Will not assume mvn.
+ 
+ ## -------EFA Appropriateness------
+ # Barlett's Test of Sphericity which tests whether a matrix is significantly different from an identity matrix
+ bart_spher(spss.data, use = "complete.obs")
+ # p-value < 2.22e-16
+ 
+ # Kaiser-Meyer-Olkin Statistics
+ KMOS(spss.data, use = "complete.obs")
+ # KMO-Criterion: 0.8795382
+ 
+ ## -----------Scatterplot matrix-----------------------
+ car::scatterplotMatrix(spss.data, smooth = F, regLine = F, col = 'black')
 # -----------Listwise Deletion-----------
  Previous work suggests using listwise deletion when the missing data rates are extremely low (e.g., < 1%; Flora, 2018; Jakobsen et al., 2017).
 
@@ -545,292 +294,28 @@ write.csv(poly.spss.ci, file = "polyCorrTableCI.csv", row.names = TRUE)
  Used polychoric correlations bc of 5-point Likert data
  All Qs are more correlated w each other than they are with 2,3,10. But 2,3, and 10 are more correlated to each other than other Qs.
 ###
-# -------MAP and Parallel Analysis----------------------------------------
-
-
-```r
-VSS(spss.data, fm = 'minres', cor = 'poly', plot = F)
-```
-
-```
-## 
-## Very Simple Structure
-## Call: vss(x = x, n = n, rotate = rotate, diagonal = diagonal, fm = fm, 
-##     n.obs = n.obs, plot = plot, title = title, use = use, cor = cor)
-## VSS complexity 1 achieves a maximimum of 0.87  with  1  factors
-## VSS complexity 2 achieves a maximimum of 0.95  with  2  factors
-## 
-## The Velicer MAP achieves a minimum of 0.05  with  2  factors 
-## BIC achieves a minimum of  NA  with  2  factors
-## Sample Size adjusted BIC achieves a minimum of  NA  with  4  factors
-## 
-## Statistics by number of factors 
-##   vss1 vss2   map dof   chisq    prob sqresid  fit RMSEA
-## 1 0.87 0.00 0.057  35 2.3e+02 2.6e-31    4.48 0.87 0.179
-## 2 0.86 0.95 0.049  26 8.7e+01 1.7e-08    1.57 0.95 0.115
-## 3 0.86 0.95 0.072  18 5.4e+01 1.9e-05    1.27 0.96 0.106
-## 4 0.86 0.94 0.116  11 1.6e+01 1.3e-01    1.17 0.97 0.052
-## 5 0.86 0.89 0.165   5 4.6e+00 4.7e-01    0.98 0.97 0.000
-## 6 0.85 0.91 0.240   0 7.6e-01      NA    0.90 0.97    NA
-## 7 0.86 0.93 0.410  -4 5.1e-07      NA    0.90 0.97    NA
-## 8 0.86 0.95 0.480  -7 1.5e-12      NA    0.85 0.98    NA
-##   BIC SABIC complex  eChisq    SRMR eCRMS eBIC
-## 1  53 163.7     1.0 2.4e+02 1.2e-01 0.138   57
-## 2 -48  34.6     1.1 1.6e+01 3.2e-02 0.042 -119
-## 3 -39  17.6     1.2 6.6e+00 2.0e-02 0.032  -87
-## 4 -41  -5.8     1.3 2.7e+00 1.3e-02 0.026  -54
-## 5 -21  -5.5     1.4 4.8e-01 5.5e-03 0.016  -25
-## 6  NA    NA     1.5 6.1e-02 2.0e-03    NA   NA
-## 7  NA    NA     1.4 1.0e-07 2.5e-06    NA   NA
-## 8  NA    NA     1.4 1.3e-13 2.9e-09    NA   NA
-```
-
- Very Simple Structure
- Call: vss(x = x, n = n, rotate = rotate, diagonal = diagonal, fm = fm, 
-           n.obs = n.obs, plot = plot, title = title, use = use, cor = cor)
- VSS complexity 1 achieves a maximimum of 0.87  with  1  factors
- VSS complexity 2 achieves a maximimum of 0.95  with  2  factors
+ ## -------MAP and Parallel Analysis----------------------------------------
+ VSS(spss.data, fm = 'minres', cor = 'poly', plot = F)
  
- The Velicer MAP achieves a minimum of 0.05  with  2  factors 
- BIC achieves a minimum of  NA  with  2  factors
- Sample Size adjusted BIC achieves a minimum of  NA  with  4  factors
-
-
-```r
-fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs,
-## rotate = rotate, : An ultra-Heywood case was detected.
-## Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs,
-## rotate = rotate, : An ultra-Heywood case was detected.
-## Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs,
-## rotate = rotate, : An ultra-Heywood case was detected.
-## Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs,
-## rotate = rotate, : An ultra-Heywood case was detected.
-## Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs,
-## rotate = rotate, : An ultra-Heywood case was detected.
-## Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs,
-## rotate = rotate, : An ultra-Heywood case was detected.
-## Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs,
-## rotate = rotate, : An ultra-Heywood case was detected.
-## Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs,
-## rotate = rotate, : An ultra-Heywood case was detected.
-## Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs,
-## rotate = rotate, : An ultra-Heywood case was detected.
-## Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs,
-## rotate = rotate, : An ultra-Heywood case was detected.
-## Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs,
-## rotate = rotate, : An ultra-Heywood case was detected.
-## Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs,
-## rotate = rotate, : An ultra-Heywood case was detected.
-## Examine the results carefully
-```
-
-```
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-
-## Warning in fa.stats(r = r, f = f, phi = phi, n.obs =
-## n.obs, np.obs = np.obs, : The estimated weights for the
-## factor scores are probably incorrect. Try a different
-## factor score estimation method.
-```
-
-```
-## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs,
-## rotate = rotate, : An ultra-Heywood case was detected.
-## Examine the results carefully
-```
-
-![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-1.png)
-
-```
-## Parallel analysis suggests that the number of factors =  2  and the number of components =  2
-```
-
- Parallel analysis suggests that the number of factors =  2  and the number of components =  2 
-###
- Both MAP and PA suggest 2F 
- PA should be interpreted w caution for polychoric correlations
- Next, running 1F, 2F and 3F model (i.e. 1 above and 1 below suggested num. of factors) next to help determine which model is best
-###
+ # Very Simple Structure
+ # Call: vss(x = x, n = n, rotate = rotate, diagonal = diagonal, fm = fm, 
+ #           n.obs = n.obs, plot = plot, title = title, use = use, cor = cor)
+ # VSS complexity 1 achieves a maximimum of 0.87  with  1  factors
+ # VSS complexity 2 achieves a maximimum of 0.95  with  2  factors
+ # 
+ # The Velicer MAP achieves a minimum of 0.05  with  2  factors 
+ # BIC achieves a minimum of  NA  with  2  factors
+ # Sample Size adjusted BIC achieves a minimum of  NA  with  4  factors
+ 
+ fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
+ 
+ # Parallel analysis suggests that the number of factors =  2  and the number of components =  2 
+ 
+ ####
+ # Both MAP and PA suggest 2F 
+ # PA should be interpreted w caution for polychoric correlations
+ # Next, running 1F, 2F and 3F model (i.e. 1 above and 1 below suggested num. of factors) next to help determine which model is best
+ ####
 # -------1F EFA----------------------------------------
 
 
@@ -931,144 +416,14 @@ fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfactors = 1)
 
  Based on model fit (RMSR), 1F sucks
 ###
-# ---------Outliers 1F ---------------
-
-
-```r
-fS1 <- forward.search(spss.data, 1, criteria = c("mah", "GOF"))
-```
-
-```
-## Remaining iterations: 106 
-## Remaining iterations: 105 
-## Remaining iterations: 104 
-## Remaining iterations: 103 
-## Remaining iterations: 102 
-## Remaining iterations: 101 
-## Remaining iterations: 100 
-## Remaining iterations: 99 
-## Remaining iterations: 98 
-## Remaining iterations: 97 
-## Remaining iterations: 96 
-## Remaining iterations: 95 
-## Remaining iterations: 94 
-## Remaining iterations: 93 
-## Remaining iterations: 92 
-## Remaining iterations: 91 
-## Remaining iterations: 90 
-## Remaining iterations: 89 
-## Remaining iterations: 88 
-## Remaining iterations: 87 
-## Remaining iterations: 86 
-## Remaining iterations: 85 
-## Remaining iterations: 84 
-## Remaining iterations: 83 
-## Remaining iterations: 82 
-## Remaining iterations: 81 
-## Remaining iterations: 80 
-## Remaining iterations: 79 
-## Remaining iterations: 78 
-## Remaining iterations: 77 
-## Remaining iterations: 76 
-## Remaining iterations: 75 
-## Remaining iterations: 74 
-## Remaining iterations: 73 
-## Remaining iterations: 72 
-## Remaining iterations: 71 
-## Remaining iterations: 70 
-## Remaining iterations: 69 
-## Remaining iterations: 68 
-## Remaining iterations: 67 
-## Remaining iterations: 66 
-## Remaining iterations: 65 
-## Remaining iterations: 64 
-## Remaining iterations: 63 
-## Remaining iterations: 62 
-## Remaining iterations: 61 
-## Remaining iterations: 60 
-## Remaining iterations: 59 
-## Remaining iterations: 58 
-## Remaining iterations: 57 
-## Remaining iterations: 56 
-## Remaining iterations: 55 
-## Remaining iterations: 54 
-## Remaining iterations: 53 
-## Remaining iterations: 52 
-## Remaining iterations: 51 
-## Remaining iterations: 50 
-## Remaining iterations: 49 
-## Remaining iterations: 48 
-## Remaining iterations: 47 
-## Remaining iterations: 46 
-## Remaining iterations: 45 
-## Remaining iterations: 44 
-## Remaining iterations: 43 
-## Remaining iterations: 42 
-## Remaining iterations: 41 
-## Remaining iterations: 40 
-## Remaining iterations: 39 
-## Remaining iterations: 38 
-## Remaining iterations: 37 
-## Remaining iterations: 36 
-## Remaining iterations: 35 
-## Remaining iterations: 34 
-## Remaining iterations: 33 
-## Remaining iterations: 32 
-## Remaining iterations: 31 
-## Remaining iterations: 30 
-## Remaining iterations: 29 
-## Remaining iterations: 28 
-## Remaining iterations: 27 
-## Remaining iterations: 26 
-## Remaining iterations: 25 
-## Remaining iterations: 24 
-## Remaining iterations: 23 
-## Remaining iterations: 22 
-## Remaining iterations: 21 
-## Remaining iterations: 20 
-## Remaining iterations: 19 
-## Remaining iterations: 18 
-## Remaining iterations: 17 
-## Remaining iterations: 16 
-## Remaining iterations: 15 
-## Remaining iterations: 14 
-## Remaining iterations: 13 
-## Remaining iterations: 12 
-## Remaining iterations: 11 
-## Remaining iterations: 10 
-## Remaining iterations: 9 
-## Remaining iterations: 8 
-## Remaining iterations: 7 
-## Remaining iterations: 6 
-## Remaining iterations: 5 
-## Remaining iterations: 4 
-## Remaining iterations: 3 
-## Remaining iterations: 2 
-## Remaining iterations: 1 
-## Remaining iterations: 0
-```
-
-```r
-gcdresult1 <- gCD(spss.data, 1)
-ldresults1 <- LD(spss.data, 1)
-
-plot(gcdresult1)
-```
-
-![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-1.png)
-
-```r
-plot(fS1)
-```
-
-![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-2.png)
-
-```r
-plot(ldresults1)
-```
-
-![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-3.png)
-
+ ## ---------Outliers 1F ---------------
+ fS1 <- forward.search(spss.data, 1, criteria = c("mah", "GOF"))
+ gcdresult1 <- gCD(spss.data, 1)
+ ldresults1 <- LD(spss.data, 1)
+ 
+ plot(gcdresult1)
+ plot(fS1)
+ plot(ldresults1)
 # ---------------2F EFA-----------------------------------
 
 
@@ -1121,14 +476,10 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 ## BIC =  -47.72
 ## Fit based upon off diagonal values = 1
 ## Measures of factor score adequacy             
-##                                                    MR1
-## Correlation of (regression) scores with factors   0.98
-## Multiple R square of scores with factors          0.95
-## Minimum correlation of possible factor scores     0.90
-##                                                    MR2
-## Correlation of (regression) scores with factors   0.91
-## Multiple R square of scores with factors          0.84
-## Minimum correlation of possible factor scores     0.67
+##                                                    MR1  MR2
+## Correlation of (regression) scores with factors   0.98 0.91
+## Multiple R square of scores with factors          0.95 0.84
+## Minimum correlation of possible factor scores     0.90 0.67
 ```
 
  Factor Analysis using method =  minres
@@ -1187,144 +538,14 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
  Notice that all negatively worded items load onto factor 2 & all positively worded items load onto factor 1
  2F prob wins, but let's try 3F next anyways
 ###
-# ------- Outliers 2F ---------
-
-
-```r
-fS2 <- forward.search(spss.data, 2, criteria = c("mah", "GOF"))
-```
-
-```
-## Remaining iterations: 106 
-## Remaining iterations: 105 
-## Remaining iterations: 104 
-## Remaining iterations: 103 
-## Remaining iterations: 102 
-## Remaining iterations: 101 
-## Remaining iterations: 100 
-## Remaining iterations: 99 
-## Remaining iterations: 98 
-## Remaining iterations: 97 
-## Remaining iterations: 96 
-## Remaining iterations: 95 
-## Remaining iterations: 94 
-## Remaining iterations: 93 
-## Remaining iterations: 92 
-## Remaining iterations: 91 
-## Remaining iterations: 90 
-## Remaining iterations: 89 
-## Remaining iterations: 88 
-## Remaining iterations: 87 
-## Remaining iterations: 86 
-## Remaining iterations: 85 
-## Remaining iterations: 84 
-## Remaining iterations: 83 
-## Remaining iterations: 82 
-## Remaining iterations: 81 
-## Remaining iterations: 80 
-## Remaining iterations: 79 
-## Remaining iterations: 78 
-## Remaining iterations: 77 
-## Remaining iterations: 76 
-## Remaining iterations: 75 
-## Remaining iterations: 74 
-## Remaining iterations: 73 
-## Remaining iterations: 72 
-## Remaining iterations: 71 
-## Remaining iterations: 70 
-## Remaining iterations: 69 
-## Remaining iterations: 68 
-## Remaining iterations: 67 
-## Remaining iterations: 66 
-## Remaining iterations: 65 
-## Remaining iterations: 64 
-## Remaining iterations: 63 
-## Remaining iterations: 62 
-## Remaining iterations: 61 
-## Remaining iterations: 60 
-## Remaining iterations: 59 
-## Remaining iterations: 58 
-## Remaining iterations: 57 
-## Remaining iterations: 56 
-## Remaining iterations: 55 
-## Remaining iterations: 54 
-## Remaining iterations: 53 
-## Remaining iterations: 52 
-## Remaining iterations: 51 
-## Remaining iterations: 50 
-## Remaining iterations: 49 
-## Remaining iterations: 48 
-## Remaining iterations: 47 
-## Remaining iterations: 46 
-## Remaining iterations: 45 
-## Remaining iterations: 44 
-## Remaining iterations: 43 
-## Remaining iterations: 42 
-## Remaining iterations: 41 
-## Remaining iterations: 40 
-## Remaining iterations: 39 
-## Remaining iterations: 38 
-## Remaining iterations: 37 
-## Remaining iterations: 36 
-## Remaining iterations: 35 
-## Remaining iterations: 34 
-## Remaining iterations: 33 
-## Remaining iterations: 32 
-## Remaining iterations: 31 
-## Remaining iterations: 30 
-## Remaining iterations: 29 
-## Remaining iterations: 28 
-## Remaining iterations: 27 
-## Remaining iterations: 26 
-## Remaining iterations: 25 
-## Remaining iterations: 24 
-## Remaining iterations: 23 
-## Remaining iterations: 22 
-## Remaining iterations: 21 
-## Remaining iterations: 20 
-## Remaining iterations: 19 
-## Remaining iterations: 18 
-## Remaining iterations: 17 
-## Remaining iterations: 16 
-## Remaining iterations: 15 
-## Remaining iterations: 14 
-## Remaining iterations: 13 
-## Remaining iterations: 12 
-## Remaining iterations: 11 
-## Remaining iterations: 10 
-## Remaining iterations: 9 
-## Remaining iterations: 8 
-## Remaining iterations: 7 
-## Remaining iterations: 6 
-## Remaining iterations: 5 
-## Remaining iterations: 4 
-## Remaining iterations: 3 
-## Remaining iterations: 2 
-## Remaining iterations: 1 
-## Remaining iterations: 0
-```
-
-```r
-gcdresult2 <- gCD(spss.data, 2)
-ldresults2 <- LD(spss.data, 2)
-
-plot(gcdresult2)
-```
-
-![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-1.png)
-
-```r
-plot(fS2)
-```
-
-![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-2.png)
-
-```r
-plot(ldresults2)
-```
-
-![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-3.png)
-
+ ## ------- Outliers 2F ---------
+ fS2 <- forward.search(spss.data, 2, criteria = c("mah", "GOF"))
+ gcdresult2 <- gCD(spss.data, 2)
+ ldresults2 <- LD(spss.data, 2)
+ 
+ plot(gcdresult2)
+ plot(fS2)
+ plot(ldresults2)
 # ----------------------------3F EFA---------------------------
 
 
@@ -1378,18 +599,10 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
 ## BIC =  -39.4
 ## Fit based upon off diagonal values = 1
 ## Measures of factor score adequacy             
-##                                                    MR1
-## Correlation of (regression) scores with factors   0.98
-## Multiple R square of scores with factors          0.96
-## Minimum correlation of possible factor scores     0.91
-##                                                    MR2
-## Correlation of (regression) scores with factors   0.97
-## Multiple R square of scores with factors          0.95
-## Minimum correlation of possible factor scores     0.89
-##                                                    MR3
-## Correlation of (regression) scores with factors   0.72
-## Multiple R square of scores with factors          0.51
-## Minimum correlation of possible factor scores     0.03
+##                                                    MR1  MR2  MR3
+## Correlation of (regression) scores with factors   0.98 0.97 0.72
+## Multiple R square of scores with factors          0.96 0.95 0.51
+## Minimum correlation of possible factor scores     0.91 0.89 0.03
 ```
 
  Factor Analysis using method =  minres
@@ -1453,144 +666,14 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
 
  Concluding that 2F wins bc improvements in model fit isn't worth it & column and row parsimony worse than 2F model 
 ###
-# ----- Outliers 3F -------
-
-
-```r
-fS3 <- forward.search(spss.data, 3, criteria = c("mah", "GOF"))
-```
-
-```
-## Remaining iterations: 106 
-## Remaining iterations: 105 
-## Remaining iterations: 104 
-## Remaining iterations: 103 
-## Remaining iterations: 102 
-## Remaining iterations: 101 
-## Remaining iterations: 100 
-## Remaining iterations: 99 
-## Remaining iterations: 98 
-## Remaining iterations: 97 
-## Remaining iterations: 96 
-## Remaining iterations: 95 
-## Remaining iterations: 94 
-## Remaining iterations: 93 
-## Remaining iterations: 92 
-## Remaining iterations: 91 
-## Remaining iterations: 90 
-## Remaining iterations: 89 
-## Remaining iterations: 88 
-## Remaining iterations: 87 
-## Remaining iterations: 86 
-## Remaining iterations: 85 
-## Remaining iterations: 84 
-## Remaining iterations: 83 
-## Remaining iterations: 82 
-## Remaining iterations: 81 
-## Remaining iterations: 80 
-## Remaining iterations: 79 
-## Remaining iterations: 78 
-## Remaining iterations: 77 
-## Remaining iterations: 76 
-## Remaining iterations: 75 
-## Remaining iterations: 74 
-## Remaining iterations: 73 
-## Remaining iterations: 72 
-## Remaining iterations: 71 
-## Remaining iterations: 70 
-## Remaining iterations: 69 
-## Remaining iterations: 68 
-## Remaining iterations: 67 
-## Remaining iterations: 66 
-## Remaining iterations: 65 
-## Remaining iterations: 64 
-## Remaining iterations: 63 
-## Remaining iterations: 62 
-## Remaining iterations: 61 
-## Remaining iterations: 60 
-## Remaining iterations: 59 
-## Remaining iterations: 58 
-## Remaining iterations: 57 
-## Remaining iterations: 56 
-## Remaining iterations: 55 
-## Remaining iterations: 54 
-## Remaining iterations: 53 
-## Remaining iterations: 52 
-## Remaining iterations: 51 
-## Remaining iterations: 50 
-## Remaining iterations: 49 
-## Remaining iterations: 48 
-## Remaining iterations: 47 
-## Remaining iterations: 46 
-## Remaining iterations: 45 
-## Remaining iterations: 44 
-## Remaining iterations: 43 
-## Remaining iterations: 42 
-## Remaining iterations: 41 
-## Remaining iterations: 40 
-## Remaining iterations: 39 
-## Remaining iterations: 38 
-## Remaining iterations: 37 
-## Remaining iterations: 36 
-## Remaining iterations: 35 
-## Remaining iterations: 34 
-## Remaining iterations: 33 
-## Remaining iterations: 32 
-## Remaining iterations: 31 
-## Remaining iterations: 30 
-## Remaining iterations: 29 
-## Remaining iterations: 28 
-## Remaining iterations: 27 
-## Remaining iterations: 26 
-## Remaining iterations: 25 
-## Remaining iterations: 24 
-## Remaining iterations: 23 
-## Remaining iterations: 22 
-## Remaining iterations: 21 
-## Remaining iterations: 20 
-## Remaining iterations: 19 
-## Remaining iterations: 18 
-## Remaining iterations: 17 
-## Remaining iterations: 16 
-## Remaining iterations: 15 
-## Remaining iterations: 14 
-## Remaining iterations: 13 
-## Remaining iterations: 12 
-## Remaining iterations: 11 
-## Remaining iterations: 10 
-## Remaining iterations: 9 
-## Remaining iterations: 8 
-## Remaining iterations: 7 
-## Remaining iterations: 6 
-## Remaining iterations: 5 
-## Remaining iterations: 4 
-## Remaining iterations: 3 
-## Remaining iterations: 2 
-## Remaining iterations: 1 
-## Remaining iterations: 0
-```
-
-```r
-gcdresult3 <- gCD(spss.data, 3)
-ldresults3 <- LD(spss.data, 3)
-
-plot(gcdresult3)
-```
-
-![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25-1.png)
-
-```r
-plot(fS3)
-```
-
-![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25-2.png)
-
-```r
-plot(ldresults3)
-```
-
-![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25-3.png)
-
+ ## ----- Outliers 3F -------
+ fS3 <- forward.search(spss.data, 3, criteria = c("mah", "GOF"))
+ gcdresult3 <- gCD(spss.data, 3)
+ ldresults3 <- LD(spss.data, 3)
+ 
+ plot(gcdresult3)
+ plot(fS3)
+ plot(ldresults3)
 # ---------------------2F EFA bentlerQ Rotation----------------------------------
 
 
@@ -1644,14 +727,10 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = 'bentlerQ', nfactors = 2
 ## BIC =  -47.72
 ## Fit based upon off diagonal values = 1
 ## Measures of factor score adequacy             
-##                                                    MR1
-## Correlation of (regression) scores with factors   0.98
-## Multiple R square of scores with factors          0.95
-## Minimum correlation of possible factor scores     0.90
-##                                                    MR2
-## Correlation of (regression) scores with factors   0.91
-## Multiple R square of scores with factors          0.84
-## Minimum correlation of possible factor scores     0.67
+##                                                    MR1  MR2
+## Correlation of (regression) scores with factors   0.98 0.91
+## Multiple R square of scores with factors          0.95 0.84
+## Minimum correlation of possible factor scores     0.90 0.67
 ```
 
            MR1   MR2   h2   u2 com
@@ -1721,14 +800,10 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = 'geominQ', nfactors = 2)
 ## BIC =  -47.72
 ## Fit based upon off diagonal values = 1
 ## Measures of factor score adequacy             
-##                                                    MR1
-## Correlation of (regression) scores with factors   0.98
-## Multiple R square of scores with factors          0.95
-## Minimum correlation of possible factor scores     0.90
-##                                                    MR2
-## Correlation of (regression) scores with factors   0.91
-## Multiple R square of scores with factors          0.83
-## Minimum correlation of possible factor scores     0.67
+##                                                    MR1  MR2
+## Correlation of (regression) scores with factors   0.98 0.91
+## Multiple R square of scores with factors          0.95 0.83
+## Minimum correlation of possible factor scores     0.90 0.67
 ```
 
            MR1   MR2   h2   u2 com
@@ -1798,14 +873,10 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "quartimin", nfactors = 
 ## BIC =  -47.72
 ## Fit based upon off diagonal values = 1
 ## Measures of factor score adequacy             
-##                                                    MR1
-## Correlation of (regression) scores with factors   0.98
-## Multiple R square of scores with factors          0.95
-## Minimum correlation of possible factor scores     0.90
-##                                                    MR2
-## Correlation of (regression) scores with factors   0.91
-## Multiple R square of scores with factors          0.84
-## Minimum correlation of possible factor scores     0.67
+##                                                    MR1  MR2
+## Correlation of (regression) scores with factors   0.98 0.91
+## Multiple R square of scores with factors          0.95 0.84
+## Minimum correlation of possible factor scores     0.90 0.67
 ```
 
          MR1   MR2   h2   u2 com
@@ -1875,14 +946,10 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "Promax", nfactors = 2)
 ## BIC =  -47.72
 ## Fit based upon off diagonal values = 1
 ## Measures of factor score adequacy             
-##                                                    MR1
-## Correlation of (regression) scores with factors   0.97
-## Multiple R square of scores with factors          0.95
-## Minimum correlation of possible factor scores     0.90
-##                                                    MR2
-## Correlation of (regression) scores with factors   0.91
-## Multiple R square of scores with factors          0.83
-## Minimum correlation of possible factor scores     0.66
+##                                                    MR1  MR2
+## Correlation of (regression) scores with factors   0.97 0.91
+## Multiple R square of scores with factors          0.95 0.83
+## Minimum correlation of possible factor scores     0.90 0.66
 ```
 
  MR1   MR2   h2   u2 com
@@ -2038,9 +1105,8 @@ omega(m = spss.data.f1, poly = TRUE, plot = F, nfactors = 1)
 ```
 
 ```
-## Warning in schmid(m, nfactors, fm, digits, rotate =
-## rotate, n.obs = n.obs, : Omega_h and Omega_asymptotic are
-## not meaningful with one factor
+## Warning in schmid(m, nfactors, fm, digits, rotate = rotate, n.obs = n.obs, : Omega_h
+## and Omega_asymptotic are not meaningful with one factor
 ```
 
 ```
@@ -2114,14 +1180,13 @@ omega(m = spss.data.f2, poly = TRUE, plot = F, nfactors = 1)
 ```
 
 ```
-## Warning in schmid(m, nfactors, fm, digits, rotate =
-## rotate, n.obs = n.obs, : Omega_h and Omega_asymptotic are
-## not meaningful with one factor
+## Warning in schmid(m, nfactors, fm, digits, rotate = rotate, n.obs = n.obs, : Omega_h
+## and Omega_asymptotic are not meaningful with one factor
 ```
 
 ```
-## Warning in cov2cor(t(w) %*% r %*% w): diag(.) had 0 or NA
-## entries; non-finite result is doubtful
+## Warning in cov2cor(t(w) %*% r %*% w): diag(.) had 0 or NA entries; non-finite result
+## is doubtful
 ```
 
 ```
@@ -2316,24 +1381,16 @@ omega(m = spss.data, poly = TRUE, plot = F, nfactors = 2)
 ## BIC =  426.95 
 ## 
 ## Measures of factor score adequacy             
-##                                                  g  F1*
-## Correlation of scores with factors            0.74 0.80
-## Multiple R square of scores with factors      0.55 0.64
-## Minimum correlation of factor score estimates 0.10 0.27
-##                                                F2*
-## Correlation of scores with factors            0.74
-## Multiple R square of scores with factors      0.55
-## Minimum correlation of factor score estimates 0.11
+##                                                  g  F1*  F2*
+## Correlation of scores with factors            0.74 0.80 0.74
+## Multiple R square of scores with factors      0.55 0.64 0.55
+## Minimum correlation of factor score estimates 0.10 0.27 0.11
 ## 
 ##  Total, General and Subset omega for each subset
-##                                                  g  F1*
-## Omega total for total scores and subscales    0.93 0.94
-## Omega general for total scores and subscales  0.52 0.39
-## Omega group for total scores and subscales    0.42 0.54
-##                                                F2*
-## Omega total for total scores and subscales    0.80
-## Omega general for total scores and subscales  0.34
-## Omega group for total scores and subscales    0.47
+##                                                  g  F1*  F2*
+## Omega total for total scores and subscales    0.93 0.94 0.80
+## Omega general for total scores and subscales  0.52 0.39 0.34
+## Omega group for total scores and subscales    0.42 0.54 0.47
 ```
 
  Omega Total for total scores = 0.93, for F1 = 0.94 and for F2 = 0.80 ; side note: I probably could have ran this instead of splitting the data into each of its factors?
@@ -2429,7 +1486,7 @@ cor.test(qa.data$total, sa.data$total)
 car::scatterplot(qa.data$total, sa.data$total)
 ```
 
-![plot of chunk unnamed-chunk-42](figure/unnamed-chunk-42-1.png)
+![plot of chunk unnamed-chunk-33](figure/unnamed-chunk-33-1.png)
 
 # --------Discriminant Validity------- 
  Quantitative Anxiety
@@ -2471,7 +1528,7 @@ cor.test(qanx.data$total, sa.data$total)
 car::scatterplot(qanx.data$total, sa.data$total)
 ```
 
-![plot of chunk unnamed-chunk-45](figure/unnamed-chunk-45-1.png)
+![plot of chunk unnamed-chunk-36](figure/unnamed-chunk-36-1.png)
 
  Quantitative Hindrances
 
@@ -2512,7 +1569,7 @@ cor.test(qh.data$total, sa.data$total)
 car::scatterplot(qh.data$total, sa.data$total)
 ```
 
-![plot of chunk unnamed-chunk-48](figure/unnamed-chunk-48-1.png)
+![plot of chunk unnamed-chunk-39](figure/unnamed-chunk-39-1.png)
 
 # --------Exploratory Convergent / Discriminant Validity?----
  The above were predictions we made a priori - below is me playing around
@@ -2555,7 +1612,7 @@ cor.test(qi.data$total, sa.data$total)
 car::scatterplot(qi.data$total, sa.data$total)
 ```
 
-![plot of chunk unnamed-chunk-51](figure/unnamed-chunk-51-1.png)
+![plot of chunk unnamed-chunk-42](figure/unnamed-chunk-42-1.png)
 
  Quantitative Success Factors
 
@@ -2596,7 +1653,7 @@ cor.test(qsf.data$total, sa.data$total)
 car::scatterplot(qsf.data$total, sa.data$total)
 ```
 
-![plot of chunk unnamed-chunk-54](figure/unnamed-chunk-54-1.png)
+![plot of chunk unnamed-chunk-45](figure/unnamed-chunk-45-1.png)
 
  Quantitative Self-Confidence
 
@@ -2642,7 +1699,7 @@ cor.test(qsc.data$total, sa.data$total)
 car::scatterplot(qsc.data$total, sa.data$total)
 ```
 
-![plot of chunk unnamed-chunk-57](figure/unnamed-chunk-57-1.png)
+![plot of chunk unnamed-chunk-48](figure/unnamed-chunk-48-1.png)
 
  Quantitative Self-Efficacy
 
@@ -2687,7 +1744,7 @@ cor.test(qse.data$total, sa.data$total)
 car::scatterplot(qse.data$total, sa.data$total)
 ```
 
-![plot of chunk unnamed-chunk-60](figure/unnamed-chunk-60-1.png)
+![plot of chunk unnamed-chunk-51](figure/unnamed-chunk-51-1.png)
 
 knitr::spin('SPSSattitudesCode.R', doc = '')
 

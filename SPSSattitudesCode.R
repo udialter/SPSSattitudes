@@ -218,6 +218,7 @@ fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfactors = 1)
 
 ## ---------------2F EFA-----------------------------------
 fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
+efa2 <- fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 
 # Factor Analysis using method =  minres
 # Call: fa(r = spss.data, nfactors = 2, fm = "minres", cor = "poly")
@@ -288,6 +289,7 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 
 ## ----------------------------3F EFA---------------------------
 fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
+efa3 <- fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
 
 # Factor Analysis using method =  minres
 # Call: fa(r = spss.data, nfactors = 3, fm = "minres", cor = "poly")
@@ -355,6 +357,17 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
 # plot(gcdresult3)
 # plot(fS3)
 # plot(ldresults3)
+
+## ---------------------LRT of 2 factor and 3 factor -----------------------------
+lrt <- anova(efa2, efa3)
+
+# ANOVA Test for Difference Between Models
+# 
+# df d.df chiSq d.chiSq PR test empirical d.empirical test.echi    BIC d.BIC
+# 1 26      87.00                     16.17                       -47.72      
+# 2 18    8 53.87   33.13  0 4.14      6.59        9.59       1.2 -39.40  8.32
+
+# Lower BIC indicates better fit, therefore, model 1 (i.e., 2-factor EFA) has a better fit than model 2 (3-factor EFA)
 
 ## ---------------------2F EFA bentlerQ Rotation----------------------------------
 fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = 'bentlerQ', nfactors = 2)
@@ -640,6 +653,86 @@ cor.test(qse.data$total, sa.data$total)
 # r = 0.2474466  ; p = 0.0008684 ; 95% CI [0.1041526 0.3806764]
 car::scatterplot(qse.data$total, sa.data$total)
 
+## --------Item Response Theory (Kunicki Method)---------
 
+# Building lavaan models: A major assumption is unidimensionality - since EFA suggests 2F, an IRT was ran for each factor individually
+
+spss.data.f1.model <- '
+f1 =~ SPSS1E + SPSS4E + SPSS5E + SPSS6E + SPSS7E + SPSS8E + SPSS9E'
+
+spss.data.f2.model <- '
+f2 =~ SPSS2E + SPSS3E + SPSS10E '
+
+# Running IRT for F1
+
+spss.f1.irt <- lavaan::cfa(spss.data.f1.model, data = spss.data, estimator = "DWLS", 
+                 ordered = c("SPSS1E", "SPSS4E", "SPSS5E", "SPSS6E", "SPSS7E", "SPSS8E", "SPSS9E"),
+                 std.lv=T, parameterization='theta')
+
+summary(spss.f1.irt, fit.measure = T)
+
+#x2 = 11.586, df = 14, p = 0.640
+#CFI = 1.00
+#RMSEA = 0.000, 90% CI [0.000, 0.061]
+#SRMR = 0.026
+
+# Running IRT for F2
+
+spss.f2.irt <- lavaan::cfa(spss.data.f2.model, data = spss.data, estimator = "DWLS", 
+                           ordered = c("SPSS2E", "SPSS3E", "SPSS10E"),
+                           std.lv=T, parameterization='theta')
+
+summary(spss.f2.irt, fit.measure = T)
+
+#x2 = 0.000, df = 0, p = 
+#CFI = 1.00
+#RMSEA = 0.000, 90% CI [0.000, 0.000]
+#SRMR = 0.000
+
+## --------Item Response Theory (StatisticsofDOOM Method)---------
+# This is for polytomous IRT which is for items with more than 2 responses (e.g., Likert)
+
+# Load data, remove NA values, reverse code items when appropriate* (we did this in the initial sections)
+# Data must be RAW DATA
+# If your data is NOT unidimensional (an IRT assumption) and you do NOT want to run a multi-dimensional IRT; Split the data into its separate factors
+head(spss.data.f1)
+head(spss.data.f2)
+
+spss.f1.irt2 = mirt(data = spss.data.f1,
+                    model = 1,
+                    itemtype = "gpcm") # model = 1 for one factor, gpcm for generalized partial credit model
+summary(spss.f1.irt2) # mini-EFA
+coef(spss.f1.irt2, IRTpars = T) # coefficients
+  # a > 1 is good; steepness of the s-curve at theta = 0; i.e., discriminability
+  # number of b values is one less than number of Likert points. This is bc gmpc does mini-2-PLs (for each comparison...1-2, 2-3, 3-4, 4-5).
+    # b-values aka 'thresholds' bc they're the point at which you go from answering 1 to answering a 2, etc.
+  # if b1 = -2 then everyone that is -2 or less on the latent variable will answer '1' on the Likert Scale
+  # if b2 = -1 then everyone between -2 and -1 on the latent variable will answer '2' on the Likert Scale
+  # note that b ~= 0 is the average person on the latent variable 
+  # b values increase as 'b' increases. This makes sense, you'd expect those with greater positive attitudes towards SPSS to answer with the higher end of the Likert Scale 
+itemplot(spss.f1.irt2, 1, type = "trace") # curves for item 1. Change number appropriately to get plot for each item. Note that YOUR 'item 5' is not '5'; if it is second in the list, it is '2'.
+  # a good plot = items should be ordered. each item has its limelight (i.e., a point in which it has the highest probability relative to the remaining items)
+  # if a Likert response does not get it's limelight, your Likert response options can be merged/decreased.
+plot(spss.f1.irt2, type = "trace") # curves for all items at once
+  # item 6: P2 does not get limelight.
+itemplot(spss.f1.irt2, 1, type = "info") # item characteristic curve (ICC) for item 1. Change number appropriately to get plot for each item. The mode is the theta the item gives the most info for.
+  # item 1 is mostly measuring ability slightly below average, but also average and slightly above average ability.
+plot(spss.f1.irt2, type = "info") # test information curve. The theta range which the TEST measures.
+itemfit(spss.f1.irt2) # item fit statistics; you want p>.05, but bc large N, likely p<.05.
+
+spss.f2.irt2 = mirt(data = spss.data.f2, model = 1, itemtype = "gpcm")
+summary(spss.f2.irt2) # mini-EFA
+coef(spss.f2.irt2, IRTpars = T) # coefficients
+itemplot(spss.f2.irt2, 1, type = "trace") # curves for each item
+plot(spss.f2.irt2, type = "trace") # curves for all items at once
+  # GOOD - for all items, the curves are ordered and each response gets its limelight.
+itemplot(spss.f2.irt2, 1, type = "info") # ICC for each item
+plot(spss.f2.irt2, type = "info") # test information curve
+itemfit(spss.f2.irt2) # item fit statistics
+
+# # If plots do not work
+# dev.off()
+
+## ---------.md file---------
 # knitr::spin('SPSSattitudesCode.R', doc = '#')
 print("end")

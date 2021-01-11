@@ -261,6 +261,13 @@ write.csv(poly.spss.data$rho, file = "polyCorrTable.csv", row.names = TRUE)
 
 ```r
 poly.spss.ci <- (cor.ci(spss.data, poly = TRUE, plot = FALSE))$ci
+```
+
+```
+## Warning in cor.smooth(mat): Matrix was not positive definite, smoothing was done
+```
+
+```r
 write.csv(poly.spss.ci, file = "polyCorrTableCI.csv", row.names = TRUE)
 ```
 
@@ -482,6 +489,10 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
 ## Minimum correlation of possible factor scores     0.90 0.67
 ```
 
+```r
+efa2 <- fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 2)
+```
+
  Factor Analysis using method =  minres
  Call: fa(r = spss.data, nfactors = 2, fm = "minres", cor = "poly")
  Standardized loadings (pattern matrix) based upon correlation matrix
@@ -605,6 +616,10 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
 ## Minimum correlation of possible factor scores     0.91 0.89 0.03
 ```
 
+```r
+efa3 <- fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
+```
+
  Factor Analysis using method =  minres
  Call: fa(r = spss.data, nfactors = 3, fm = "minres", cor = "poly")
  Standardized loadings (pattern matrix) based upon correlation matrix
@@ -674,6 +689,24 @@ fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
  plot(gcdresult3)
  plot(fS3)
  plot(ldresults3)
+# ---------------------LRT of 2 factor and 3 factor -----------------------------
+
+
+```r
+lrt <- anova(efa2, efa3)
+```
+
+```
+## Model 1 = fa(r = spss.data, nfactors = 2, fm = "minres", cor = "poly")
+## Model 2 = fa(r = spss.data, nfactors = 3, fm = "minres", cor = "poly")
+```
+
+ ANOVA Test for Difference Between Models
+ 
+ df d.df chiSq d.chiSq PR test empirical d.empirical test.echi    BIC d.BIC
+ 1 26      87.00                     16.17                       -47.72      
+ 2 18    8 53.87   33.13  0 4.14      6.59        9.59       1.2 -39.40  8.32
+ Lower BIC indicates better fit, therefore, model 1 (i.e., 2-factor EFA) has a better fit than model 2 (3-factor EFA)
 # ---------------------2F EFA bentlerQ Rotation----------------------------------
 
 
@@ -1105,8 +1138,8 @@ omega(m = spss.data.f1, poly = TRUE, plot = F, nfactors = 1)
 ```
 
 ```
-## Warning in schmid(m, nfactors, fm, digits, rotate = rotate, n.obs = n.obs, : Omega_h
-## and Omega_asymptotic are not meaningful with one factor
+## Warning in schmid(m, nfactors, fm, digits, rotate = rotate, n.obs = n.obs, : Omega_h and Omega_asymptotic are
+## not meaningful with one factor
 ```
 
 ```
@@ -1180,13 +1213,12 @@ omega(m = spss.data.f2, poly = TRUE, plot = F, nfactors = 1)
 ```
 
 ```
-## Warning in schmid(m, nfactors, fm, digits, rotate = rotate, n.obs = n.obs, : Omega_h
-## and Omega_asymptotic are not meaningful with one factor
+## Warning in schmid(m, nfactors, fm, digits, rotate = rotate, n.obs = n.obs, : Omega_h and Omega_asymptotic are
+## not meaningful with one factor
 ```
 
 ```
-## Warning in cov2cor(t(w) %*% r %*% w): diag(.) had 0 or NA entries; non-finite result
-## is doubtful
+## Warning in cov2cor(t(w) %*% r %*% w): diag(.) had 0 or NA entries; non-finite result is doubtful
 ```
 
 ```
@@ -1486,7 +1518,7 @@ cor.test(qa.data$total, sa.data$total)
 car::scatterplot(qa.data$total, sa.data$total)
 ```
 
-![plot of chunk unnamed-chunk-33](figure/unnamed-chunk-33-1.png)
+![plot of chunk unnamed-chunk-34](figure/unnamed-chunk-34-1.png)
 
 # --------Discriminant Validity------- 
  Quantitative Anxiety
@@ -1528,7 +1560,7 @@ cor.test(qanx.data$total, sa.data$total)
 car::scatterplot(qanx.data$total, sa.data$total)
 ```
 
-![plot of chunk unnamed-chunk-36](figure/unnamed-chunk-36-1.png)
+![plot of chunk unnamed-chunk-37](figure/unnamed-chunk-37-1.png)
 
  Quantitative Hindrances
 
@@ -1569,7 +1601,7 @@ cor.test(qh.data$total, sa.data$total)
 car::scatterplot(qh.data$total, sa.data$total)
 ```
 
-![plot of chunk unnamed-chunk-39](figure/unnamed-chunk-39-1.png)
+![plot of chunk unnamed-chunk-40](figure/unnamed-chunk-40-1.png)
 
 # --------Exploratory Convergent / Discriminant Validity?----
  The above were predictions we made a priori - below is me playing around
@@ -1612,7 +1644,7 @@ cor.test(qi.data$total, sa.data$total)
 car::scatterplot(qi.data$total, sa.data$total)
 ```
 
-![plot of chunk unnamed-chunk-42](figure/unnamed-chunk-42-1.png)
+![plot of chunk unnamed-chunk-43](figure/unnamed-chunk-43-1.png)
 
  Quantitative Success Factors
 
@@ -1653,7 +1685,7 @@ cor.test(qsf.data$total, sa.data$total)
 car::scatterplot(qsf.data$total, sa.data$total)
 ```
 
-![plot of chunk unnamed-chunk-45](figure/unnamed-chunk-45-1.png)
+![plot of chunk unnamed-chunk-46](figure/unnamed-chunk-46-1.png)
 
  Quantitative Self-Confidence
 
@@ -1699,7 +1731,7 @@ cor.test(qsc.data$total, sa.data$total)
 car::scatterplot(qsc.data$total, sa.data$total)
 ```
 
-![plot of chunk unnamed-chunk-48](figure/unnamed-chunk-48-1.png)
+![plot of chunk unnamed-chunk-49](figure/unnamed-chunk-49-1.png)
 
  Quantitative Self-Efficacy
 
@@ -1744,8 +1776,362 @@ cor.test(qse.data$total, sa.data$total)
 car::scatterplot(qse.data$total, sa.data$total)
 ```
 
-![plot of chunk unnamed-chunk-51](figure/unnamed-chunk-51-1.png)
+![plot of chunk unnamed-chunk-52](figure/unnamed-chunk-52-1.png)
 
+# --------Item Response Theory (Kunicki Method)---------
+ Building lavaan models: A major assumption is unidimensionality - since EFA suggests 2F, an IRT was ran for each factor individually
+
+
+```r
+spss.data.f1.model <- '
+f1 =~ SPSS1E + SPSS4E + SPSS5E + SPSS6E + SPSS7E + SPSS8E + SPSS9E'
+
+spss.data.f2.model <- '
+f2 =~ SPSS2E + SPSS3E + SPSS10E '
+```
+
+ Running IRT for F1
+
+
+```r
+spss.f1.irt <- lavaan::cfa(spss.data.f1.model, data = spss.data, estimator = "DWLS", 
+                 ordered = c("SPSS1E", "SPSS4E", "SPSS5E", "SPSS6E", "SPSS7E", "SPSS8E", "SPSS9E"),
+                 std.lv=T, parameterization='theta')
+
+summary(spss.f1.irt, fit.measure = T)
+```
+
+```
+## lavaan 0.6-6 ended normally after 55 iterations
+## 
+##   Estimator                                       DWLS
+##   Optimization method                           NLMINB
+##   Number of free parameters                         35
+##                                                       
+##   Number of observations                           178
+##                                                       
+## Model Test User Model:
+##                                                       
+##   Test statistic                                11.586
+##   Degrees of freedom                                14
+##   P-value (Chi-square)                           0.640
+## 
+## Model Test Baseline Model:
+## 
+##   Test statistic                              9571.923
+##   Degrees of freedom                                21
+##   P-value                                        0.000
+## 
+## User Model versus Baseline Model:
+## 
+##   Comparative Fit Index (CFI)                    1.000
+##   Tucker-Lewis Index (TLI)                       1.000
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.000
+##   90 Percent confidence interval - lower         0.000
+##   90 Percent confidence interval - upper         0.061
+##   P-value RMSEA <= 0.05                          0.899
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.026
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                             Standard
+##   Information                                 Expected
+##   Information saturated (h1) model        Unstructured
+## 
+## Latent Variables:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##   f1 =~                                               
+##     SPSS1E            2.040    0.184   11.083    0.000
+##     SPSS4E            2.372    0.263    9.014    0.000
+##     SPSS5E            1.342    0.087   15.383    0.000
+##     SPSS6E            0.895    0.059   15.259    0.000
+##     SPSS7E            0.850    0.056   15.294    0.000
+##     SPSS8E            1.743    0.140   12.453    0.000
+##     SPSS9E            2.274    0.242    9.394    0.000
+## 
+## Intercepts:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##    .SPSS1E            0.000                           
+##    .SPSS4E            0.000                           
+##    .SPSS5E            0.000                           
+##    .SPSS6E            0.000                           
+##    .SPSS7E            0.000                           
+##    .SPSS8E            0.000                           
+##    .SPSS9E            0.000                           
+##     f1                0.000                           
+## 
+## Thresholds:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##     SPSS1E|t1        -3.852    0.467   -8.250    0.000
+##     SPSS1E|t2        -2.232    0.303   -7.360    0.000
+##     SPSS1E|t3        -0.224    0.215   -1.043    0.297
+##     SPSS1E|t4         2.181    0.299    7.282    0.000
+##     SPSS4E|t1        -4.708    0.643   -7.318    0.000
+##     SPSS4E|t2        -2.250    0.351   -6.417    0.000
+##     SPSS4E|t3         0.036    0.243    0.149    0.881
+##     SPSS4E|t4         3.051    0.427    7.145    0.000
+##     SPSS5E|t1        -3.060    0.329   -9.305    0.000
+##     SPSS5E|t2        -1.983    0.221   -8.959    0.000
+##     SPSS5E|t3        -0.404    0.160   -2.525    0.012
+##     SPSS5E|t4         1.085    0.176    6.155    0.000
+##     SPSS6E|t1        -1.800    0.185   -9.709    0.000
+##     SPSS6E|t2        -1.201    0.151   -7.966    0.000
+##     SPSS6E|t3        -0.133    0.127   -1.046    0.296
+##     SPSS6E|t4         0.847    0.138    6.125    0.000
+##     SPSS7E|t1        -2.084    0.209   -9.980    0.000
+##     SPSS7E|t2        -0.783    0.134   -5.858    0.000
+##     SPSS7E|t3         0.111    0.124    0.897    0.370
+##     SPSS7E|t4         1.120    0.145    7.738    0.000
+##     SPSS8E|t1        -3.838    0.452   -8.500    0.000
+##     SPSS8E|t2        -2.271    0.277   -8.202    0.000
+##     SPSS8E|t3        -0.284    0.191   -1.488    0.137
+##     SPSS8E|t4         1.841    0.248    7.436    0.000
+##     SPSS9E|t1        -4.369    0.578   -7.557    0.000
+##     SPSS9E|t2        -2.330    0.345   -6.751    0.000
+##     SPSS9E|t3         0.140    0.234    0.597    0.550
+##     SPSS9E|t4         2.441    0.355    6.880    0.000
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##    .SPSS1E            1.000                           
+##    .SPSS4E            1.000                           
+##    .SPSS5E            1.000                           
+##    .SPSS6E            1.000                           
+##    .SPSS7E            1.000                           
+##    .SPSS8E            1.000                           
+##    .SPSS9E            1.000                           
+##     f1                1.000                           
+## 
+## Scales y*:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##     SPSS1E            0.440                           
+##     SPSS4E            0.388                           
+##     SPSS5E            0.598                           
+##     SPSS6E            0.745                           
+##     SPSS7E            0.762                           
+##     SPSS8E            0.498                           
+##     SPSS9E            0.403
+```
+
+x2 = 11.586, df = 14, p = 0.640
+CFI = 1.00
+RMSEA = 0.000, 90% CI [0.000, 0.061]
+SRMR = 0.026
+ Running IRT for F2
+
+
+```r
+spss.f2.irt <- lavaan::cfa(spss.data.f2.model, data = spss.data, estimator = "DWLS", 
+                           ordered = c("SPSS2E", "SPSS3E", "SPSS10E"),
+                           std.lv=T, parameterization='theta')
+
+summary(spss.f2.irt, fit.measure = T)
+```
+
+```
+## lavaan 0.6-6 ended normally after 36 iterations
+## 
+##   Estimator                                       DWLS
+##   Optimization method                           NLMINB
+##   Number of free parameters                         15
+##                                                       
+##   Number of observations                           178
+##                                                       
+## Model Test User Model:
+##                                                       
+##   Test statistic                                 0.000
+##   Degrees of freedom                                 0
+## 
+## Model Test Baseline Model:
+## 
+##   Test statistic                               596.649
+##   Degrees of freedom                                 3
+##   P-value                                        0.000
+## 
+## User Model versus Baseline Model:
+## 
+##   Comparative Fit Index (CFI)                    1.000
+##   Tucker-Lewis Index (TLI)                       1.000
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.000
+##   90 Percent confidence interval - lower         0.000
+##   90 Percent confidence interval - upper         0.000
+##   P-value RMSEA <= 0.05                             NA
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.000
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                             Standard
+##   Information                                 Expected
+##   Information saturated (h1) model        Unstructured
+## 
+## Latent Variables:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##   f2 =~                                               
+##     SPSS2E            1.512    0.365    4.139    0.000
+##     SPSS3E            1.470    0.342    4.302    0.000
+##     SPSS10E           0.744    0.085    8.755    0.000
+## 
+## Intercepts:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##    .SPSS2E            0.000                           
+##    .SPSS3E            0.000                           
+##    .SPSS10E           0.000                           
+##     f2                0.000                           
+## 
+## Thresholds:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##     SPSS2E|t1        -3.316    0.647   -5.126    0.000
+##     SPSS2E|t2        -1.585    0.331   -4.786    0.000
+##     SPSS2E|t3        -0.679    0.209   -3.248    0.001
+##     SPSS2E|t4         1.175    0.270    4.348    0.000
+##     SPSS3E|t1        -2.823    0.525   -5.381    0.000
+##     SPSS3E|t2        -1.554    0.313   -4.959    0.000
+##     SPSS3E|t3        -0.353    0.178   -1.985    0.047
+##     SPSS3E|t4         1.591    0.319    4.990    0.000
+##     SPSS10E|t1       -1.979    0.207   -9.559    0.000
+##     SPSS10E|t2       -0.943    0.136   -6.932    0.000
+##     SPSS10E|t3       -0.035    0.117   -0.299    0.765
+##     SPSS10E|t4        1.116    0.144    7.769    0.000
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##    .SPSS2E            1.000                           
+##    .SPSS3E            1.000                           
+##    .SPSS10E           1.000                           
+##     f2                1.000                           
+## 
+## Scales y*:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##     SPSS2E            0.552                           
+##     SPSS3E            0.562                           
+##     SPSS10E           0.802
+```
+
+x2 = 0.000, df = 0, p = 
+CFI = 1.00
+RMSEA = 0.000, 90% CI [0.000, 0.000]
+SRMR = 0.000
+# --------Item Response Theory (StatisticsofDOOM Method)---------
+ This is for polytomous IRT which is for items with more than 2 responses (e.g., Likert)
+ Load data, remove NA values, reverse code items when appropriate* (we did this in the initial sections)
+ Data must be RAW DATA
+ If your data is NOT unidimensional (an IRT assumption) and you do NOT want to run a multi-dimensional IRT; Split the data into its separate factors
+
+
+```r
+head(spss.data.f1)
+```
+
+```
+##   SPSS1E SPSS4E SPSS5E SPSS6E SPSS7E SPSS8E SPSS9E
+## 1      4      3      3      3      4      4      4
+## 2      4      4      4      4      4      4      4
+## 3      3      2      3      2      2      3      3
+## 4      2      2      2      2      2      2      2
+## 5      4      3      4      4      3      4      3
+## 6      2      3      2      1      3      3      3
+```
+
+```r
+head(spss.data.f2)
+```
+
+```
+##   SPSS2E SPSS3E SPSS10E
+## 1      4      4       4
+## 2      5      5       5
+## 3      3      3       3
+## 4      4      4       4
+## 5      5      4       5
+## 6      2      2       3
+```
+
+```r
+spss.f1.irt2 = mirt(data = spss.data.f1,
+                    model = 1,
+                    itemtype = "gpcm") # model = 1 for one factor, gpcm for generalized partial credit model
+```
+
+```
+## Iteration: 1, Log-Lik: -1533.907, Max-Change: 3.55379Iteration: 2, Log-Lik: -1404.563, Max-Change: 1.77509Iteration: 3, Log-Lik: -1385.605, Max-Change: 1.24217Iteration: 4, Log-Lik: -1380.073, Max-Change: 0.62205Iteration: 5, Log-Lik: -1378.595, Max-Change: 0.33646Iteration: 6, Log-Lik: -1377.862, Max-Change: 0.30722Iteration: 7, Log-Lik: -1377.123, Max-Change: 0.08436Iteration: 8, Log-Lik: -1376.918, Max-Change: 0.04494Iteration: 9, Log-Lik: -1376.835, Max-Change: 0.04426Iteration: 10, Log-Lik: -1376.734, Max-Change: 0.02487Iteration: 11, Log-Lik: -1376.703, Max-Change: 0.04990Iteration: 12, Log-Lik: -1376.678, Max-Change: 0.02173Iteration: 13, Log-Lik: -1376.668, Max-Change: 0.03283Iteration: 14, Log-Lik: -1376.652, Max-Change: 0.03898Iteration: 15, Log-Lik: -1376.639, Max-Change: 0.01624Iteration: 16, Log-Lik: -1376.635, Max-Change: 0.03167Iteration: 17, Log-Lik: -1376.626, Max-Change: 0.01433Iteration: 18, Log-Lik: -1376.620, Max-Change: 0.01984Iteration: 19, Log-Lik: -1376.611, Max-Change: 0.04109Iteration: 20, Log-Lik: -1376.605, Max-Change: 0.00965Iteration: 21, Log-Lik: -1376.603, Max-Change: 0.02283Iteration: 22, Log-Lik: -1376.600, Max-Change: 0.00972Iteration: 23, Log-Lik: -1376.599, Max-Change: 0.00827Iteration: 24, Log-Lik: -1376.598, Max-Change: 0.00578Iteration: 25, Log-Lik: -1376.597, Max-Change: 0.02995Iteration: 26, Log-Lik: -1376.595, Max-Change: 0.00502Iteration: 27, Log-Lik: -1376.594, Max-Change: 0.00339Iteration: 28, Log-Lik: -1376.593, Max-Change: 0.01191Iteration: 29, Log-Lik: -1376.593, Max-Change: 0.00645Iteration: 30, Log-Lik: -1376.592, Max-Change: 0.00132Iteration: 31, Log-Lik: -1376.592, Max-Change: 0.00307Iteration: 32, Log-Lik: -1376.592, Max-Change: 0.00481Iteration: 33, Log-Lik: -1376.592, Max-Change: 0.01779Iteration: 34, Log-Lik: -1376.591, Max-Change: 0.00212Iteration: 35, Log-Lik: -1376.591, Max-Change: 0.00436Iteration: 36, Log-Lik: -1376.590, Max-Change: 0.00271Iteration: 37, Log-Lik: -1376.590, Max-Change: 0.00065Iteration: 38, Log-Lik: -1376.590, Max-Change: 0.00332Iteration: 39, Log-Lik: -1376.590, Max-Change: 0.00057Iteration: 40, Log-Lik: -1376.590, Max-Change: 0.00024Iteration: 41, Log-Lik: -1376.590, Max-Change: 0.00041Iteration: 42, Log-Lik: -1376.590, Max-Change: 0.00013Iteration: 43, Log-Lik: -1376.590, Max-Change: 0.00051Iteration: 44, Log-Lik: -1376.590, Max-Change: 0.00234Iteration: 45, Log-Lik: -1376.590, Max-Change: 0.00059Iteration: 46, Log-Lik: -1376.590, Max-Change: 0.00083Iteration: 47, Log-Lik: -1376.590, Max-Change: 0.00052Iteration: 48, Log-Lik: -1376.590, Max-Change: 0.00016Iteration: 49, Log-Lik: -1376.590, Max-Change: 0.00014Iteration: 50, Log-Lik: -1376.590, Max-Change: 0.00038Iteration: 51, Log-Lik: -1376.590, Max-Change: 0.00037Iteration: 52, Log-Lik: -1376.590, Max-Change: 0.00016Iteration: 53, Log-Lik: -1376.590, Max-Change: 0.00037Iteration: 54, Log-Lik: -1376.590, Max-Change: 0.00041Iteration: 55, Log-Lik: -1376.590, Max-Change: 0.00020Iteration: 56, Log-Lik: -1376.590, Max-Change: 0.00036Iteration: 57, Log-Lik: -1376.590, Max-Change: 0.00046Iteration: 58, Log-Lik: -1376.590, Max-Change: 0.00025Iteration: 59, Log-Lik: -1376.590, Max-Change: 0.00035Iteration: 60, Log-Lik: -1376.590, Max-Change: 0.00011Iteration: 61, Log-Lik: -1376.590, Max-Change: 0.00044Iteration: 62, Log-Lik: -1376.590, Max-Change: 0.00028Iteration: 63, Log-Lik: -1376.590, Max-Change: 0.00034Iteration: 64, Log-Lik: -1376.590, Max-Change: 0.00020Iteration: 65, Log-Lik: -1376.590, Max-Change: 0.00033Iteration: 66, Log-Lik: -1376.590, Max-Change: 0.00011Iteration: 67, Log-Lik: -1376.590, Max-Change: 0.00010Iteration: 68, Log-Lik: -1376.590, Max-Change: 0.00033Iteration: 69, Log-Lik: -1376.590, Max-Change: 0.00033Iteration: 70, Log-Lik: -1376.590, Max-Change: 0.00013Iteration: 71, Log-Lik: -1376.590, Max-Change: 0.00033Iteration: 72, Log-Lik: -1376.590, Max-Change: 0.00008
+```
+
+summary(spss.f1.irt2)  mini-EFA
+coef(spss.f1.irt2, IRTpars = T)  coefficients
+
+
+```r
+  # a > 1 is good; steepness of the s-curve at theta = 0; i.e., discriminability
+  # number of b values is one less than number of Likert points. This is bc gmpc does mini-2-PLs (for each comparison...1-2, 2-3, 3-4, 4-5).
+    # b-values aka 'thresholds' bc they're the point at which you go from answering 1 to answering a 2, etc.
+  # if b1 = -2 then everyone that is -2 or less on the latent variable will answer '1' on the Likert Scale
+  # if b2 = -1 then everyone between -2 and -1 on the latent variable will answer '2' on the Likert Scale
+  # note that b ~= 0 is the average person on the latent variable 
+  # b values increase as 'b' increases. This makes sense, you'd expect those with greater positive attitudes towards SPSS to answer with the higher end of the Likert Scale 
+```
+
+itemplot(spss.f1.irt2, 1, type = "trace")  curves for item 1. Change number appropriately to get plot for each item. Note that YOUR 'item 5' is not '5'; if it is second in the list, it is '2'.
+
+
+```r
+  # a good plot = items should be ordered. each item has its limelight (i.e., a point in which it has the highest probability relative to the remaining items)
+  # if a Likert response does not get it's limelight, your Likert response options can be merged/decreased.
+```
+
+plot(spss.f1.irt2, type = "trace")  curves for all items at once
+
+
+```r
+  # item 6: P2 does not get limelight.
+```
+
+itemplot(spss.f1.irt2, 1, type = "info")  item characteristic curve (ICC) for item 1. Change number appropriately to get plot for each item. The mode is the theta the item gives the most info for.
+
+
+```r
+  # item 1 is mostly measuring ability slightly below average, but also average and slightly above average ability.
+```
+
+plot(spss.f1.irt2, type = "info")  test information curve. The theta range which the TEST measures.
+itemfit(spss.f1.irt2)  item fit statistics; you want p>.05, but bc large N, likely p<.05.
+
+
+```r
+spss.f2.irt2 = mirt(data = spss.data.f2, model = 1, itemtype = "gpcm")
+```
+
+```
+## Iteration: 1, Log-Lik: -736.816, Max-Change: 1.90551Iteration: 2, Log-Lik: -716.859, Max-Change: 0.76976Iteration: 3, Log-Lik: -713.698, Max-Change: 0.52035Iteration: 4, Log-Lik: -711.336, Max-Change: 0.26878Iteration: 5, Log-Lik: -710.874, Max-Change: 0.20378Iteration: 6, Log-Lik: -710.654, Max-Change: 0.13542Iteration: 7, Log-Lik: -710.494, Max-Change: 0.05078Iteration: 8, Log-Lik: -710.482, Max-Change: 0.03837Iteration: 9, Log-Lik: -710.476, Max-Change: 0.02344Iteration: 10, Log-Lik: -710.473, Max-Change: 0.02233Iteration: 11, Log-Lik: -710.472, Max-Change: 0.01358Iteration: 12, Log-Lik: -710.471, Max-Change: 0.01274Iteration: 13, Log-Lik: -710.470, Max-Change: 0.00344Iteration: 14, Log-Lik: -710.470, Max-Change: 0.00051Iteration: 15, Log-Lik: -710.469, Max-Change: 0.00019Iteration: 16, Log-Lik: -710.469, Max-Change: 0.00015Iteration: 17, Log-Lik: -710.469, Max-Change: 0.00013Iteration: 18, Log-Lik: -710.469, Max-Change: 0.00057Iteration: 19, Log-Lik: -710.469, Max-Change: 0.00044Iteration: 20, Log-Lik: -710.469, Max-Change: 0.00031Iteration: 21, Log-Lik: -710.469, Max-Change: 0.00010Iteration: 22, Log-Lik: -710.469, Max-Change: 0.00008
+```
+
+summary(spss.f2.irt2)  mini-EFA
+coef(spss.f2.irt2, IRTpars = T)  coefficients
+itemplot(spss.f2.irt2, 1, type = "trace")  curves for each item
+plot(spss.f2.irt2, type = "trace")  curves for all items at once
+
+
+```r
+  # GOOD - for all items, the curves are ordered and each response gets its limelight.
+```
+
+itemplot(spss.f2.irt2, 1, type = "info")  ICC for each item
+plot(spss.f2.irt2, type = "info")  test information curve
+itemfit(spss.f2.irt2)  item fit statistics
+ # If plots do not work
+ dev.off()
+# ---------.md file---------
 knitr::spin('SPSSattitudesCode.R', doc = '')
 
 

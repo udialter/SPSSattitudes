@@ -261,13 +261,6 @@ write.csv(poly.spss.data$rho, file = "polyCorrTable.csv", row.names = TRUE)
 
 ```r
 poly.spss.ci <- (cor.ci(spss.data, poly = TRUE, plot = FALSE))$ci
-```
-
-```
-## Warning in cor.smooth(mat): Matrix was not positive definite, smoothing was done
-```
-
-```r
 write.csv(poly.spss.ci, file = "polyCorrTableCI.csv", row.names = TRUE)
 ```
 
@@ -1138,8 +1131,8 @@ omega(m = spss.data.f1, poly = TRUE, plot = F, nfactors = 1)
 ```
 
 ```
-## Warning in schmid(m, nfactors, fm, digits, rotate = rotate, n.obs = n.obs, : Omega_h and Omega_asymptotic are
-## not meaningful with one factor
+## Warning in schmid(m, nfactors, fm, digits, rotate = rotate, n.obs = n.obs, : Omega_h and Omega_asymptotic are not meaningful
+## with one factor
 ```
 
 ```
@@ -1213,8 +1206,8 @@ omega(m = spss.data.f2, poly = TRUE, plot = F, nfactors = 1)
 ```
 
 ```
-## Warning in schmid(m, nfactors, fm, digits, rotate = rotate, n.obs = n.obs, : Omega_h and Omega_asymptotic are
-## not meaningful with one factor
+## Warning in schmid(m, nfactors, fm, digits, rotate = rotate, n.obs = n.obs, : Omega_h and Omega_asymptotic are not meaningful
+## with one factor
 ```
 
 ```
@@ -2109,6 +2102,15 @@ itemfit(spss.f1.irt2)  item fit statistics; you want p>.05, but bc large N, like
 
 
 ```r
+M2(spss.f1.irt2, type = "C2")
+```
+
+```
+##             M2 df          p      RMSEA RMSEA_5  RMSEA_95     SRMSR       TLI       CFI
+## stats 23.17077 14 0.05754706 0.06083483       0 0.1031013 0.0413568 0.9899327 0.9932885
+```
+
+```r
 spss.f2.irt2 = mirt(data = spss.data.f2, model = 1, itemtype = "gpcm")
 ```
 
@@ -2129,10 +2131,17 @@ plot(spss.f2.irt2, type = "trace")  curves for all items at once
 itemplot(spss.f2.irt2, 1, type = "info")  ICC for each item
 plot(spss.f2.irt2, type = "info")  test information curve
 itemfit(spss.f2.irt2)  item fit statistics
+ M2(spss.f2.irt2, type = "C2")
+
+
+```r
+  # Error: M2() statistic cannot be calculated due to too few degrees of freedom
+```
+
  # If plots do not work
  dev.off()
 # ---------.md file---------
-knitr::spin('SPSSattitudesCode.R', doc = '')
+ knitr::spin('SPSSattitudesCode.R', doc = '#')
 
 
 ```r

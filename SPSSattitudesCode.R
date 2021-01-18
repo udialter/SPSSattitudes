@@ -719,6 +719,7 @@ itemplot(spss.f1.irt2, 1, type = "info") # item characteristic curve (ICC) for i
   # item 1 is mostly measuring ability slightly below average, but also average and slightly above average ability.
 plot(spss.f1.irt2, type = "info") # test information curve. The theta range which the TEST measures.
 itemfit(spss.f1.irt2) # item fit statistics; you want p>.05, but bc large N, likely p<.05.
+M2(spss.f1.irt2, type = "C2")
 
 spss.f2.irt2 = mirt(data = spss.data.f2, model = 1, itemtype = "gpcm")
 summary(spss.f2.irt2) # mini-EFA
@@ -729,6 +730,8 @@ plot(spss.f2.irt2, type = "trace") # curves for all items at once
 itemplot(spss.f2.irt2, 1, type = "info") # ICC for each item
 plot(spss.f2.irt2, type = "info") # test information curve
 itemfit(spss.f2.irt2) # item fit statistics
+# M2(spss.f2.irt2, type = "C2")
+  # Error: M2() statistic cannot be calculated due to too few degrees of freedom
 
 # # If plots do not work
 # dev.off()

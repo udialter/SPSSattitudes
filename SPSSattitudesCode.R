@@ -7,18 +7,15 @@
 
 #' ## Setup
 # Packages ----------------------------------------------------------------
-library(readr)
-library(haven)
 library(tidyverse)
-library(lavaan)
+library(car)
 library(psych)
-library(mirt)
-library(rsample)
-library(GPArotation)
-library(MBESS)
-library(REdaS)
-library(faoutlier)
-library(mice)
+library(mirt) # for multiple IRT
+library(GPArotation) # for Promax rotation
+library(MBESS) # for reliability CI
+library(REdaS) # for assumptions
+library(faoutlier) # for efa outliers
+library(mice) # for imputations
 
 # Initial Data Setup ------------------------------------------------------
 #' ## Initial Data Setup
@@ -188,7 +185,7 @@ poly.spss.ci <- (cor.ci(spss.data, poly = TRUE, plot = FALSE))$ci
 # MAP Test/Parallel Analysis ----------------------------------------------
 #' ## MAP Test & Parallel Analysis (PA)
 #' __MAP Test__
-# VSS(spss.data, fm = 'minres', cor = 'poly', plot = F)
+VSS(spss.data, fm = 'minres', cor = 'poly', plot = F)
 
 # Very Simple Structure
 # Call: vss(x = x, n = n, rotate = rotate, diagonal = diagonal, fm = fm,
@@ -201,7 +198,7 @@ poly.spss.ci <- (cor.ci(spss.data, poly = TRUE, plot = FALSE))$ci
 # Sample Size adjusted BIC achieves a minimum of  NA  with  4  factors
 
 #' __Parallel Analysis__
-# fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
+fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
 
 # Parallel analysis suggests that the number of factors =  2  and the number of components =  2
 
@@ -271,7 +268,6 @@ efa1 <- fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfact
 # plot(gcdresult1)
 # plot(fS1)
 # plot(ldresults1)
-
 
 # EFA 2 Factors -----------------------------------------------------------
 #' ## EFA 2 Factors
@@ -415,7 +411,6 @@ efa3 <- fa(r = spss.data, fm = 'minres', cor = 'poly', nfactors = 3)
 # plot(fS3)
 # plot(ldresults3)
 
-
 # Likelihood Ratio Test for EFA 2 vs. EFA 3 -------------------------------
 #' ## Likelihood Ratio Test (LRT) for EFA 2 vs. EFA 3  
 
@@ -431,8 +426,7 @@ lrt <- anova(efa2, efa3)
 #' __LRT Interpretation__  
 # Lower BIC indicates better fit, therefore, model 1 (i.e., 2-factor EFA) has a better fit than model 2 (3-factor EFA)  
 
-
-#' For several reasons (e.g., quantitative, interpretabiltiy, etc.), the 2 Factor model fits the data better than  
+#' For several reasons (e.g., quantitative, interpretabilty, etc.), the 2 Factor model fits the data better than  
 #' a 3 factor model. Next, we will try various oblique rotations on the 2 Factor model to get the best row and  
 #' column parsimony.  
 
@@ -603,11 +597,8 @@ cor.test(qa.data.f2$total, sa.data.f2$total) # r = 0.1250142 95% [-0.02248388  0
 car::scatterplot(qa.data.f2$total, sa.data.f1$total)
 car::scatterplot(qa.data.f2$total, sa.data.f2$total)
 
-# Discriminant Validity ---------------------------------------------------
-#' ## Discriminant Validity Testing with Quantitative Anxiety Scale and Quantitative Hindrances Scale  
 #' The following section runs Pearson Correlations between ATSPSS scale  
 #' and Quantitative Anxiety scale / Quantitative Hindrances scale  
-#' to test for discriminant validity.  
 
 #' __Quantitative Anxiety__
 # Set up Quant. Anxiety scale by selecting only the items and calculating total score
@@ -1134,111 +1125,3 @@ efa2temp <- fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "Promax", nf
 
 #' Overall, none of the rotations were significantly better than the default oblimin rotation.  
 #' So, we decided to just stick with oblimin.  
-#'  
-#' ### __3 Factor EFA without Item 10__
-
-# remove item 10
-spss.data.temp <- spss.data %>% dplyr::select(
-  -(SPSS10E)
-)
-efa3_no_item10 <- fa(r = spss.data.temp, fm = 'minres', cor = 'poly', nfactors = 3)
-
-# Warning message:
-#   In fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs,  :
-#                 The estimated weights for the factor scores are probably incorrect.  Try a different factor score estimation method.
-# 
-# 
-# Factor Analysis using method =  minres
-# Call: fa(r = spss.data.temp, nfactors = 3, fm = "minres", cor = "poly")
-# Standardized loadings (pattern matrix) based upon correlation matrix
-#         MR1   MR2   MR3   h2     u2 com
-# SPSS1E  0.88  0.05 -0.06 0.80 0.2044 1.0
-# SPSS2E  0.09  0.67  0.17 0.53 0.4685 1.2
-# SPSS3E -0.02  1.00 -0.05 1.00 0.0041 1.0
-# SPSS4E  0.95  0.01 -0.24 0.92 0.0811 1.1
-# SPSS5E  0.78  0.01  0.18 0.68 0.3195 1.1
-# SPSS6E  0.63  0.01  0.22 0.48 0.5179 1.2
-# SPSS7E  0.66 -0.08  0.19 0.46 0.5374 1.2
-# SPSS8E  0.84  0.03  0.15 0.78 0.2221 1.1
-# SPSS9E  0.92  0.00 -0.05 0.84 0.1639 1.0
-#               
-#                       MR1  MR2  MR3
-# SS loadings           4.72 1.50 0.26
-# Proportion Var        0.52 0.17 0.03
-# Cumulative Var        0.52 0.69 0.72
-# Proportion Explained  0.73 0.23 0.04
-# Cumulative Proportion 0.73 0.96 1.00
-#               
-# With factor correlations of 
-#     MR1   MR2   MR3
-# MR1 1.00  0.39  0.11
-# MR2 0.39  1.00 -0.02
-# MR3 0.11 -0.02  1.00
-#               
-# Mean item complexity =  1.1
-# Test of the hypothesis that 3 factors are sufficient.
-#               
-# The degrees of freedom for the null model are  36  and the objective function was  6.87 with Chi Square of  1189.51
-# The degrees of freedom for the model are 12  and the objective function was  0.18 
-#               
-# The root mean square of the residuals (RMSR) is  0.02 
-# The df corrected root mean square of the residuals is  0.03 
-#               
-# The harmonic number of observations is  178 with the empirical chi square  3.2  with prob <  0.99 
-# The total number of observations was  178  with Likelihood Chi Square =  30.04  with prob <  0.0028 
-#               
-# Tucker Lewis Index of factoring reliability =  0.953
-# RMSEA index =  0.092  and the 90 % confidence intervals are  0.051 0.134
-# BIC =  -32.14
-# Fit based upon off diagonal values = 1
-#'
-#' ### __2 Factor EFA without Item 10__
-efa2_no_item10 <- fa(r = spss.data.temp, fm = 'minres', cor = 'poly', nfactors = 2)
-
-# Warning messages:
-#   1: In fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs,  :
-#                    The estimated weights for the factor scores are probably incorrect.  Try a different factor score estimation method.
-#                  2: In fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate,  :
-#                              An ultra-Heywood case was detected.  Examine the results carefully
-# Factor Analysis using method =  minres
-# Call: fa(r = spss.data.temp, nfactors = 2, fm = "minres", cor = "poly")
-# Standardized loadings (pattern matrix) based upon correlation matrix
-#         MR1   MR2   h2       u2 com
-# SPSS1E  0.87  0.04 0.78  0.21556 1.0
-# SPSS2E  0.13  0.64 0.49  0.51280 1.1
-# SPSS3E -0.03  1.01 1.00 -0.00042 1.0
-# SPSS4E  0.89  0.02 0.80  0.19678 1.0
-# SPSS5E  0.82 -0.01 0.66  0.33886 1.0
-# SPSS6E  0.67 -0.01 0.45  0.55388 1.0
-# SPSS7E  0.69 -0.10 0.44  0.56291 1.0
-# SPSS8E  0.87  0.01 0.77  0.22845 1.0
-# SPSS9E  0.91  0.00 0.83  0.17083 1.0
-# 
-#                       MR1  MR2
-# SS loadings           4.77 1.45
-# Proportion Var        0.53 0.16
-# Cumulative Var        0.53 0.69
-# Proportion Explained  0.77 0.23
-# Cumulative Proportion 0.77 1.00
-# 
-# With factor correlations of 
-# MR1 MR2
-# MR1 1.0 0.4
-# MR2 0.4 1.0
-# 
-# Mean item complexity =  1
-# Test of the hypothesis that 2 factors are sufficient.
-# 
-# The degrees of freedom for the null model are  36  and the objective function was  6.87 with Chi Square of  1189.51
-# The degrees of freedom for the model are 19  and the objective function was  0.36 
-# 
-# The root mean square of the residuals (RMSR) is  0.03 
-# The df corrected root mean square of the residuals is  0.04 
-# 
-# The harmonic number of observations is  178 with the empirical chi square  9.15  with prob <  0.97 
-# The total number of observations was  178  with Likelihood Chi Square =  61.35  with prob <  2.4e-06 
-# 
-# Tucker Lewis Index of factoring reliability =  0.93
-# RMSEA index =  0.112  and the 90 % confidence intervals are  0.082 0.144
-# BIC =  -37.1
-# Fit based upon off diagonal values = 1

@@ -7,41 +7,38 @@ Jan 31, 2021
 
 ``` r
 # Packages ----------------------------------------------------------------
-library(readr)
-```
-
-    ## Warning: package 'readr' was built under R version 4.0.2
-
-``` r
-library(haven)
-```
-
-    ## Warning: package 'haven' was built under R version 4.0.2
-
-``` r
 library(tidyverse)
 ```
 
-    ## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
+    ## -- Attaching packages --------
 
-    ## v ggplot2 3.3.1     v dplyr   1.0.0
-    ## v tibble  3.0.1     v stringr 1.4.0
-    ## v tidyr   1.1.0     v forcats 0.5.0
-    ## v purrr   0.3.4
+    ## v ggplot2 3.3.1     v purrr   0.3.4
+    ## v tibble  3.0.1     v dplyr   1.0.0
+    ## v tidyr   1.1.0     v stringr 1.4.0
+    ## v readr   1.3.1     v forcats 0.5.0
 
-    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+    ## Warning: package 'readr' was built under R version 4.0.2
+
+    ## -- Conflicts -----------------
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
 
 ``` r
-library(lavaan)
+library(car)
 ```
 
-    ## Warning: package 'lavaan' was built under R version 4.0.2
+    ## Loading required package: carData
 
-    ## This is lavaan 0.6-6
+    ## 
+    ## Attaching package: 'car'
 
-    ## lavaan is BETA software! Please report any bugs.
+    ## The following object is masked from 'package:dplyr':
+    ## 
+    ##     recode
+
+    ## The following object is masked from 'package:purrr':
+    ## 
+    ##     some
 
 ``` r
 library(psych)
@@ -52,16 +49,16 @@ library(psych)
     ## 
     ## Attaching package: 'psych'
 
-    ## The following object is masked from 'package:lavaan':
+    ## The following object is masked from 'package:car':
     ## 
-    ##     cor2cov
+    ##     logit
 
     ## The following objects are masked from 'package:ggplot2':
     ## 
     ##     %+%, alpha
 
 ``` r
-library(mirt)
+library(mirt) # for multiple IRT
 ```
 
     ## Warning: package 'mirt' was built under R version 4.0.2
@@ -71,14 +68,8 @@ library(mirt)
     ## Loading required package: lattice
 
 ``` r
-library(rsample)
-```
-
-    ## Warning: package 'rsample' was built under R version 4.0.2
-
-``` r
-library(GPArotation)
-library(MBESS)
+library(GPArotation) # for Promax rotation
+library(MBESS) # for reliability CI
 ```
 
     ## Warning: package 'MBESS' was built under R version 4.0.2
@@ -90,12 +81,8 @@ library(MBESS)
     ## 
     ##     cor2cov
 
-    ## The following object is masked from 'package:lavaan':
-    ## 
-    ##     cor2cov
-
 ``` r
-library(REdaS)
+library(REdaS) # for assumptions
 ```
 
     ## Warning: package 'REdaS' was built under R version 4.0.3
@@ -103,7 +90,7 @@ library(REdaS)
     ## Loading required package: grid
 
 ``` r
-library(faoutlier)
+library(faoutlier) # for efa outliers
 ```
 
     ## Warning: package 'faoutlier' was built under R version 4.0.3
@@ -112,6 +99,13 @@ library(faoutlier)
 
     ## Warning: package 'sem' was built under R version 4.0.2
 
+    ## Registered S3 methods overwritten by 'lme4':
+    ##   method                          from
+    ##   cooks.distance.influence.merMod car 
+    ##   influence.merMod                car 
+    ##   dfbeta.influence.merMod         car 
+    ##   dfbetas.influence.merMod        car
+
     ## 
     ## Attaching package: 'sem'
 
@@ -119,16 +113,12 @@ library(faoutlier)
     ## 
     ##     fscores
 
-    ## The following objects are masked from 'package:lavaan':
-    ## 
-    ##     cfa, sem
-
     ## Loading required package: mvtnorm
 
     ## Loading required package: parallel
 
 ``` r
-library(mice)
+library(mice) # for imputations
 ```
 
     ## Warning: package 'mice' was built under R version 4.0.3
@@ -180,16 +170,6 @@ spss.data <- full.data %>%
 
 ``` r
 spss.data$SPSS2E <- car::recode(spss.data$SPSS2E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1")
-```
-
-    ## Registered S3 methods overwritten by 'car':
-    ##   method                          from
-    ##   influence.merMod                lme4
-    ##   cooks.distance.influence.merMod lme4
-    ##   dfbeta.influence.merMod         lme4
-    ##   dfbetas.influence.merMod        lme4
-
-``` r
 spss.data$SPSS3E <- car::recode(spss.data$SPSS3E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1")
 spss.data$SPSS10E <- car::recode(spss.data$SPSS10E, "1 = 5; 2 = 4; 3 = 3; 4 = 2; 5 = 1")
 
@@ -527,8 +507,41 @@ But 2,3, and 10 are more correlated to each other than other Qs.
 **MAP Test**
 
 ``` r
-# VSS(spss.data, fm = 'minres', cor = 'poly', plot = F)
+VSS(spss.data, fm = 'minres', cor = 'poly', plot = F)
+```
 
+    ## 
+    ## Very Simple Structure
+    ## Call: vss(x = x, n = n, rotate = rotate, diagonal = diagonal, fm = fm, 
+    ##     n.obs = n.obs, plot = plot, title = title, use = use, cor = cor)
+    ## VSS complexity 1 achieves a maximimum of 0.87  with  1  factors
+    ## VSS complexity 2 achieves a maximimum of 0.95  with  2  factors
+    ## 
+    ## The Velicer MAP achieves a minimum of 0.05  with  2  factors 
+    ## BIC achieves a minimum of  NA  with  2  factors
+    ## Sample Size adjusted BIC achieves a minimum of  NA  with  4  factors
+    ## 
+    ## Statistics by number of factors 
+    ##   vss1 vss2   map dof   chisq    prob sqresid  fit RMSEA BIC SABIC complex
+    ## 1 0.87 0.00 0.057  35 2.3e+02 2.6e-31    4.48 0.87 0.179  53 163.7     1.0
+    ## 2 0.86 0.95 0.049  26 8.7e+01 1.7e-08    1.57 0.95 0.115 -48  34.6     1.1
+    ## 3 0.86 0.95 0.072  18 5.4e+01 1.9e-05    1.27 0.96 0.106 -39  17.6     1.2
+    ## 4 0.86 0.94 0.116  11 1.6e+01 1.3e-01    1.17 0.97 0.052 -41  -5.8     1.3
+    ## 5 0.86 0.89 0.165   5 4.6e+00 4.7e-01    0.98 0.97 0.000 -21  -5.5     1.4
+    ## 6 0.85 0.91 0.240   0 7.6e-01      NA    0.90 0.97    NA  NA    NA     1.5
+    ## 7 0.86 0.93 0.410  -4 5.1e-07      NA    0.90 0.97    NA  NA    NA     1.4
+    ## 8 0.86 0.95 0.480  -7 1.5e-12      NA    0.85 0.98    NA  NA    NA     1.4
+    ##    eChisq    SRMR eCRMS eBIC
+    ## 1 2.4e+02 1.2e-01 0.138   57
+    ## 2 1.6e+01 3.2e-02 0.042 -119
+    ## 3 6.6e+00 2.0e-02 0.032  -87
+    ## 4 2.7e+00 1.3e-02 0.026  -54
+    ## 5 4.8e-01 5.5e-03 0.016  -25
+    ## 6 6.1e-02 2.0e-03    NA   NA
+    ## 7 1.0e-07 2.5e-06    NA   NA
+    ## 8 1.3e-13 2.9e-09    NA   NA
+
+``` r
 # Very Simple Structure
 # Call: vss(x = x, n = n, rotate = rotate, diagonal = diagonal, fm = fm,
 #           n.obs = n.obs, plot = plot, title = title, use = use, cor = cor)
@@ -543,8 +556,160 @@ But 2,3, and 10 are more correlated to each other than other Qs.
 **Parallel Analysis**
 
 ``` r
-# fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
+fa.parallel(spss.data, fm = 'minres', cor = 'poly', fa ='both', n.iter=100)
+```
 
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+    
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
+    ## ultra-Heywood case was detected. Examine the results carefully
+
+    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+    ## The estimated weights for the factor scores are probably incorrect. Try a
+    ## different factor score estimation method.
+
+![](SPSSattitudesCode_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
+    ## Parallel analysis suggests that the number of factors =  2  and the number of components =  2
+
+``` r
 # Parallel analysis suggests that the number of factors =  2  and the number of components =  2
 ```
 
@@ -627,7 +792,6 @@ efa1 <- fa(r = spss.data, fm = 'minres', rotate = "oblimin", cor = 'poly', nfact
 # plot(gcdresult1)
 # plot(fS1)
 # plot(ldresults1)
-
 
 # EFA 2 Factors -----------------------------------------------------------
 ```
@@ -796,7 +960,6 @@ Additionally, column and row parsimony for 3F is worse than 2F model
 # plot(fS3)
 # plot(ldresults3)
 
-
 # Likelihood Ratio Test for EFA 2 vs. EFA 3 -------------------------------
 ```
 
@@ -825,7 +988,7 @@ lrt <- anova(efa2, efa3)
 # Lower BIC indicates better fit, therefore, model 1 (i.e., 2-factor EFA) has a better fit than model 2 (3-factor EFA)  
 ```
 
-For several reasons (e.g., quantitative, interpretabiltiy, etc.), the 2
+For several reasons (e.g., quantitative, interpretabilty, etc.), the 2
 Factor model fits the data better than  
 a 3 factor model. Next, we will try various oblique rotations on the 2
 Factor model to get the best row and  
@@ -1227,7 +1390,7 @@ account for categorical nature of items.
 # Convergent Validity -----------------------------------------------------
 ```
 
-## Convergent Validity Testing with Quantitative Attitudes Scale
+## Convergent Validity Testing
 
 The following section runs Pearson Correlations between ATSPSS scale and
 Quantitative Attitudes scale  
@@ -1373,15 +1536,8 @@ car::scatterplot(qa.data.f2$total, sa.data.f2$total)
 
 ![](SPSSattitudesCode_files/figure-gfm/unnamed-chunk-43-4.png)<!-- -->
 
-``` r
-# Discriminant Validity ---------------------------------------------------
-```
-
-## Discriminant Validity Testing with Quantitative Anxiety Scale and Quantitative Hindrances Scale
-
 The following section runs Pearson Correlations between ATSPSS scale  
 and Quantitative Anxiety scale / Quantitative Hindrances scale  
-to test for discriminant validity.  
 **Quantitative Anxiety**
 
 ``` r
@@ -2054,49 +2210,49 @@ fa(r = imp, fm = "minres", cor = 'poly', nfactors = 2)
     ## Standardized loadings (pattern matrix) based upon correlation matrix
     ##           MR1   MR2   h2   u2 com
     ## SPSS1E   0.85  0.08 0.79 0.21 1.0
-    ## SPSS2E   0.05  0.79 0.66 0.34 1.0
-    ## SPSS3E   0.02  0.82 0.69 0.31 1.0
+    ## SPSS2E   0.04  0.79 0.66 0.34 1.0
+    ## SPSS3E   0.03  0.81 0.68 0.32 1.0
     ## SPSS4E   0.88  0.04 0.80 0.20 1.0
     ## SPSS5E   0.82 -0.02 0.66 0.34 1.0
-    ## SPSS6E   0.68 -0.04 0.45 0.55 1.0
-    ## SPSS7E   0.71 -0.12 0.44 0.56 1.1
-    ## SPSS8E   0.86  0.05 0.77 0.23 1.0
+    ## SPSS6E   0.69 -0.04 0.45 0.55 1.0
+    ## SPSS7E   0.70 -0.12 0.44 0.56 1.1
+    ## SPSS8E   0.86  0.04 0.77 0.23 1.0
     ## SPSS9E   0.93 -0.04 0.83 0.17 1.0
     ## SPSS10E -0.09  0.66 0.39 0.61 1.0
     ## 
     ##                        MR1  MR2
-    ## SS loadings           4.72 1.75
-    ## Proportion Var        0.47 0.18
+    ## SS loadings           4.72 1.74
+    ## Proportion Var        0.47 0.17
     ## Cumulative Var        0.47 0.65
     ## Proportion Explained  0.73 0.27
     ## Cumulative Proportion 0.73 1.00
     ## 
     ##  With factor correlations of 
     ##      MR1  MR2
-    ## MR1 1.00 0.42
-    ## MR2 0.42 1.00
+    ## MR1 1.00 0.43
+    ## MR2 0.43 1.00
     ## 
     ## Mean item complexity =  1
     ## Test of the hypothesis that 2 factors are sufficient.
     ## 
-    ## The degrees of freedom for the null model are  45  and the objective function was  7.31 with Chi Square of  1286.21
-    ## The degrees of freedom for the model are 26  and the objective function was  0.49 
+    ## The degrees of freedom for the null model are  45  and the objective function was  7.29 with Chi Square of  1281.28
+    ## The degrees of freedom for the model are 26  and the objective function was  0.48 
     ## 
     ## The root mean square of the residuals (RMSR) is  0.03 
     ## The df corrected root mean square of the residuals is  0.04 
     ## 
-    ## The harmonic number of observations is  181 with the empirical chi square  16.14  with prob <  0.93 
-    ## The total number of observations was  181  with Likelihood Chi Square =  85.78  with prob <  2.6e-08 
+    ## The harmonic number of observations is  181 with the empirical chi square  15.97  with prob <  0.94 
+    ## The total number of observations was  181  with Likelihood Chi Square =  84.11  with prob <  4.8e-08 
     ## 
-    ## Tucker Lewis Index of factoring reliability =  0.916
-    ## RMSEA index =  0.113  and the 90 % confidence intervals are  0.087 0.14
-    ## BIC =  -49.38
+    ## Tucker Lewis Index of factoring reliability =  0.918
+    ## RMSEA index =  0.111  and the 90 % confidence intervals are  0.085 0.138
+    ## BIC =  -51.06
     ## Fit based upon off diagonal values = 1
     ## Measures of factor score adequacy             
     ##                                                    MR1  MR2
     ## Correlation of (regression) scores with factors   0.98 0.91
-    ## Multiple R square of scores with factors          0.95 0.84
-    ## Minimum correlation of possible factor scores     0.90 0.67
+    ## Multiple R square of scores with factors          0.95 0.83
+    ## Minimum correlation of possible factor scores     0.90 0.66
 
 ``` r
 # Factor Analysis using method =  minres
@@ -2163,51 +2319,51 @@ fa(r = imp, fm = "minres", cor = 'poly', nfactors = 3)
     ## Call: fa(r = imp, nfactors = 3, fm = "minres", cor = "poly")
     ## Standardized loadings (pattern matrix) based upon correlation matrix
     ##           MR1   MR2   MR3   h2    u2 com
-    ## SPSS1E   0.88  0.02  0.11 0.81 0.192 1.0
-    ## SPSS2E  -0.01  1.00 -0.07 0.96 0.038 1.0
-    ## SPSS3E   0.13  0.62  0.26 0.59 0.406 1.4
+    ## SPSS1E   0.88  0.02  0.11 0.81 0.191 1.0
+    ## SPSS2E  -0.01  1.00 -0.06 0.97 0.029 1.0
+    ## SPSS3E   0.14  0.60  0.26 0.58 0.421 1.5
     ## SPSS4E   0.93 -0.05  0.14 0.85 0.149 1.1
-    ## SPSS5E   0.78  0.07 -0.17 0.67 0.326 1.1
-    ## SPSS6E   0.64  0.08 -0.21 0.48 0.520 1.2
-    ## SPSS7E   0.65  0.01 -0.23 0.47 0.532 1.2
-    ## SPSS8E   0.86  0.04  0.01 0.77 0.234 1.0
+    ## SPSS5E   0.78  0.08 -0.17 0.67 0.327 1.1
+    ## SPSS6E   0.64  0.08 -0.21 0.48 0.519 1.2
+    ## SPSS7E   0.65  0.01 -0.22 0.47 0.534 1.2
+    ## SPSS8E   0.86  0.03  0.01 0.77 0.235 1.0
     ## SPSS9E   0.93 -0.04 -0.01 0.83 0.168 1.0
-    ## SPSS10E  0.02  0.44  0.44 0.48 0.524 2.0
+    ## SPSS10E  0.02  0.43  0.45 0.48 0.523 2.0
     ## 
     ##                        MR1  MR2  MR3
-    ## SS loadings           4.74 1.70 0.47
+    ## SS loadings           4.75 1.69 0.47
     ## Proportion Var        0.47 0.17 0.05
     ## Cumulative Var        0.47 0.64 0.69
-    ## Proportion Explained  0.69 0.25 0.07
+    ## Proportion Explained  0.69 0.24 0.07
     ## Cumulative Proportion 0.69 0.93 1.00
     ## 
     ##  With factor correlations of 
     ##      MR1  MR2  MR3
-    ## MR1 1.00 0.38 0.03
-    ## MR2 0.38 1.00 0.20
-    ## MR3 0.03 0.20 1.00
+    ## MR1 1.00 0.38 0.04
+    ## MR2 0.38 1.00 0.21
+    ## MR3 0.04 0.21 1.00
     ## 
     ## Mean item complexity =  1.2
     ## Test of the hypothesis that 3 factors are sufficient.
     ## 
-    ## The degrees of freedom for the null model are  45  and the objective function was  7.31 with Chi Square of  1286.21
-    ## The degrees of freedom for the model are 18  and the objective function was  0.31 
+    ## The degrees of freedom for the null model are  45  and the objective function was  7.29 with Chi Square of  1281.28
+    ## The degrees of freedom for the model are 18  and the objective function was  0.3 
     ## 
     ## The root mean square of the residuals (RMSR) is  0.02 
     ## The df corrected root mean square of the residuals is  0.03 
     ## 
-    ## The harmonic number of observations is  181 with the empirical chi square  6.67  with prob <  0.99 
-    ## The total number of observations was  181  with Likelihood Chi Square =  53.43  with prob <  2.3e-05 
+    ## The harmonic number of observations is  181 with the empirical chi square  6.42  with prob <  0.99 
+    ## The total number of observations was  181  with Likelihood Chi Square =  51.51  with prob <  4.4e-05 
     ## 
-    ## Tucker Lewis Index of factoring reliability =  0.928
-    ## RMSEA index =  0.104  and the 90 % confidence intervals are  0.073 0.138
-    ## BIC =  -40.15
+    ## Tucker Lewis Index of factoring reliability =  0.931
+    ## RMSEA index =  0.101  and the 90 % confidence intervals are  0.07 0.135
+    ## BIC =  -42.06
     ## Fit based upon off diagonal values = 1
     ## Measures of factor score adequacy             
     ##                                                    MR1  MR2  MR3
-    ## Correlation of (regression) scores with factors   0.98 0.98 0.72
-    ## Multiple R square of scores with factors          0.96 0.97 0.52
-    ## Minimum correlation of possible factor scores     0.91 0.94 0.05
+    ## Correlation of (regression) scores with factors   0.98 0.99 0.72
+    ## Multiple R square of scores with factors          0.96 0.98 0.52
+    ## Minimum correlation of possible factor scores     0.91 0.95 0.05
 
 ``` r
 # Factor Analysis using method =  minres
@@ -2559,131 +2715,3 @@ efa2temp <- fa(r = spss.data, fm = 'minres', cor = 'poly', rotate = "Promax", nf
 Overall, none of the rotations were significantly better than the
 default oblimin rotation.  
 So, we decided to just stick with oblimin.
-
-### **3 Factor EFA without Item 10**
-
-``` r
-# remove item 10
-spss.data.temp <- spss.data %>% dplyr::select(
-  -(SPSS10E)
-)
-efa3_no_item10 <- fa(r = spss.data.temp, fm = 'minres', cor = 'poly', nfactors = 3)
-```
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-``` r
-# Warning message:
-#   In fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs,  :
-#                 The estimated weights for the factor scores are probably incorrect.  Try a different factor score estimation method.
-# 
-# 
-# Factor Analysis using method =  minres
-# Call: fa(r = spss.data.temp, nfactors = 3, fm = "minres", cor = "poly")
-# Standardized loadings (pattern matrix) based upon correlation matrix
-#         MR1   MR2   MR3   h2     u2 com
-# SPSS1E  0.88  0.05 -0.06 0.80 0.2044 1.0
-# SPSS2E  0.09  0.67  0.17 0.53 0.4685 1.2
-# SPSS3E -0.02  1.00 -0.05 1.00 0.0041 1.0
-# SPSS4E  0.95  0.01 -0.24 0.92 0.0811 1.1
-# SPSS5E  0.78  0.01  0.18 0.68 0.3195 1.1
-# SPSS6E  0.63  0.01  0.22 0.48 0.5179 1.2
-# SPSS7E  0.66 -0.08  0.19 0.46 0.5374 1.2
-# SPSS8E  0.84  0.03  0.15 0.78 0.2221 1.1
-# SPSS9E  0.92  0.00 -0.05 0.84 0.1639 1.0
-#               
-#                       MR1  MR2  MR3
-# SS loadings           4.72 1.50 0.26
-# Proportion Var        0.52 0.17 0.03
-# Cumulative Var        0.52 0.69 0.72
-# Proportion Explained  0.73 0.23 0.04
-# Cumulative Proportion 0.73 0.96 1.00
-#               
-# With factor correlations of 
-#     MR1   MR2   MR3
-# MR1 1.00  0.39  0.11
-# MR2 0.39  1.00 -0.02
-# MR3 0.11 -0.02  1.00
-#               
-# Mean item complexity =  1.1
-# Test of the hypothesis that 3 factors are sufficient.
-#               
-# The degrees of freedom for the null model are  36  and the objective function was  6.87 with Chi Square of  1189.51
-# The degrees of freedom for the model are 12  and the objective function was  0.18 
-#               
-# The root mean square of the residuals (RMSR) is  0.02 
-# The df corrected root mean square of the residuals is  0.03 
-#               
-# The harmonic number of observations is  178 with the empirical chi square  3.2  with prob <  0.99 
-# The total number of observations was  178  with Likelihood Chi Square =  30.04  with prob <  0.0028 
-#               
-# Tucker Lewis Index of factoring reliability =  0.953
-# RMSEA index =  0.092  and the 90 % confidence intervals are  0.051 0.134
-# BIC =  -32.14
-# Fit based upon off diagonal values = 1
-```
-
-### **2 Factor EFA without Item 10**
-
-``` r
-efa2_no_item10 <- fa(r = spss.data.temp, fm = 'minres', cor = 'poly', nfactors = 2)
-```
-
-    ## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
-    ## The estimated weights for the factor scores are probably incorrect. Try a
-    ## different factor score estimation method.
-
-    ## Warning in fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, : An
-    ## ultra-Heywood case was detected. Examine the results carefully
-
-``` r
-# Warning messages:
-#   1: In fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs,  :
-#                    The estimated weights for the factor scores are probably incorrect.  Try a different factor score estimation method.
-#                  2: In fac(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate,  :
-#                              An ultra-Heywood case was detected.  Examine the results carefully
-# Factor Analysis using method =  minres
-# Call: fa(r = spss.data.temp, nfactors = 2, fm = "minres", cor = "poly")
-# Standardized loadings (pattern matrix) based upon correlation matrix
-#         MR1   MR2   h2       u2 com
-# SPSS1E  0.87  0.04 0.78  0.21556 1.0
-# SPSS2E  0.13  0.64 0.49  0.51280 1.1
-# SPSS3E -0.03  1.01 1.00 -0.00042 1.0
-# SPSS4E  0.89  0.02 0.80  0.19678 1.0
-# SPSS5E  0.82 -0.01 0.66  0.33886 1.0
-# SPSS6E  0.67 -0.01 0.45  0.55388 1.0
-# SPSS7E  0.69 -0.10 0.44  0.56291 1.0
-# SPSS8E  0.87  0.01 0.77  0.22845 1.0
-# SPSS9E  0.91  0.00 0.83  0.17083 1.0
-# 
-#                       MR1  MR2
-# SS loadings           4.77 1.45
-# Proportion Var        0.53 0.16
-# Cumulative Var        0.53 0.69
-# Proportion Explained  0.77 0.23
-# Cumulative Proportion 0.77 1.00
-# 
-# With factor correlations of 
-# MR1 MR2
-# MR1 1.0 0.4
-# MR2 0.4 1.0
-# 
-# Mean item complexity =  1
-# Test of the hypothesis that 2 factors are sufficient.
-# 
-# The degrees of freedom for the null model are  36  and the objective function was  6.87 with Chi Square of  1189.51
-# The degrees of freedom for the model are 19  and the objective function was  0.36 
-# 
-# The root mean square of the residuals (RMSR) is  0.03 
-# The df corrected root mean square of the residuals is  0.04 
-# 
-# The harmonic number of observations is  178 with the empirical chi square  9.15  with prob <  0.97 
-# The total number of observations was  178  with Likelihood Chi Square =  61.35  with prob <  2.4e-06 
-# 
-# Tucker Lewis Index of factoring reliability =  0.93
-# RMSEA index =  0.112  and the 90 % confidence intervals are  0.082 0.144
-# BIC =  -37.1
-# Fit based upon off diagonal values = 1
-```
